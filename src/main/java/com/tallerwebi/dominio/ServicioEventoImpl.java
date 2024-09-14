@@ -14,7 +14,7 @@ public class ServicioEventoImpl implements ServicioEvento {
 
     @Autowired
     public ServicioEventoImpl(RepositorioEvento repositorioEventoMock) {
-        this.repositorioEvento = repositorioEvento;
+        this.repositorioEvento = repositorioEventoMock;
     }
 
     public List<Evento> obtenerTodosLosEventos() {
