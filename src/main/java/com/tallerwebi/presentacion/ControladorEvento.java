@@ -1,24 +1,21 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Evento;
-import com.tallerwebi.dominio.ServicioEvento;
+import com.tallerwebi.dominio.ServicioEventoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 @Controller
 public class ControladorEvento {
-private ServicioEvento servicioEvento;
+private ServicioEventoImpl servicioEvento;
 
 @Autowired
-public ControladorEvento(ServicioEvento servicioEvento) {
+public ControladorEvento(ServicioEventoImpl servicioEvento) {
     this.servicioEvento = servicioEvento;
 }
 
