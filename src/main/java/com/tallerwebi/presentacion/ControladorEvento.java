@@ -21,9 +21,12 @@ public ControladorEvento(ServicioEventoImpl servicioEvento) {
 
     @RequestMapping("/eventos")
     public ModelAndView mostrarEventos(){
-        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
+    List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
     ModelMap modelo = new ModelMap();
     modelo.put("eventos", eventos);
     return new ModelAndView("eventos", modelo);
     }
+
+    // USUARIO :D <----> CAPA DE PRESENTACIÓN
+        //              VISTAS - CONTROLADORES  <----> SERVICIOS <----> REPOSITORIO
 }

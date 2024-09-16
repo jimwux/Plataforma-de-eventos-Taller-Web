@@ -18,8 +18,8 @@ public class ControladorEventoTest {
         this.servicioEventoMock = mock(ServicioEventoImpl.class);
         this.controladorEvento = new ControladorEvento(servicioEventoMock);
     }
-@Test
-public void debeRetornarLaVistaEventosCuandoSeEjecutaElMetodoMostrarEventos() {
+    @Test
+    public void debeRetornarLaVistaEventosCuandoSeEjecutaElMetodoMostrarEventos() {
 
     //Contrastacion
     ModelAndView modelAndView = controladorEvento.mostrarEventos();

@@ -13,11 +13,13 @@ public class ServicioEventoImpl implements ServicioEvento {
     private RepositorioEvento repositorioEvento;
 
     @Autowired
-    public ServicioEventoImpl(RepositorioEvento repositorioEventoMock) {
+    public ServicioEventoImpl(RepositorioEvento repositorioEvento) {
         this.repositorioEvento = repositorioEvento;
     }
 
     public List<Evento> obtenerTodosLosEventos() {
         return this.repositorioEvento.obtenerTodosLosEventos();
     }
+
+
 }
