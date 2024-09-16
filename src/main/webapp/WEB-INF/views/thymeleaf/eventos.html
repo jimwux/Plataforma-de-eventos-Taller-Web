@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eventos</title>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li>Eventos</li>
+            <li>Contacto</li>
+            <li>Usuario</li>
+        </ul>
+    </nav>
+
+    <div>
+        <input type="text">
+
+        <select>
+            <option>Provincia</option>
+        </select>
+
+        <select>
+            <option>Ciudad</option>
+        </select>
+
+        <button>Buscar</button>
+    </div>
+
+    <button>Conciertos</button>
+    <button>Teatro</button>
+    <button>Fiestas</button>
+    <button>Convenciones</button>
+    <button>Deportes</button>
+    <button>Familia</button>
+    <button>Otros</button>
+
+    <h1>Nuestros eventos</h1>
+    <div>
+        <ul>
+            <!-- th:each sirve para iterar -->
+            <li th:each="evento : ${eventos}">
+                <a th:href="@{/eventos/{id}(id=${evento.id})}">
+                    <h2 th:text="${evento.nombre}"></h2>
+                    <p th:text="${evento.lugar}"></p>
+                    <p th:text="${evento.fecha}"></p>
+                    <p th:text="${evento.hora}"></p>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>

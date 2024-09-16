@@ -1,0 +1,32 @@
+package com.tallerwebi.presentacion;
+
+import com.tallerwebi.dominio.Evento;
+import com.tallerwebi.dominio.ServicioEventoImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
+@Controller
+public class ControladorEvento {
+private ServicioEventoImpl servicioEvento;
+
+@Autowired
+public ControladorEvento(ServicioEventoImpl servicioEvento) {
+    this.servicioEvento = servicioEvento;
+}
+
+    @RequestMapping("/eventos")
+    public ModelAndView mostrarEventos(){
+    List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
+    ModelMap modelo = new ModelMap();
+    modelo.put("eventos", eventos);
+    return new ModelAndView("eventos", modelo);
+    }
+
+    // USUARIO :D <----> CAPA DE PRESENTACIÓN
+        //              VISTAS - CONTROLADORES  <----> SERVICIOS <----> REPOSITORIO
+}
