@@ -4,6 +4,7 @@ import com.tallerwebi.config.HibernateConfig;
 import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.RepositorioEvento;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
+import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -28,8 +31,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateInfraestructuraTestConfig.class})
@@ -45,11 +47,10 @@ public class RepositorioEventoImplTest {
     }
 
 
-
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioEventoCuandoGuardoUnEventoEntoncesLoEncuentroEnLaBaseDeDatos () {
+    public void dadoQueExisteUnRepositorioEventoCuandoGuardoUnEventoEntoncesLoEncuentroEnLaBaseDeDatos() {
         Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(evento);
 
@@ -64,7 +65,7 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioEventoCuandoGuardo3EventosEntoncesEncuentro3EventosEnLaBaseDeDatos () {
+    public void dadoQueExisteUnRepositorioEventoCuandoGuardo3EventosEntoncesEncuentro3EventosEnLaBaseDeDatos() {
         Evento eventoUno = new Evento("Evento uno", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(eventoUno);
         Evento eventoDos = new Evento("Evento dos", LocalDate.of(2024, 8, 12), "Parque de la Ciudad");
@@ -81,7 +82,7 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioEventoCuandoActualizoSuLugarLoEncuentroEnLaBaseDeDatos () {
+    public void dadoQueExisteUnRepositorioEventoCuandoActualizoSuLugarLoEncuentroEnLaBaseDeDatos() {
         Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(evento);
 
@@ -100,7 +101,7 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioEventoCuandoActualizoSuNombreLoEncuentroEnLaBaseDeDatos () {
+    public void dadoQueExisteUnRepositorioEventoCuandoActualizoSuNombreLoEncuentroEnLaBaseDeDatos() {
         Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(evento);
 
@@ -115,6 +116,38 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventoEncontrado.getNombre(), equalTo(nuevoNombre));
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoEliminoUnEventoEntoncesNoLoEncuentroEnLaBaseDeDatos(){
+        Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
+        this.repositorioEvento.guardar(evento);
+
+        this.repositorioEvento.eliminar(evento);
+
+        String hql = "FROM Evento WHERE nombre = :nombre";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombre", "Creamfields 2024");
+
+        List<Evento> eventos = query.getResultList();
+        assertThat(eventos, empty());
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExisteUnEventoCuandoIntentoActualizarEntoncesSeGeneraUnaExcepcion() {
+        Evento eventoInexistente = new Evento();
+
+        eventoInexistente.setId(999L);
+        eventoInexistente.setLugar("Lugar Inexistente");
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            this.repositorioEvento.actualizarLugar(eventoInexistente);
+        });
+    }
+
 
 
 }

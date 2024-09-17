@@ -5,7 +5,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,11 +35,17 @@ public class RepositorioEventoImpl implements RepositorioEvento {
 
     @Override
     public void actualizarLugar(Evento evento) {
+        Evento eventoInexistente = this.sessionFactory.getCurrentSession().get(Evento.class, evento.getId());
+
+        if (eventoInexistente == null){
+            throw new EntityNotFoundException("Evento no encontrado)");
+        }
         String hql = "UPDATE Evento SET lugar = :lugar WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("lugar", evento.getLugar());
         query.setParameter("id", evento.getId());
         query.executeUpdate();
+
     }
 
     @Override
@@ -48,4 +56,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("id", evento.getId());
         query.executeUpdate();
     }
+
+       @Override
+       public void eliminar(Evento evento) {
+           String hql = "DELETE FROM Evento WHERE id = :id";
+           Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+           query.setParameter("id", evento.getId());
+           query.executeUpdate();
+       }
 }
