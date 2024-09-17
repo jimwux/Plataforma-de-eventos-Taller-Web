@@ -124,7 +124,7 @@ public class RepositorioEventoImplTest {
         Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(evento);
 
-        this.repositorioEvento.eliminar(evento);
+        this.repositorioEvento.eliminarEvento(evento);
 
         String hql = "FROM Evento WHERE nombre = :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
@@ -148,6 +148,21 @@ public class RepositorioEventoImplTest {
         });
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosPorFechaEntoncesLosEncuentroEnLaBaseDeDatos() {
+        Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024,11,16), "Parque de la Ciudad");
+        Evento evento2 = new Evento("TANGO SHOW",LocalDate.of(2024,11,16), "Parque de los Patos");
+        Evento evento3 = new Evento("Fiesta Wasabi",LocalDate.of(2025,2,6), "CABA");
 
+        this.repositorioEvento.guardar(evento);
+        this.repositorioEvento.guardar(evento2);
+        this.repositorioEvento.guardar(evento3);
+
+    List<Evento> eventosEncontrados = this.repositorioEvento.obtenerLosEventosPorFecha(LocalDate.of(2024, 11,16));
+
+    assertThat(eventosEncontrados.size(), equalTo(2));
+    }
 
 }

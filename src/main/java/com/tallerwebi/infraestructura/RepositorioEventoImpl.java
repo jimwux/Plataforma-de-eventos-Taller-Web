@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,10 +59,18 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     }
 
        @Override
-       public void eliminar(Evento evento) {
+       public void eliminarEvento(Evento evento) {
            String hql = "DELETE FROM Evento WHERE id = :id";
            Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
            query.setParameter("id", evento.getId());
            query.executeUpdate();
        }
+
+    @Override
+    public List<Evento> obtenerLosEventosPorFecha(LocalDate fecha) {
+        String hql = "FROM Evento WHERE fecha = :fecha";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        query.setParameter("fecha", fecha);
+        return query.getResultList();
+    }
 }

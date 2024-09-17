@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface RepositorioEvento {
@@ -12,5 +13,7 @@ public interface RepositorioEvento {
 
     void actualizarNombre(Evento evento);
 
-    void eliminar(Evento evento);
+    void eliminarEvento(Evento evento);
+
+    List<Evento> obtenerLosEventosPorFecha(LocalDate of);
 }
