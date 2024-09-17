@@ -30,8 +30,35 @@ public class ServicioEventoImplTest {
         assertThat(eventos, empty());
     }
 
+    @Test
+    public void dadoQueSeCreanDosEventosDebeDevolverUnaListaConEsosDosEventos () {
+
+        Long primerId = 1L;
+        Long segundoId = 2L;
+
+        Evento primerEvento = new Evento();
+        primerEvento.setId(primerId);
+        Evento segundoEvento = new Evento();
+        segundoEvento.setId(segundoId);
+
+        devuelveUnaListaConEsosDosElementos(primerEvento, segundoEvento);
 
 
+    }
 
 
+    private void devuelveUnaListaConEsosDosElementos(Evento primerEvento, Evento segundoEvento) {
+        {
+            List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
+            when(repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
+            eventos.add(primerEvento);
+            eventos.add(segundoEvento);
+            //Esto cuenta como mockear??
+
+            assertThat(eventos.size(), is(2));
+            assertThat(eventos.get(0).getId(), equalTo(primerEvento.getId()));
+            assertThat(eventos.get(1).getId(), equalTo(segundoEvento.getId()));
+        }
+
+    }
 }
