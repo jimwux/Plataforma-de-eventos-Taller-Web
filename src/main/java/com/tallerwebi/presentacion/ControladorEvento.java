@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Evento;
+import com.tallerwebi.dominio.ServicioEvento;
 import com.tallerwebi.dominio.ServicioEventoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,21 +13,21 @@ import java.util.List;
 
 @Controller
 public class ControladorEvento {
-private ServicioEventoImpl servicioEvento;
+
+private ServicioEvento servicioEvento;
 
 @Autowired
-public ControladorEvento(ServicioEventoImpl servicioEvento) {
+public ControladorEvento(ServicioEvento servicioEvento) {
     this.servicioEvento = servicioEvento;
 }
 
     @RequestMapping("/eventos")
     public ModelAndView mostrarEventos(){
-    List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
-    ModelMap modelo = new ModelMap();
-    modelo.put("eventos", eventos);
-    return new ModelAndView("eventos", modelo);
+        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
+        ModelMap modelo = new ModelMap();
+        modelo.put("eventos", eventos);
+        return new ModelAndView("eventos", modelo);
     }
 
-    // USUARIO :D <----> CAPA DE PRESENTACIÓN
-        //              VISTAS - CONTROLADORES  <----> SERVICIOS <----> REPOSITORIO
+
 }
