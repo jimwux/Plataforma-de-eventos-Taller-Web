@@ -21,5 +21,10 @@ public class ServicioEventoImpl implements ServicioEvento {
         return this.repositorioEvento.obtenerTodosLosEventos();
     }
 
+    @Override
+    public Evento obtenerEventoPorId(Long id) {
+        return new Evento();
+    }
+
 
 }

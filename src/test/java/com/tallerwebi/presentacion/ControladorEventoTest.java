@@ -4,6 +4,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.mock;
 
+import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.ServicioEventoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,4 +26,9 @@ public class ControladorEventoTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
     }
 
+    @Test
+    public void debeRetornarLaVistaDetalleDeUnEventoCuandoSePresionaEseEventoEnParticular(){
+        ModelAndView modelAndView = controladorEvento.mostrarVistas(1L);
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vista"));
+    }
 }

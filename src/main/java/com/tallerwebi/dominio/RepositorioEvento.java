@@ -11,4 +11,5 @@ public interface RepositorioEvento {
     void actualizarLugar(Evento evento);
 
     void actualizarNombre(Evento evento);
+
 }
