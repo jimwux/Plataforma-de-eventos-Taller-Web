@@ -58,7 +58,6 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.executeUpdate();
     }
 
-
        @Override
        public void eliminarEvento(Evento evento) {
            String hql = "DELETE FROM Evento WHERE id = :id";
@@ -81,5 +80,13 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", busqueda + "%");  // Concatenamos el valor del nombre con "%"
         return query.getResultList();
+    }
+      
+    @Override
+    public Evento obtenerEventoPorId(Long id) {
+        String hql = "FROM Evento WHERE id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", id);
+        return (Evento) query.getSingleResult();
     }
 }

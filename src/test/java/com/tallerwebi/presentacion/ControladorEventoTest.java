@@ -4,12 +4,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.mockito.Mockito.*;
-
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.Evento;
+import com.tallerwebi.dominio.ServicioEventoImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +70,10 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1)); // Comprobar que contiene 1 elemento
         verify(servicioEventoMock, times(1)).obtenerTodosLosEventos();
     }
-
-
+    
+    @Test
+    public void debeRetornarLaVistaDetalleDeUnEventoCuandoSePresionaEseEventoEnParticular(){
+        ModelAndView modelAndView = controladorEvento.mostrarVistas(1L);
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("vista"));
+    }
 }
