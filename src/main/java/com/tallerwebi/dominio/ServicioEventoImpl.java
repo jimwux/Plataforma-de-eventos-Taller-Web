@@ -24,11 +24,12 @@ public class ServicioEventoImpl implements ServicioEvento {
     @Override
     public void agregarEvento(Evento nuevoEvento) {
         List<Evento> eventosExistentes = this.repositorioEvento.obtenerTodosLosEventos();
-
         if (!eventosExistentes.contains(nuevoEvento)) {
             this.repositorioEvento.guardar(nuevoEvento);
         }
+    }
 
+    @Override
     public List<Evento> buscarEventosPorNombre(String busqueda) {
         if (busqueda == null || busqueda.isEmpty()) {
             // Si no se especifica ningún nombre, retorna todos los eventos
@@ -37,10 +38,11 @@ public class ServicioEventoImpl implements ServicioEvento {
             // Si se especifica un nombre, busca los eventos que lo contienen
             return this.repositorioEvento.buscarEventosPorNombre(busqueda);
         }
-      
+    }
+
+    @Override
     public Evento obtenerEventoPorId(Long id) {
         return this.repositorioEvento.obtenerEventoPorId(id);
-
     }
 
 

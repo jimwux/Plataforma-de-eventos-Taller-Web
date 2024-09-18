@@ -103,12 +103,13 @@ button {
     margin: 30px;
 }
 
-.eventos{
+.container-eventos {
     display: grid;
-    grid-template-columns: repeat(4, 300px);
-    grid-gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     justify-content: space-evenly;
 }
+
 
 .eventos img{
     width: 200px;
@@ -125,7 +126,6 @@ button {
     padding: 10px;
 
 }
-
 
 .evento h3{
     color:  #B1B1BB;
