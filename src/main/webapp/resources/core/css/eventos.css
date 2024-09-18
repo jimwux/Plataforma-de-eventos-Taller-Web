@@ -1,0 +1,144 @@
+body{
+    background-color: #18181B;
+    margin: 0;
+    font-family: sans-serif;
+}
+
+
+nav{
+    background-color: #B1B1BB;
+    margin:0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+h1{
+    margin:0;
+    padding:0;
+    color: white;
+}
+
+h2{
+    text-align: center;
+    color: white;
+    font-size: 2em;
+}
+
+.nav-bar{
+    display: flex;
+    margin:0;
+    justify-content: flex-end;
+}
+
+.nav-bar li{
+    list-style: none;
+    padding: 5px;
+}
+
+.nav-bar li a{
+    color: white;
+    margin: 2em;
+}
+
+.barrita{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 30px;
+}
+
+.barrita input{
+    width: 70%;
+    border-radius: 10px;
+    border: none;
+    opacity: 0.5;
+    padding-left: 15px;
+    padding-top:10px;
+    padding-bottom:10px;
+
+}
+
+.barrita select{
+    border-radius: 10px;
+    width: 10%;
+    border: none;
+    opacity: 0.7;
+}
+
+.barrita button{
+    border: none;
+    border-radius: 4px;
+    width: 7%;
+    background-color: #B1B1BB;
+}
+
+button {
+    cursor: pointer;
+}
+
+.botones_categorias{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.botones_categorias button{
+    width: 12%;
+    border:none;
+    border-radius: 10px;
+    padding: 10px;
+    background-color:  #C1B8BB;
+}
+
+.botones_categorias button:hover{
+    color: white;
+    background-color: #09090B;
+
+}
+
+.contenedor-evento{
+    margin: 30px;
+}
+
+.eventos{
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    grid-gap: 20px;
+    justify-content: space-evenly;
+}
+
+.eventos img{
+    width: 200px;
+    border-radius: 3px;
+}
+
+.evento {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    text-align: center;
+    background-color:  #B1B1BB55;
+    border-radius: 10px;
+    padding: 10px;
+
+}
+
+
+.evento h3{
+    color:  #B1B1BB;
+}
+
+.evento p,a{
+    color: black;
+    text-decoration: none;
+}
+
+
+
+
+
+
+

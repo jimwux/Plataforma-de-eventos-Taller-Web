@@ -6,5 +6,7 @@ public interface ServicioEvento {
 
     public List<Evento> obtenerTodosLosEventos();
 
+    List<Evento> buscarEventosPorNombre(String busqueda);
+
     public Evento obtenerEventoPorId(Long id);
 }

@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Eventos</title>
+    <!--<link rel="stylesheet" th:href="@{../../../resources/core/css/eventos.css}">-->
+    <link rel="stylesheet" th:href="@{/css/eventos.css}"/>
 </head>
 <body>
 
     <nav>
-        <ul>
-            <li>Eventos</li>
-            <li>Contacto</li>
-            <li>Usuario</li>
+        <h1>Equipo mokito</h1>
+        <ul class="nav-bar">
+            <li><a href="">Eventos</a></li>
+            <li><a href="">Contacto</a></li>
+            <li><a href="">Usuario</a></li>
         </ul>
     </nav>
 
-    <div>
-        <input type="text">
-
+    <form action="/spring/eventos" method="get" class="barrita">
+        <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
         <select>
             <option>Provincia</option>
         </select>
-
         <select>
             <option>Ciudad</option>
         </select>
-
         <button>Buscar</button>
-    </div>
+    </form>
 
+    <div class="botones_categorias">
     <button>Conciertos</button>
     <button>Teatro</button>
     <button>Fiestas</button>
@@ -35,19 +36,22 @@
     <button>Deportes</button>
     <button>Familia</button>
     <button>Otros</button>
+    </div>
 
-    <h1>Nuestros eventos</h1>
-    <div>
-        <ul>
+
+    <h2>Nuestros eventos</h2>
+    <div class="contenedor-evento">
+        <div class="eventos">
             <!-- th:each sirve para iterar -->
-            <li th:each="evento : ${eventos}">
+            <div th:each="evento : ${eventos}" class="evento">
                 <a th:href="@{/eventos/{id}(id=${evento.id})}">
-                    <h2 th:text="${evento.nombre}"></h2>
+                    <h3 th:text="${evento.nombre}"></h3>
                     <p th:text="${evento.lugar}"></p>
                     <p th:text="${evento.fecha}"></p>
+                    <img th:src="${evento.imagenUrl}" alt="img">
                 </a>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 
 </body>
