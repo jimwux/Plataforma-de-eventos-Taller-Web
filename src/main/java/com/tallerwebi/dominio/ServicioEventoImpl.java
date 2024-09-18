@@ -21,5 +21,14 @@ public class ServicioEventoImpl implements ServicioEvento {
         return this.repositorioEvento.obtenerTodosLosEventos();
     }
 
+    @Override
+    public void agregarEvento(Evento nuevoEvento) {
+        List<Evento> eventosExistentes = this.repositorioEvento.obtenerTodosLosEventos();
+
+        if (!eventosExistentes.contains(nuevoEvento)) {
+            this.repositorioEvento.guardar(nuevoEvento);
+        }
+    }
+
 
 }

@@ -6,4 +6,6 @@ public interface ServicioEvento {
 
     public List<Evento> obtenerTodosLosEventos();
 
+    public void agregarEvento(Evento nuevoEvento);
+
 }
