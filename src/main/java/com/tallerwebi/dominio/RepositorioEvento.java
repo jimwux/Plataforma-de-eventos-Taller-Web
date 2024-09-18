@@ -12,4 +12,5 @@ public interface RepositorioEvento {
 
     void actualizarNombre(Evento evento);
 
+    public Evento obtenerEventoPorId(Long id);
 }

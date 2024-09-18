@@ -116,5 +116,16 @@ public class RepositorioEventoImplTest {
         assertThat(eventoEncontrado.getNombre(), equalTo(nuevoNombre));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoPuedaObtenerUnEventoPorId(){
+        Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
+       // Al crear un evento automaticamente se le asigna un ID incremental.
+        this.repositorioEvento.guardar(evento);
 
+        Evento eventoObtenido = this.repositorioEvento.obtenerEventoPorId(1L);
+
+        assertThat(eventoObtenido, equalTo(evento));
+    }
 }

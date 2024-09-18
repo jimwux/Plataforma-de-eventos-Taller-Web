@@ -61,4 +61,17 @@ public class ServicioEventoImplTest {
         }
 
     }
+
+    @Test
+    public void dadoQueExistenEventosPodemosObtenerlosPorSuId() {
+        Evento eventoMock = new Evento();
+        eventoMock.setId(1L);
+
+        when(this.repositorioEventoMock.obtenerEventoPorId(1L)).thenReturn(eventoMock);
+        Evento eventoObtenido = this.servicioEvento.obtenerEventoPorId(1L);
+
+        verify(this.repositorioEventoMock, times(1)).obtenerEventoPorId(1L);
+        assertThat(eventoObtenido.getId(), is(1L));
+        assertThat(eventoObtenido, equalTo(eventoMock));
+    }
 }

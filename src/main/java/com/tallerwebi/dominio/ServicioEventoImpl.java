@@ -23,7 +23,7 @@ public class ServicioEventoImpl implements ServicioEvento {
 
     @Override
     public Evento obtenerEventoPorId(Long id) {
-        return new Evento();
+        return this.repositorioEvento.obtenerEventoPorId(id);
     }
 
 
