@@ -16,4 +16,7 @@ public interface RepositorioEvento {
     void eliminarEvento(Evento evento);
 
     List<Evento> obtenerLosEventosPorFecha(LocalDate of);
+
+    List<Evento> buscarEventosPorNombre(String busqueda);
+
 }

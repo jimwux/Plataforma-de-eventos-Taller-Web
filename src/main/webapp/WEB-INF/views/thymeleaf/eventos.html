@@ -17,21 +17,18 @@
         </ul>
     </nav>
 
-    <div class="barrita">
-        <input type="text" placeholder="Ingrese el nombre del evento que esta buscando...">
-
+    <form action="/spring/eventos" method="get" class="barrita">
+        <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
         <select>
             <option>Provincia</option>
         </select>
-
         <select>
             <option>Ciudad</option>
         </select>
-
         <button>Buscar</button>
-    </div>
+    </form>
 
-    <div class="opciones">
+    <div class="botones_categorias">
     <button>Conciertos</button>
     <button>Teatro</button>
     <button>Fiestas</button>

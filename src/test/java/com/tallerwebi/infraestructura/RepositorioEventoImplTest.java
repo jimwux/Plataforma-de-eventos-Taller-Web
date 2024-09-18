@@ -27,6 +27,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -161,8 +163,31 @@ public class RepositorioEventoImplTest {
         this.repositorioEvento.guardar(evento3);
 
     List<Evento> eventosEncontrados = this.repositorioEvento.obtenerLosEventosPorFecha(LocalDate.of(2024, 11,16));
-
     assertThat(eventosEncontrados.size(), equalTo(2));
     }
+
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerAquellosQueCorrespondenAMiBusquedaPorNombre () {
+        Evento eventoUno = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
+        this.repositorioEvento.guardar(eventoUno);
+        Evento eventoDos = new Evento("Lollapalooza", LocalDate.of(2025, 03, 21), "Hipodromo de San Isidro");
+        this.repositorioEvento.guardar(eventoDos);
+        Evento eventoTres = new Evento("Cretive Party", LocalDate.of(2025, 05, 15), "Hipodromo de San Isidro");
+        this.repositorioEvento.guardar(eventoTres);
+
+        String busqueda = "cre";
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorNombre(busqueda);
+
+        List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
+        assertThat(eventosEncontrados.size(), equalTo(2));
+
+        // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperados) {
+            assertThat(eventosEncontrados.get(iterador), equalTo(evento));
+            iterador++;
+        }
+    }
+
+
 
 }

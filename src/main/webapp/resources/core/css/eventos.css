@@ -4,6 +4,7 @@ body{
     font-family: sans-serif;
 }
 
+
 nav{
     background-color: #B1B1BB;
     margin:0;
@@ -38,6 +39,7 @@ h2{
 
 .nav-bar li a{
     color: white;
+    margin: 2em;
 }
 
 .barrita{
@@ -53,9 +55,9 @@ h2{
     border-radius: 10px;
     border: none;
     opacity: 0.5;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-left: 15px;
+    padding-top:10px;
+    padding-bottom:10px;
 
 }
 
@@ -73,21 +75,25 @@ h2{
     background-color: #B1B1BB;
 }
 
-.opciones{
+button {
+    cursor: pointer;
+}
+
+.botones_categorias{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
 
-.opciones button{
+.botones_categorias button{
     width: 12%;
     border:none;
     border-radius: 10px;
-    padding: 5px;
+    padding: 10px;
     background-color:  #C1B8BB;
 }
 
-.opciones button:hover{
+.botones_categorias button:hover{
     color: white;
     background-color: #09090B;
 
@@ -101,6 +107,7 @@ h2{
     display: grid;
     grid-template-columns: repeat(4, 300px);
     grid-gap: 20px;
+    justify-content: space-evenly;
 }
 
 .eventos img{
