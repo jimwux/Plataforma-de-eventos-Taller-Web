@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -25,8 +26,8 @@ public class ServicioEventoImplTest {
 
     @Test
     public void alNoExistirEventosDebeDevolverUnaListaVacia () {
-        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
         when(repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
+        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
         assertThat(eventos, empty());
     }
 
@@ -112,6 +113,36 @@ public class ServicioEventoImplTest {
         servicioEvento.obtenerTodosLosEventos();
 
         verify(repositorioEventoMock, times(1)).obtenerTodosLosEventos();
+    }
+
+    @Test
+    public void dadoQueExistenElementosAlBuscarlosObtenemosTodosLosQueSuNombreComiencenIgual() {
+        Evento eventoUno = new Evento();
+        eventoUno.setNombre("Creamfields");
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("CreativeFest");
+        List<Evento> eventos = Arrays.asList(eventoUno, eventoDos);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombre("crea")).thenReturn(eventos);
+        List<Evento> resultados = this.servicioEvento.buscarEventosPorNombre("crea");
+
+        assertThat(resultados.size(), is(2));
+        assertThat(resultados.get(0).getNombre(), equalTo(eventoUno.getNombre()));
+        assertThat(resultados.get(1).getNombre(), equalTo(eventoDos.getNombre()));
+        verify(this.repositorioEventoMock).buscarEventosPorNombre("crea");
+    }
+    
+    @Test
+    public void dadoQueExistenEventosPodemosObtenerlosPorSuId() {
+        Evento eventoMock = new Evento();
+        eventoMock.setId(1L);
+
+        when(this.repositorioEventoMock.obtenerEventoPorId(1L)).thenReturn(eventoMock);
+        Evento eventoObtenido = this.servicioEvento.obtenerEventoPorId(1L);
+
+        verify(this.repositorioEventoMock, times(1)).obtenerEventoPorId(1L);
+        assertThat(eventoObtenido.getId(), is(1L));
+        assertThat(eventoObtenido, equalTo(eventoMock));
     }
 
 }
