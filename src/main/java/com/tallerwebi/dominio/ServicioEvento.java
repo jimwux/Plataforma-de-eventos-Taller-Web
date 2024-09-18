@@ -6,4 +6,5 @@ public interface ServicioEvento {
 
     public List<Evento> obtenerTodosLosEventos();
 
+    List<Evento> buscarEventosPorNombre(String busqueda);
 }
