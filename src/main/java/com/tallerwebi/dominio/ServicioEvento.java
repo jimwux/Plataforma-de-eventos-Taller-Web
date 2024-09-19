@@ -4,14 +4,12 @@ import java.util.List;
 
 public interface ServicioEvento {
 
-    public List<Evento> obtenerTodosLosEventos();
+    List<Evento> obtenerTodosLosEventos();
 
-
-    public void agregarEvento(Evento nuevoEvento);
-
+    void agregarEvento(Evento nuevoEvento);
 
     List<Evento> buscarEventosPorNombre(String busqueda);
 
-    public Evento obtenerEventoPorId(Long id);
+    Evento obtenerEventoPorId(Long id);
 
 }

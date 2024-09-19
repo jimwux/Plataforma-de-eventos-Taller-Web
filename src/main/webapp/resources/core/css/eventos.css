@@ -1,3 +1,4 @@
+
 body{
     background-color: #18181B;
     margin: 0;
@@ -106,8 +107,15 @@ button {
 .eventos{
     display: grid;
     grid-template-columns: repeat(4, 300px);
-    grid-gap: 20px;
+    row-gap: 4vh;
     justify-content: space-evenly;
+}
+
+
+@media (min-width: 1900px) {
+    .eventos {
+        grid-template-columns: repeat(5, 300px); /* Cambia a 5 columnas en pantallas grandes */
+    }
 }
 
 .eventos img{
@@ -135,10 +143,3 @@ button {
     color: black;
     text-decoration: none;
 }
-
-
-
-
-
-
-

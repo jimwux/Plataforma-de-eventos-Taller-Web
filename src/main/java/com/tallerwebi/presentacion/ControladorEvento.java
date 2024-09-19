@@ -24,21 +24,7 @@ public ControladorEvento(ServicioEvento servicioEvento) {
     this.servicioEvento = servicioEvento;
 }
 
-    /*@RequestMapping("/eventos")
-    public ModelAndView mostrarEventos(){
-        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
-        ModelMap modelo = new ModelMap();
-        modelo.put("eventos", eventos);
-        return new ModelAndView("eventos", modelo);
-    }
-
-    @GetMapping("/buscar")
-    public List<Evento> buscarEventos(@RequestParam("nombre") String nombre) {
-        List<Evento> eventos = this.servicioEvento.buscarEventosPorNombre(nombre);
-        return eventos;  // Esto devuelve una lista de eventos en formato JSON
-    }*/
-
-    @RequestMapping(value = "/eventos", method = RequestMethod.GET)
+    @GetMapping("/eventos")
     public ModelAndView mostrarEventos(@RequestParam(value = "nombre", required = false) String nombre) {
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
