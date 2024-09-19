@@ -1,6 +1,6 @@
 
 body{
-    background-color: #18181B;
+    background: linear-gradient(to right, #18181B, black);
     margin: 0;
     font-family: sans-serif;
 }
@@ -108,6 +108,7 @@ button {
     display: grid;
     grid-template-columns: repeat(4, 300px);
     row-gap: 4vh;
+    column-gap: 2vh;
     justify-content: space-evenly;
 }
 
