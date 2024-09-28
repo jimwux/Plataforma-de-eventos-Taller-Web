@@ -173,7 +173,7 @@
                         <port>8080</port>
                     </httpConnector>
                     <webApp>
-                        <contextPath>/spring</contextPath>
+                        <contextPath>/equipomokito</contextPath>
                     </webApp>
                 </configuration>
             </plugin>

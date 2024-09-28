@@ -1,0 +1,37 @@
+body{
+    font-family: sans-serif;
+    background: linear-gradient(to right, #18181B, black);
+    margin: 0;
+    padding : 0;
+}
+
+h1{
+    text-align: center;
+    background: linear-gradient(dimgray, white) ;
+    margin:0;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+}
+
+.detalles{
+   color: #B1B1BB;
+    margin-top:80px;
+    display:flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.extras{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.nombre{
+    font-weight: 600;
+}
+
+img{
+    border-radius: 20px;
+    width: 340px;
+}

@@ -30,7 +30,7 @@ public class ControladorEventoTest {
     }
 
     @Test
-    public void testMostrarEventosSinNombre() {
+    public void debenObtenerseTodosLosEventosCuandoNoSeUtilizaElBuscador() {
         List<Evento> listaDeEventos = new ArrayList<>();
         listaDeEventos.add(new Evento());
 
@@ -44,7 +44,7 @@ public class ControladorEventoTest {
     }
 
     @Test
-    public void testMostrarEventosConNombre() {
+    public void debenObtenerseLosEventosQueCorrespondanALaBusquedaCuandoSeUtilizaElBuscador() {
         List<Evento> listaDeEventos = new ArrayList<>();
         listaDeEventos.add(new Evento());
 
@@ -58,7 +58,7 @@ public class ControladorEventoTest {
     }
 
     @Test
-    public void testMostrarEventosNombreVacio() {
+    public void debenObtenerseTodosLosEventosCuandoElBuscadorEstaVacio() {
         List<Evento> listaDeEventos = new ArrayList<>();
         listaDeEventos.add(new Evento());
 

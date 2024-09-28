@@ -3,11 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalle</title>
+    <link rel="stylesheet" th:href="@{/css/vista.css}">
 </head>
 <body>
-<h1>Evento ID: <span th:text="${vista.id}"></span></h1>
- <h2 th:text="${vista.nombre}"></h2>
-<p>Este es un evento temporal. ID del evento:  <span th:text="${vista.id}"></span></p>
+
+<h1 class="titulo-evento"><span th:text="${vista.nombre}"></span></h1>
+<div class="detalles">
+
+    <img th:src="${vista.imagenUrl}">
+    <div class="extras">
+        <p>----------------------------------------------------</p>
+        <p> <span class="nombre">Lugar:</span> <span th:text="${vista.lugar}"></span></p>
+        <p> <span class="nombre">Fecha:</span> <span th:text="${vista.fecha}"></span></p>
+        <p>----------------------------------------------------</p>
+    </div>
+
+</div>
+
+
+
+
 </body>
 </html>
 
