@@ -18,6 +18,7 @@ public class Evento {
     private LocalDate fecha;
     private String lugar;
     private String imagenUrl;
+    private String categoria;
 
     public Evento(String nombre, LocalDate fecha, String lugar) {
         this.nombre = nombre;
@@ -80,5 +81,13 @@ public class Evento {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 }

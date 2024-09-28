@@ -145,4 +145,30 @@ public class ServicioEventoImplTest {
         assertThat(eventoObtenido, equalTo(eventoMock));
     }
 
+    @Test
+    public void dadoQueExistenEventosPodemosObtenerlosPorSuCategoriaConcierto() {
+        List<Evento> eventosFiltrados = new ArrayList<>();
+
+        Evento eventoUno = new Evento();
+        eventoUno.setNombre("Mario Bros");
+        eventoUno.setCategoria("Concierto");
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Star Wars");
+        eventoDos.setCategoria("Concierto");
+        Evento eventoTres = new Evento();
+        eventoTres.setCategoria("Otro");
+
+        eventosFiltrados.add(eventoUno);
+       eventosFiltrados.add(eventoDos);
+
+        when(this.repositorioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(eventosFiltrados);
+        List<Evento> resultado = this.servicioEvento.obtenerEventosPorCategoria("Concierto");
+
+        assertThat(resultado.size(), is(2));
+        assertThat(resultado.get(0).getNombre(), equalTo(eventoUno.getNombre()));
+        assertThat(resultado.get(1).getNombre(), equalTo(eventoDos.getNombre()));
+    }
+
+
+
 }

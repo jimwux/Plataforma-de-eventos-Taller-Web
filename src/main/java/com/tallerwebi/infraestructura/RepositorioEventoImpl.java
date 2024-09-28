@@ -89,4 +89,13 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("id", id);
         return (Evento) query.getSingleResult();
     }
+
+    @Override
+    public List<Evento> obtenerEventosPorCategoria(String categoria) {
+        String hql = "FROM Evento WHERE categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
 }

@@ -45,5 +45,10 @@ public class ServicioEventoImpl implements ServicioEvento {
         return this.repositorioEvento.obtenerEventoPorId(id);
     }
 
+    @Override
+    public List<Evento> obtenerEventosPorCategoria(String categoria) {
+        return repositorioEvento.obtenerEventosPorCategoria(categoria);
+    }
+
 
 }

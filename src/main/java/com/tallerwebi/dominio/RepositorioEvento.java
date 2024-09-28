@@ -20,4 +20,6 @@ public interface RepositorioEvento {
     List<Evento> buscarEventosPorNombre(String busqueda);
 
     Evento obtenerEventoPorId(Long id);
+
+    List<Evento> obtenerEventosPorCategoria(String categoria);
 }

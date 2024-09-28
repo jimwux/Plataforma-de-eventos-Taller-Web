@@ -76,4 +76,32 @@ public class ControladorEventoTest {
         ModelAndView modelAndView = controladorEvento.mostrarVistas(1L);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vista"));
     }
+
+
+    @Test
+    public void debenRetornarEventosDeConciertoAlPresionarElBotonDeConcierto(){
+        List<Evento> listaDeEventos = new ArrayList<>();
+
+        Evento evento = new Evento();
+        evento.setCategoria("Concierto");
+        Evento evento2 = new Evento();
+        evento2.setCategoria("Concierto");
+        Evento evento3 = new Evento();
+        evento3.setCategoria("otro");
+
+        listaDeEventos.add(evento);
+        listaDeEventos.add(evento2);
+
+
+        when(servicioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = controladorEvento.mostrarEventosFiltradosPorCategoria("Concierto");
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+
+        assertThat(eventos, hasSize(2));
+        assertThat(eventos.get(0).getCategoria(), is(equalToIgnoringCase("concierto")));
+    }
+
+
+
 }
