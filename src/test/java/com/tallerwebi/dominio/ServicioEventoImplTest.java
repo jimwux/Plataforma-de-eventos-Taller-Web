@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 public class ServicioEventoImplTest {
 
-    private ServicioEventoImpl servicioEvento;
+    private ServicioEvento servicioEvento;
     private RepositorioEvento repositorioEventoMock;
 
     @BeforeEach
@@ -54,7 +54,6 @@ public class ServicioEventoImplTest {
             when(repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
             eventos.add(primerEvento);
             eventos.add(segundoEvento);
-            //Esto cuenta como mockear??
 
             assertThat(eventos.size(), is(2));
             assertThat(eventos.get(0).getId(), equalTo(primerEvento.getId()));
