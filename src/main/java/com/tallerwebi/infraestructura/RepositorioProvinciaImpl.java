@@ -3,10 +3,12 @@ package com.tallerwebi.infraestructura;
 import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioProvincia;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
 import java.util.List;
 
+@Repository
 public class RepositorioProvinciaImpl implements RepositorioProvincia {
 
     private SessionFactory sessionFactory;

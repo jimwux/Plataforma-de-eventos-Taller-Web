@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioProvincia;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
@@ -16,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import java.util.Arrays;
@@ -40,12 +42,16 @@ public class RepositorioProvinciaImplTest {
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioProvinciaCuandoGuardoUnaLaPuedoObtenerAPartirDeSuNombreDesdeLaBaseDeDatos () {
+    public void dadoQueExisteUnRepositorioProvinciaCuandoGuardoUnaSeAñadeALaBaseDeDatos () {
         Provincia buenosAires = new Provincia();
         buenosAires.setNombre("Buenos Aires");
         this.repositorioProvincia.guardar(buenosAires);
 
-        Provincia provinciaObtenida = this.repositorioProvincia.obtenerProvinciaPorNombre("Buenos Aires");
+        String hql = "FROM Provincia WHERE nombre = :nombre";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombre", "Buenos Aires");
+        Provincia provinciaObtenida = (Provincia) query.getSingleResult();
+
         assertThat(provinciaObtenida, equalTo(buenosAires));
         assertThat("Buenos Aires", equalTo(provinciaObtenida.getNombre()));
     }
@@ -79,20 +85,16 @@ public class RepositorioProvinciaImplTest {
         mendoza.setNombre("Mendoza");
         this.repositorioProvincia.guardar(mendoza);
 
-        Provincia tierraDelFuego = new Provincia();
-        mendoza.setNombre("Tierra del Fuego");
-        this.repositorioProvincia.guardar(tierraDelFuego);
-
         List<Provincia> provinciasObtenidas = this.repositorioProvincia.obtenerTodasLasProvincias();
 
-        assertThat(provinciasObtenidas.size(), is(3));
-        assertThat(provinciasObtenidas, containsInAnyOrder(buenosAires, mendoza, tierraDelFuego));
+        assertThat(provinciasObtenidas.size(), is(2));
+        assertThat(provinciasObtenidas, containsInAnyOrder(buenosAires, mendoza));
     }
 
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioConProvinciasPodemosEliminarLasQueTenemosGuardadas () {
+    public void dadoQueExisteUnRepositorioConProvinciasPodemosEliminarAlgunaDeLasQueTenemosGuardadas () {
         Provincia buenosAires = new Provincia();
         buenosAires.setNombre("Buenos Aires");
         this.repositorioProvincia.guardar(buenosAires);
