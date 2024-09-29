@@ -230,9 +230,7 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventos.size(), equalTo(2));
         assertThat(eventos, equalTo(esperados));
-
-
-
+        assertThat(eventos, containsInAnyOrder(evento, eventoTres));
     }
 
 

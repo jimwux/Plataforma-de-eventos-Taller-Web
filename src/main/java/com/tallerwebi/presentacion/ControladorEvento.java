@@ -46,7 +46,7 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         return new ModelAndView("vista", vistas);
     }
 
-    @GetMapping("/eventos/filtrar/categoria")
+    @GetMapping("/eventos/categoria")
     public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
         List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
         ModelMap modelo = new ModelMap();
