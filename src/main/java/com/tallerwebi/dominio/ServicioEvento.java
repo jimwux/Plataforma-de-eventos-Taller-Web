@@ -8,9 +8,7 @@ public interface ServicioEvento {
 
     void agregarEvento(Evento nuevoEvento);
 
-    List<Evento> buscarEventosPorNombre(String busqueda);
-
     Evento obtenerEventoPorId(Long id);
 
-    List<Evento> filtrarEventos(String nombre, String provinciaId, String ciudadId);
+    List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad);
 }

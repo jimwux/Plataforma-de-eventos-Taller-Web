@@ -123,25 +123,83 @@ public class ServicioEventoImplTest {
         List<Evento> eventos = Arrays.asList(eventoUno, eventoDos);
 
         when(this.repositorioEventoMock.buscarEventosPorNombre("crea")).thenReturn(eventos);
-        List<Evento> resultados = this.servicioEvento.buscarEventosPorNombre("crea");
+        List<Evento> resultados = this.servicioEvento.filtrarEventos("crea", null,null);
 
         assertThat(resultados.size(), is(2));
         assertThat(resultados.get(0).getNombre(), equalTo(eventoUno.getNombre()));
         assertThat(resultados.get(1).getNombre(), equalTo(eventoDos.getNombre()));
         verify(this.repositorioEventoMock).buscarEventosPorNombre("crea");
     }
+
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreProvinciaYCiudadDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento);
+
+        when(repositorioEventoMock.buscarEventosPorCiudadYNombre("Evento", "Morón")).thenReturn(eventos);
+        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", "Morón");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(repositorioEventoMock).buscarEventosPorCiudadYNombre("Evento", "Morón");
+    }
+
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreYProvinciaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento);
+
+        when(repositorioEventoMock.buscarEventosPorProvinciaYNombre("Evento", "Buenos Aires")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", null);
+
+        assertThat(eventosFiltrados.size(), is(1));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(repositorioEventoMock).buscarEventosPorProvinciaYNombre("Evento", "Buenos Aires");
+    }
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaYCiudadDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento);
+
+        when(repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(repositorioEventoMock).buscarEventosPorCiudad("Morón");
+    }
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento);
+
+        when(repositorioEventoMock.buscarEventosPorProvincia("Buenos Aires")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos(null, "Buenos Aires", null);
+
+        assertThat(eventosFiltrados.size(), is(1));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(repositorioEventoMock).buscarEventosPorProvincia("Buenos Aires");
+    }
     
     @Test
     public void dadoQueExistenEventosPodemosObtenerlosPorSuId() {
-        Evento eventoMock = new Evento();
-        eventoMock.setId(1L);
+        Evento evento = new Evento();
+        evento.setId(1L);
 
-        when(this.repositorioEventoMock.obtenerEventoPorId(1L)).thenReturn(eventoMock);
+        when(this.repositorioEventoMock.obtenerEventoPorId(1L)).thenReturn(evento);
         Evento eventoObtenido = this.servicioEvento.obtenerEventoPorId(1L);
 
         verify(this.repositorioEventoMock, times(1)).obtenerEventoPorId(1L);
         assertThat(eventoObtenido.getId(), is(1L));
-        assertThat(eventoObtenido, equalTo(eventoMock));
+        assertThat(eventoObtenido, equalTo(evento));
     }
+
+
+
 
 }

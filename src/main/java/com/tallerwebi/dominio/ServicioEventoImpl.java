@@ -31,17 +31,6 @@ public class ServicioEventoImpl implements ServicioEvento {
     }
 
     @Override
-    public List<Evento> buscarEventosPorNombre(String busqueda) {
-        if (busqueda == null || busqueda.isEmpty()) {
-            // Si no se especifica ningún nombre, retorna todos los eventos
-            return this.repositorioEvento.obtenerTodosLosEventos();
-        } else {
-            // Si se especifica un nombre, busca los eventos que lo contienen
-            return this.repositorioEvento.buscarEventosPorNombre(busqueda);
-        }
-    }
-
-    @Override
     public Evento obtenerEventoPorId(Long id) {
         return this.repositorioEvento.obtenerEventoPorId(id);
     }
