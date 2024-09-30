@@ -5,6 +5,31 @@ body{
     padding : 0;
 }
 
+.nav-bar{
+    display: flex;
+    margin:0;
+    justify-content: flex-end;
+}
+
+.nav-bar li{
+    list-style: none;
+    padding: 5px;
+}
+
+.nav-bar li a{
+    color: white;
+    margin: 2em;
+}
+
+nav{
+    background-color: #B1B1BB;
+    margin:0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
 h1{
     text-align: center;
     background: linear-gradient(dimgray, white) ;
@@ -25,13 +50,30 @@ h1{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: left; /* Asegura que el texto esté alineado a la izquierda */
+        margin: 0 auto; /* Centra el contenido si es necesario */
+        width: 80%; /* Ajusta el ancho según lo necesites */
+        padding: 10px;
 }
 
 .nombre{
     font-weight: 600;
+    width: 80%; /* Ajusta el ancho según lo necesites */
 }
 
-img{
+#imagenEvento{
     border-radius: 20px;
     width: 340px;
 }
+
+.redSocial{
+    display: flex;
+    justify-content: flex-start;
+    background-color: white;
+}
+
+#logoInstagram{
+    height: 50px;
+    width: 50px;
+}
+

@@ -11,10 +11,15 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 1000)
+    private String acercaDe;
+
     private String nombre;
     private LocalDate fecha;
     private String lugar;
     private String imagenUrl;
+    private String instagramUrl;
+
 
     @ManyToOne
     private Ciudad ciudad;
@@ -82,7 +87,27 @@ public class Evento {
         this.imagenUrl = imagenUrl;
     }
 
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public String getInstagramUrl() {
+        return instagramUrl;
+    }
+
+    public void setInstagramUrl(String instagramUrl) {
+        this.instagramUrl = instagramUrl;
+    }
+
+    public String getAcercaDe() {
+        return acercaDe;
+    }
+
+    public void setAcercaDe(String acercaDe) {
+        this.acercaDe = acercaDe;
     }
 }
