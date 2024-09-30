@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,21 +30,31 @@ public class ServicioEventoImpl implements ServicioEvento {
         }
     }
 
-    @Override
-    public List<Evento> buscarEventosPorNombre(String busqueda) {
-        if (busqueda == null || busqueda.isEmpty()) {
-            // Si no se especifica ningún nombre, retorna todos los eventos
-            return this.repositorioEvento.obtenerTodosLosEventos();
-        } else {
-            // Si se especifica un nombre, busca los eventos que lo contienen
-            return this.repositorioEvento.buscarEventosPorNombre(busqueda);
-        }
-    }
+
 
     @Override
     public Evento obtenerEventoPorId(Long id) {
         return this.repositorioEvento.obtenerEventoPorId(id);
     }
 
+    @Override
+    public List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad) {
+
+        List<Evento> eventosFiltrados = new ArrayList<>();
+
+        if (nombre != null && !nombre.isEmpty() && nombreProvincia != null && !nombreProvincia.isEmpty() && nombreCiudad != null && !nombreCiudad.isEmpty()) {
+            eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYNombre(nombreCiudad, nombre);
+        } else if (nombre != null && !nombre.isEmpty() && nombreProvincia != null && !nombreProvincia.isEmpty()) {
+            eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre(nombreProvincia, nombre);
+        } else if (nombreProvincia != null && !nombreProvincia.isEmpty() && nombreCiudad != null && !nombreCiudad.isEmpty()) {
+            eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
+        } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
+            eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
+        } else if (nombre != null && !nombre.isEmpty()) {
+            eventosFiltrados = this.repositorioEvento.buscarEventosPorNombre(nombre);
+        }
+
+        return eventosFiltrados;
+    }
 
 }

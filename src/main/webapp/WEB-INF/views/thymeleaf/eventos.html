@@ -11,7 +11,7 @@
     <nav>
         <h1>Equipo mokito</h1>
         <ul class="nav-bar">
-            <li><a href="">Eventos</a></li>
+            <li><a href="" id="boton_eventos">Eventos</a></li>
             <li><a href="">Contacto</a></li>
             <li><a href="">Usuario</a></li>
         </ul>
@@ -19,12 +19,17 @@
 
     <form action="/equipomokito/eventos" method="get" class="barrita">
         <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
-        <select>
-            <option>Provincia</option>
-        </select>
-        <select>
-            <option>Ciudad</option>
-        </select>
+
+            <select id="provincia" name="provinciaNombre">
+                <option value="">Seleccione una provincia</option>
+                <option th:each="provincia : ${provincias}"
+                        th:value="${provincia.nombre}"
+                        th:text="${provincia.nombre}">Provincia</option>
+            </select>
+
+            <select id="ciudad" name="ciudadNombre">
+                <option value="">Seleccione una ciudad</option>
+            </select>
         <button>Buscar</button>
     </form>
 
@@ -54,5 +59,6 @@
         </div>
     </div>
 
+    <script th:src="@{js/eventos.js}"></script>
 </body>
 </html>
