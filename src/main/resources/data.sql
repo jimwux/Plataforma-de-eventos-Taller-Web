@@ -1,5 +1,7 @@
 INSERT INTO Usuario(id, email, password, rol, activo) VALUES(null, 'test@unlam.edu.ar', 'test', 'ADMIN', true);
 
+DROP TABLE entrada;
+
 TRUNCATE TABLE evento;
 
 INSERT INTO evento (lugar, fecha, imagenUrl, nombre, categoria)
