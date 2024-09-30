@@ -74,6 +74,68 @@ public class ControladorEventoTest {
     }
 
     @Test
+    public void debenObtenerseLosEventosCorrespondientesCuandoSeIngresanLosParametrosNombreProvinciaYCiudad() {
+        List<Evento> listaDeEventos = new ArrayList<>();
+        listaDeEventos.add(new Evento());
+
+        // Mock del metodo filtrarEventos con nombre, provincia y ciudad
+        when(servicioEventoMock.filtrarEventos("creamfields", "Buenos Aires", "Morón")).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos("creamfields", "Buenos Aires", "Morón");
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+        assertThat(eventos, not(empty()));
+        assertThat(eventos, hasSize(1)); // Comprobar que contiene 1 elemento
+        verify(servicioEventoMock, times(1)).filtrarEventos("creamfields", "Buenos Aires", "Morón");
+    }
+
+    @Test
+    public void debenObtenerseLosEventosCorrespondientesCuandoSeIngresanLosParametrosNombreYProvincia() {
+        List<Evento> listaDeEventos = new ArrayList<>();
+        listaDeEventos.add(new Evento());
+
+        // Mock del metodo filtrarEventos con nombre y provincia
+        when(servicioEventoMock.filtrarEventos("creamfields", "Buenos Aires", null)).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos("creamfields", "Buenos Aires", null);
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+        assertThat(eventos, not(empty()));
+        assertThat(eventos, hasSize(1)); // Comprobar que contiene 1 elemento
+        verify(servicioEventoMock, times(1)).filtrarEventos("creamfields", "Buenos Aires", null);
+    }
+
+    @Test
+    public void debenObtenerseLosEventosCorrespondientesCuandoSeIngresanLosParametrosProviciaYCiudad() {
+        List<Evento> listaDeEventos = new ArrayList<>();
+        listaDeEventos.add(new Evento());
+
+        // Mock del metodo filtrarEventos con provincia y ciudad
+        when(servicioEventoMock.filtrarEventos(null, "Buenos Aires", "Morón")).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos(null, "Buenos Aires", "Morón");
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+        assertThat(eventos, not(empty()));
+        assertThat(eventos, hasSize(1)); // Comprobar que contiene 1 elemento
+        verify(servicioEventoMock, times(1)).filtrarEventos(null, "Buenos Aires", "Morón");
+    }
+
+    @Test
+    public void debenObtenerseLosEventosCorrespondientesCuandoSeBuscaPorProvincia() {
+        List<Evento> listaDeEventos = new ArrayList<>();
+        listaDeEventos.add(new Evento());
+
+        // Mock del metodo filtrarEventos con provincia
+        when(servicioEventoMock.filtrarEventos(null, "Buenos Aires", null)).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos(null, "Buenos Aires", null);
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+        assertThat(eventos, not(empty()));
+        assertThat(eventos, hasSize(1)); // Comprobar que contiene 1 elemento
+        verify(servicioEventoMock, times(1)).filtrarEventos(null, "Buenos Aires", null);
+    }
+
+
+
+    @Test
     public void debeRetornarLaVistaDetalleDeUnEventoCuandoSePresionaEseEventoEnParticular () {
         ModelAndView modelAndView = controladorEvento.mostrarVistas(1L);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vista"));
