@@ -89,4 +89,38 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("id", id);
         return (Evento) query.getSingleResult();
     }
+
+    @Override
+    public List<Evento> buscarEventosPorCiudad(String nombreCiudad) {
+        String hql = "FROM Evento WHERE ciudad.nombre = :nombreCiudad";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombreCiudad", nombreCiudad);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorProvincia(String nombreProvincia) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombreProvincia", nombreProvincia);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorCiudadYNombre(String nombreCiudad, String busqueda) {
+        String hql = "FROM Evento WHERE ciudad.nombre = :nombreCiudad AND lower(nombre) LIKE lower(:busqueda)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombreCiudad", nombreCiudad);
+        query.setParameter("busqueda", busqueda.toLowerCase() + "%");  // Convertir búsqueda a minúsculas
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorProvinciaYNombre(String nombreProvincia, String busqueda) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.nombre) LIKE lower(:busqueda)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombreProvincia", nombreProvincia);
+        query.setParameter("busqueda", busqueda.toLowerCase() + "%");  // Convertir búsqueda a minúsculas
+        return query.getResultList();
+    }
 }

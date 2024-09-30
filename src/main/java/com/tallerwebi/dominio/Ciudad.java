@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Ciudad {
     private String nombre;
 
     @ManyToOne (fetch = FetchType.EAGER)
+    @JsonIgnore
     private Provincia provincia;
 
 

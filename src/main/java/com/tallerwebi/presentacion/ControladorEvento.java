@@ -1,17 +1,15 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Evento;
-import com.tallerwebi.dominio.ServicioEvento;
-import com.tallerwebi.dominio.ServicioEventoImpl;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -19,21 +17,25 @@ public class ControladorEvento {
 
 private ServicioEvento servicioEvento;
 
+
 @Autowired
 public ControladorEvento(ServicioEvento servicioEvento) {
     this.servicioEvento = servicioEvento;
 }
 
     @GetMapping("/eventos")
-    public ModelAndView mostrarEventos(@RequestParam(value = "nombre", required = false) String nombre) {
+    public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
+                                            @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
+                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
 
-        if (nombre == null || nombre.isEmpty()) {
+        if ((nombre == null || nombre.isEmpty()) && nombreProvincia == null && nombreCiudad == null) {
             eventos = this.servicioEvento.obtenerTodosLosEventos();
         } else {
-            eventos = this.servicioEvento.buscarEventosPorNombre(nombre);
+            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
         }
+
         modelo.put("eventos", eventos);
         return new ModelAndView("eventos", modelo);
     }

@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -18,6 +15,9 @@ public class Evento {
     private LocalDate fecha;
     private String lugar;
     private String imagenUrl;
+
+    @ManyToOne
+    private Ciudad ciudad;
 
     public Evento(String nombre, LocalDate fecha, String lugar) {
         this.nombre = nombre;
@@ -80,5 +80,9 @@ public class Evento {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
     }
 }

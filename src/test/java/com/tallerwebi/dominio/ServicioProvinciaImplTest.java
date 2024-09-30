@@ -74,6 +74,8 @@ public class ServicioProvinciaImplTest {
         });
 
         assertThat("La provincia ya existe", equalTo(excepcionObtenida.getMessage()));
+        verify(this.repositorioProvinciaMock, times(1)).guardar(provincia);
+
     }
 
 }

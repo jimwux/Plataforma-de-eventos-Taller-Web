@@ -1,7 +1,9 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.config.HibernateConfig;
+import com.tallerwebi.dominio.Ciudad;
 import com.tallerwebi.dominio.Evento;
+import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioEvento;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hamcrest.Matchers;
@@ -204,6 +206,177 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventoObtenido.getId(), equalTo(idDelEvento));
         assertThat(eventoObtenido, equalTo(evento));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudad () {
+        Ciudad moron = new Ciudad();
+        moron.setNombre("Morón");
+        this.sessionFactory.getCurrentSession().save(moron);
+
+        Ciudad merlo = new Ciudad();
+        merlo.setNombre("Merlo");
+        this.sessionFactory.getCurrentSession().save(merlo);
+
+        Evento eventoUno = new Evento();
+        eventoUno.setCiudad(moron);
+        this.repositorioEvento.guardar(eventoUno);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setCiudad(merlo);
+        this.repositorioEvento.guardar(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setCiudad(moron);
+        this.repositorioEvento.guardar(eventoTres);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorCiudad("Morón");
+
+        List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
+        assertThat(eventosEncontrados.size(), equalTo(2));
+
+        // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperados) {
+            assertThat(eventosEncontrados.get(iterador), equalTo(evento));
+            iterador++;
+        }
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaProvincia () {
+        Provincia buenosAires = new Provincia();
+        buenosAires.setNombre("Buenos Aires");
+        this.sessionFactory.getCurrentSession().save(buenosAires);
+
+        Provincia cordoba = new Provincia();
+        cordoba.setNombre("Córdoba");
+        this.sessionFactory.getCurrentSession().save(cordoba);
+
+        Ciudad moron = new Ciudad();
+        moron.setNombre("Morón");
+        moron.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(moron);
+
+        Ciudad merlo = new Ciudad();
+        merlo.setNombre("Merlo");
+        merlo.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(merlo);
+
+        Ciudad villaCarlosPaz = new Ciudad();
+        villaCarlosPaz.setNombre("Villa Carlos Paz");
+        villaCarlosPaz.setProvincia(cordoba);
+        this.sessionFactory.getCurrentSession().save(villaCarlosPaz);
+
+        Evento eventoUno = new Evento();
+        eventoUno.setCiudad(moron);
+        this.repositorioEvento.guardar(eventoUno);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setCiudad(villaCarlosPaz);
+        this.repositorioEvento.guardar(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setCiudad(merlo);
+        this.repositorioEvento.guardar(eventoTres);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvincia("Buenos Aires");
+
+        List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
+        assertThat(eventosEncontrados.size(), equalTo(2));
+
+        // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperados) {
+            assertThat(eventosEncontrados.get(iterador), equalTo(evento));
+            iterador++;
+        }
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYTienenUnNombreParticular () {
+        Ciudad moron = new Ciudad();
+        moron.setNombre("Morón");
+        this.sessionFactory.getCurrentSession().save(moron);
+
+        Ciudad merlo = new Ciudad();
+        merlo.setNombre("Merlo");
+        this.sessionFactory.getCurrentSession().save(merlo);
+
+        Evento eventoUno = new Evento();
+        eventoUno.setNombre("Parense de Manos");
+        eventoUno.setCiudad(moron);
+        this.repositorioEvento.guardar(eventoUno);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Aventuras Perrunas");
+        eventoDos.setCiudad(merlo);
+        this.repositorioEvento.guardar(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setNombre("Aventuras Perrunas");
+        eventoTres.setCiudad(moron);
+        this.repositorioEvento.guardar(eventoTres);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorCiudadYNombre("Morón", "Aventuras Perrunas");
+
+        assertThat(eventosEncontrados, hasSize(1));
+        assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaProvinciaYTienenUnNombreParticular () {
+        Provincia buenosAires = new Provincia();
+        buenosAires.setNombre("Buenos Aires");
+        this.sessionFactory.getCurrentSession().save(buenosAires);
+
+        Provincia cordoba = new Provincia();
+        cordoba.setNombre("Córdoba");
+        this.sessionFactory.getCurrentSession().save(cordoba);
+
+        Ciudad moron = new Ciudad();
+        moron.setNombre("Morón");
+        moron.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(moron);
+
+        Ciudad merlo = new Ciudad();
+        merlo.setNombre("Merlo");
+        merlo.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(merlo);
+
+        Ciudad villaCarlosPaz = new Ciudad();
+        villaCarlosPaz.setNombre("Villa Carlos Paz");
+        villaCarlosPaz.setProvincia(cordoba);
+        this.sessionFactory.getCurrentSession().save(villaCarlosPaz);
+
+        Evento eventoUno = new Evento();
+        eventoUno.setNombre("Parense de Manos");
+        eventoUno.setCiudad(moron);
+        this.repositorioEvento.guardar(eventoUno);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Parense de Manos");
+        eventoDos.setCiudad(villaCarlosPaz);
+        this.repositorioEvento.guardar(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setNombre("Aventuras Perrunas");
+        eventoTres.setCiudad(merlo);
+        this.repositorioEvento.guardar(eventoTres);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre("Buenos Aires", "Parense de Manos");
+
+        assertThat(eventosEncontrados, hasSize(1));
+        assertThat(eventosEncontrados.get(0), equalTo(eventoUno));
     }
 
 

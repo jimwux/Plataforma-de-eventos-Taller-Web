@@ -33,6 +33,8 @@ public class ServicioProvinciaImpl implements ServicioProvincia {
     public void agregarProvincia(Provincia provincia) {
         if (this.repositorioProvincia.obtenerProvinciaPorNombre(provincia.getNombre()) != null) {
             throw new ProvinciaExistente("La provincia ya existe");
-        }
+        } this.repositorioProvincia.guardar(provincia);
     }
+
+
 }

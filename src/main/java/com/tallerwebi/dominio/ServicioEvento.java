@@ -12,4 +12,5 @@ public interface ServicioEvento {
 
     Evento obtenerEventoPorId(Long id);
 
+    List<Evento> filtrarEventos(String nombre, String provinciaId, String ciudadId);
 }
