@@ -136,12 +136,12 @@ public class ServicioEventoImplTest {
         Evento evento = new Evento();
         List<Evento> eventos = Arrays.asList(evento);
 
-        when(repositorioEventoMock.buscarEventosPorCiudadYNombre("Evento", "Morón")).thenReturn(eventos);
+        when(repositorioEventoMock.buscarEventosPorCiudadYNombre("Morón", "Evento")).thenReturn(eventos);
         List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", "Morón");
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
-        verify(repositorioEventoMock).buscarEventosPorCiudadYNombre("Evento", "Morón");
+        verify(repositorioEventoMock).buscarEventosPorCiudadYNombre("Morón", "Evento");
     }
 
     @Test
@@ -149,13 +149,13 @@ public class ServicioEventoImplTest {
         Evento evento = new Evento();
         List<Evento> eventos = Arrays.asList(evento);
 
-        when(repositorioEventoMock.buscarEventosPorProvinciaYNombre("Evento", "Buenos Aires")).thenReturn(eventos);
+        when(repositorioEventoMock.buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento")).thenReturn(eventos);
 
         List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
-        verify(repositorioEventoMock).buscarEventosPorProvinciaYNombre("Evento", "Buenos Aires");
+        verify(repositorioEventoMock).buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento");
     }
 
     @Test

@@ -17,7 +17,6 @@ public class ControladorEvento {
 
 private ServicioEvento servicioEvento;
 
-
 @Autowired
 public ControladorEvento(ServicioEvento servicioEvento) {
     this.servicioEvento = servicioEvento;
@@ -30,7 +29,11 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
 
-        if ((nombre == null || nombre.isEmpty()) && nombreProvincia == null && nombreCiudad == null) {
+        Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
+                (nombreProvincia == null || nombreProvincia.isEmpty()) &&
+                (nombreCiudad == null || nombreCiudad.isEmpty());
+
+        if (sinFiltros) {
             eventos = this.servicioEvento.obtenerTodosLosEventos();
         } else {
             eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
