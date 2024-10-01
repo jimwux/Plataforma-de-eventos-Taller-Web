@@ -87,7 +87,7 @@ public class ServicioEntradaImplTest {
         List<Entrada> obtenidas = this.servicioEntrada.obtenerEntradasDeUnEvento(evento.getId());
 
         assertThat(obtenidas.size(), equalTo(2));
-        
+
     }
 
 
