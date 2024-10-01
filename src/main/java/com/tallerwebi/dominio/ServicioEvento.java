@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ServicioEvento {
@@ -12,4 +13,7 @@ public interface ServicioEvento {
 
     Evento obtenerEventoPorId(Long id);
 
+    List<Evento> obtenerEventosOrdenadosPorFecha();
+
+    List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin);
 }

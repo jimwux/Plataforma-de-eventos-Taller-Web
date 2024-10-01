@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -46,4 +47,11 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         return new ModelAndView("vista", vistas);
     }
 
+    public List<Evento> obtenerEventosOrdenadosPorFecha() {
+        return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
+    }
+
+    public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
+    }
 }

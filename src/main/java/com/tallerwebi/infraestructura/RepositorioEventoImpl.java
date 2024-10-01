@@ -89,4 +89,20 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("id", id);
         return (Evento) query.getSingleResult();
     }
+
+    @Override
+    public List<Evento> obtenerEventosOrdenadosPorFecha() {
+        String hql = "FROM Evento ORDER BY fecha ASC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        String hql = "FROM Evento WHERE fecha >= :fechaInicio AND fecha <= :fechaFin ORDER BY fecha ASC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+        return query.getResultList();
+    }
 }

@@ -20,4 +20,10 @@ public interface RepositorioEvento {
     List<Evento> buscarEventosPorNombre(String busqueda);
 
     Evento obtenerEventoPorId(Long id);
+
+    List<Evento> obtenerEventosOrdenadosPorFecha();
+
+    List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin);
+
+
 }
