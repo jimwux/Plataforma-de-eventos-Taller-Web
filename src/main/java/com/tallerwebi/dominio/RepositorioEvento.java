@@ -25,5 +25,12 @@ public interface RepositorioEvento {
 
     List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin);
 
+    List<Evento> buscarEventosPorCiudad(String nombreCiudad);
+
+    List<Evento> buscarEventosPorProvincia(String nombreProvincia);
+
+    List<Evento> buscarEventosPorCiudadYNombre(String nombreCiudad, String busqueda);
+
+    List<Evento> buscarEventosPorProvinciaYNombre(String nombreProvincia, String busqueda);
 
 }

@@ -1,0 +1,31 @@
+#botones-nav {
+    display: flex;
+    margin:0;
+    justify-content: flex-end;
+}
+
+.boton-nav{
+    list-style: none;
+    padding: 5px;
+}
+
+.boton-nav a{
+    color: white;
+    margin: 2em;
+    text-decoration:none;
+}
+
+#nav-bar{
+    background-color: #B1B1BB;
+    margin:0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+#titulo-pagina {
+    margin:0;
+    padding:0;
+    color: white;
+}
