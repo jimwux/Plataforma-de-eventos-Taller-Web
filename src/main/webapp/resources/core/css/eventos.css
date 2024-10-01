@@ -55,16 +55,16 @@ button {
 }
 
 .botones_categorias button{
-    width: 12%;
     border:none;
     border-radius: 10px;
-    padding: 10px;
+    padding: 10px 40px 10px 40px;
     background-color:  #C1B8BB;
+    transition: all .4s;
 }
 
 .botones_categorias button:hover{
     color: white;
-    background-color: #09090B;
+    background-color: rgba(211, 211, 218, 0.46);
 
 }
 

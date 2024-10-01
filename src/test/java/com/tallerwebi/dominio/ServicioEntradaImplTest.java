@@ -64,6 +64,32 @@ public class ServicioEntradaImplTest {
         verify(repositorioEntradaMock, times(1)).obtenerEntradaPorId(1L);
     }
 
+    @Test
+    public void dadoQueExistenEntradasAlBuscarUnEventoNosDebeDevolverLasEntradasDelMismo(){
+        Evento evento = new Evento();
+        evento.setId(1L);
+        evento.setNombre("Wasabi");
+
+        Entrada entrada = new Entrada();
+        entrada.setNombre("General");
+        entrada.setEvento(evento);
+
+        Entrada entradaDos = new Entrada();
+        entradaDos.setNombre("General");
+        entradaDos.setEvento(evento);
+
+        List<Entrada> entradas = new ArrayList<>();
+        entradas.add(entrada);
+        entradas.add(entradaDos);
+
+
+        when(this.repositorioEntradaMock.obtenerEntradasDeUnEvento(evento.getId())).thenReturn(entradas);
+        List<Entrada> obtenidas = this.servicioEntrada.obtenerEntradasDeUnEvento(evento.getId());
+
+        assertThat(obtenidas.size(), equalTo(2));
+        
+    }
+
 
 
 
