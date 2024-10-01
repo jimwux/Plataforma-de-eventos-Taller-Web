@@ -1,8 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Evento;
-import com.tallerwebi.dominio.ServicioEvento;
-import com.tallerwebi.dominio.ServicioEventoImpl;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,10 +16,12 @@ import java.util.List;
 public class ControladorEvento {
 
 private ServicioEvento servicioEvento;
+private ServicioEntrada servicioEntrada;
 
 @Autowired
-public ControladorEvento(ServicioEvento servicioEvento) {
+public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicioEntrada) {
     this.servicioEvento = servicioEvento;
+    this.servicioEntrada = servicioEntrada;
 }
 
     @GetMapping("/eventos")
@@ -43,6 +43,8 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         Evento eventoBuscado = servicioEvento.obtenerEventoPorId(id);
         ModelMap vistas = new ModelMap();
         vistas.put("vista", eventoBuscado);
+        List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
+        vistas.put("entradas", entradas);
         return new ModelAndView("vista", vistas);
     }
 

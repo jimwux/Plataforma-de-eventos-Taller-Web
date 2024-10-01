@@ -9,4 +9,6 @@ public interface RepositorioEntrada {
     Entrada obtenerEntradaPorId(Long id);
 
     Entrada obtenerEntradaPorNombre(String nombre);
+
+    List<Entrada> obtenerEntradasDeUnEvento(Long id);
 }

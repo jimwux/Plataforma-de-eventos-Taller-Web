@@ -16,6 +16,16 @@
         <p> <span class="nombre">Lugar:</span> <span th:text="${vista.lugar}"></span></p>
         <p> <span class="nombre">Fecha:</span> <span th:text="${vista.fecha}"></span></p>
         <p>----------------------------------------------------</p>
+
+        <h2>Entradas Disponibles:</h2>
+        <ul>
+            <li th:each="entrada : ${entradas}">
+                <h3 th:text="${entrada.nombre}"></h3>
+                <p th:text="${entrada.precio}"></p>
+            </li>
+        </ul>
+
+
     </div>
 
 </div>

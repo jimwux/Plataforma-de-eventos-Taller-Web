@@ -27,5 +27,10 @@ public class ServicioEntradaImpl implements ServicioEntrada {
         return repositorioEntrada.obtenerEntradaPorId(id);
     }
 
+    @Override
+    public List<Entrada> obtenerEntradasDeUnEvento(Long id) {
+        return this.repositorioEntrada.obtenerEntradasDeUnEvento(id);
+    }
+
 
 }

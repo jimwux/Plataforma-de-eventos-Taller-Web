@@ -16,11 +16,12 @@ import java.util.List;
 public class ControladorEventoTest {
     private ControladorEvento controladorEvento;
     private ServicioEventoImpl servicioEventoMock;
+    private ServicioEntradaImpl servicioEntradaMock;
 
     @BeforeEach
     public void init(){
         this.servicioEventoMock = mock(ServicioEventoImpl.class);
-        this.controladorEvento = new ControladorEvento(servicioEventoMock);
+        this.controladorEvento = new ControladorEvento(servicioEventoMock, servicioEntradaMock);
     }
 
     @Test

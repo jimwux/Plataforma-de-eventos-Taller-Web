@@ -98,4 +98,6 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return query.getResultList();
     }
 
+
+
 }
