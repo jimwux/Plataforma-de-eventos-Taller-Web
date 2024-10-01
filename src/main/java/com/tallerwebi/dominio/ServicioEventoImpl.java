@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import java.time.LocalDate;
+
 import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -60,4 +64,15 @@ public class ServicioEventoImpl implements ServicioEvento {
         return eventosFiltrados;
     }
 
+
+    public List<Evento> obtenerEventosOrdenadosPorFecha() {
+        return this.repositorioEvento.obtenerEventosOrdenadosPorFecha();
+    }
+
+    public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
+    }
 }
+
+
+

@@ -23,6 +23,10 @@ public interface RepositorioEvento {
 
     List<Evento> obtenerEventosPorCategoria(String categoria);
 
+    List<Evento> obtenerEventosOrdenadosPorFecha();
+
+    List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin);
+
     List<Evento> buscarEventosPorCiudad(String nombreCiudad);
 
     List<Evento> buscarEventosPorProvincia(String nombreProvincia);

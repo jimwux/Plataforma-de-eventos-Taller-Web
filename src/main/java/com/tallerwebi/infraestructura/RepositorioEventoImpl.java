@@ -58,13 +58,13 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.executeUpdate();
     }
 
-       @Override
-       public void eliminarEvento(Evento evento) {
-           String hql = "DELETE FROM Evento WHERE id = :id";
-           Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-           query.setParameter("id", evento.getId());
-           query.executeUpdate();
-       }
+    @Override
+    public void eliminarEvento(Evento evento) {
+        String hql = "DELETE FROM Evento WHERE id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("id", evento.getId());
+        query.executeUpdate();
+    }
 
     @Override
     public List<Evento> obtenerLosEventosPorFecha(LocalDate fecha) {
@@ -99,6 +99,13 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     }
 
     @Override
+    public List<Evento> obtenerEventosOrdenadosPorFecha() {
+        String hql = "FROM Evento ORDER BY fecha ASC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        return query.getResultList();
+    }
+
+    @Override
     public List<Evento> buscarEventosPorCiudad(String nombreCiudad) {
         String hql = "FROM Evento WHERE ciudad.nombre = :nombreCiudad";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
@@ -106,6 +113,15 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return query.getResultList();
     }
 
+    @Override
+    public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        String hql = "FROM Evento WHERE fecha >= :fechaInicio AND fecha <= :fechaFin ORDER BY fecha ASC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+        return query.getResultList();
+    }
+  
     @Override
     public List<Evento> buscarEventosPorProvincia(String nombreProvincia) {
         String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia";
