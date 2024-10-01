@@ -2,7 +2,7 @@ INSERT INTO Usuario(id, email, password, rol, activo) VALUES(null, 'test@unlam.e
 
 TRUNCATE TABLE evento;
 
-IINSERT INTO evento (lugar, fecha, imagenUrl, nombre, acercaDe, instagramUrl, ciudad_id)
+INSERT INTO evento (lugar, fecha, imagenUrl, nombre, acercaDe, instagramUrl, ciudad_id)
 VALUES
     ('Teatro el Nacional Sancor Seguros', '2024-10-05', 'https://raw.githubusercontent.com/jimwux/Plataforma-de-eventos-Taller-Web/master/src/main/webapp/WEB-INF/assets/portadas-eventos/somos-las-chicas-de-la-culpa.jpeg', 'Somos Las Chicas de la Culpa', 'Todas las funciones son distintas y delirantes! No es una obra de teatro, no es stand up, SOMOS Las Chicas de la Culpa, una juntada con tus amigas más zarpadas!', 'https://www.instagram.com/laschicasdelaculpa/?hl=es-la', 1), -- Ciudad de Buenos Aires
     ('Estadio Velez Sarsfield', '2024-12-19', 'https://raw.githubusercontent.com/jimwux/Plataforma-de-eventos-Taller-Web/master/src/main/webapp/WEB-INF/assets/portadas-eventos/parense-de-manos-2.jpg', 'Parense de Manos II', 'Se trata de un evento de boxeo y entretenimiento, que reunirá a 20 celebridades del mundo del streaming, redes sociales y creadores de contenido, que se subirán al ring en unas épicas peleas, junto a increíbles shows de música que se realizarán a lo largo de la noche.', 'https://www.instagram.com/parensedemanosok/?hl=es-la', 1), -- Ciudad de Buenos Aires

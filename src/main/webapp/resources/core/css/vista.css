@@ -3,77 +3,164 @@ body{
     background: linear-gradient(to right, #18181B, black);
     margin: 0;
     padding : 0;
-}
-
-.nav-bar{
-    display: flex;
-    margin:0;
-    justify-content: flex-end;
-}
-
-.nav-bar li{
-    list-style: none;
-    padding: 5px;
-}
-
-.nav-bar li a{
     color: white;
-    margin: 2em;
 }
 
-nav{
-    background-color: #B1B1BB;
-    margin:0;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    margin-bottom: 30px;
-}
-
-h1{
-    text-align: center;
-    background: linear-gradient(dimgray, white) ;
-    margin:0;
-    border-radius: 0 0 10px 10px;
-    padding: 20px;
-}
-
-.detalles{
-   color: #B1B1BB;
-    margin-top:80px;
-    display:flex;
-    justify-content: center;
-    gap: 30px;
-}
-
-.extras{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: left; /* Asegura que el texto esté alineado a la izquierda */
-        margin: 0 auto; /* Centra el contenido si es necesario */
-        width: 80%; /* Ajusta el ancho según lo necesites */
-        padding: 10px;
-}
-
-.nombre{
-    font-weight: 600;
-    width: 80%; /* Ajusta el ancho según lo necesites */
-}
 
 #imagenEvento{
     border-radius: 20px;
-    width: 340px;
-}
-
-.redSocial{
-    display: flex;
-    justify-content: flex-start;
-    background-color: white;
+    width: 60vh;
 }
 
 #logoInstagram{
     height: 50px;
     width: 50px;
+    color: white
+}
+
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+#datos-evento {
+    width: 80%;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    gap: 4em;
+}
+
+#nombre-imagen-evento {
+    background-color: grey;
+    border-radius:2em;
+    padding:2em;
+}
+
+#nombre-imagen-evento h2 {
+    margin: 0;
+}
+
+#info-evento {
+    width: 74vh;
+}
+
+#label-carrito {
+    margin-bottom: 1em;
+}
+
+#label-carrito, .entrada{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.entrada {
+    align-items: center;
+    padding: 1.2em;
+    background-color: lightgrey;
+    border-radius: 1em;
+    margin: 1.2em;
+    color: black;
+}
+
+.tipo-entrada {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.cantidad select{
+    margin-right: 1em;
+    padding: 0.8em;
+    width: 8em;
+    border-radius: 0.6em;
+    border:none;
+}
+
+.datos-entrada {
+    margin: 0.2em;
+}
+
+#info-ubicacion-evento {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding: 1.3em;
+    background-color:lightgrey;
+    margin-bottom: 1.5em;
+    border-radius: 1em;
+    color: black;
+}
+
+#info-ubicacion-evento p {
+    margin: 0.2em;
+    margin-right: 0.6em;
+}
+
+#lugar-evento {
+    font-size: 1.4em;
+
+}
+
+#direccion-evento {
+    font-size: 1.2em;
+}
+
+#boton-comprar {
+    width: 100%;
+    padding: 0.8em;
+    font-size: 1.2em;
+    border-radius: 1em;
+    border:none;
+    background-color: grey;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+#boton-comprar:hover {
+    background-color: dimgrey;
+    transform: scale(1.05);
+}
+
+#total-compra-entradas {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 11vh;
+}
+
+#contenedor_entradas {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(11vh, 1fr)); /* Columnas automáticas según el espacio */
+    gap: 10px;
+    height: 41vh;
+    overflow-y: scroll; /* Habilita el scroll vertical */
+}
+
+#acerca-del-evento {
+    width: 72%;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+}
+
+#enlace-instagram {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    gap: 1em;
+    width: 30vh;
 }
 
