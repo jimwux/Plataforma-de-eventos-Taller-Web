@@ -21,6 +21,8 @@ public interface RepositorioEvento {
 
     Evento obtenerEventoPorId(Long id);
 
+    List<Evento> obtenerEventosPorCategoria(String categoria);
+
     List<Evento> obtenerEventosOrdenadosPorFecha();
 
     List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin);

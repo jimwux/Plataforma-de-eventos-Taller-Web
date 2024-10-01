@@ -18,14 +18,14 @@ import java.util.List;
 
 public class ControladorEventoTest {
     private ControladorEvento controladorEvento;
-    private ServicioEvento servicioEventoMock;
-
+    private ServicioEventoImpl servicioEventoMock;
+    private ServicioEntradaImpl servicioEntradaMock;
 
 
     @BeforeEach
-    public void init() {
-        this.servicioEventoMock = mock(ServicioEvento.class);
-        this.controladorEvento = new ControladorEvento(servicioEventoMock);
+    public void init(){
+        this.servicioEventoMock = mock(ServicioEventoImpl.class);
+        this.controladorEvento = new ControladorEvento(servicioEventoMock, servicioEntradaMock);
     }
 
     @Test
@@ -47,7 +47,6 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1));
         verify(servicioEventoMock, times(1)).obtenerTodosLosEventos();
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
 
     @Test
@@ -64,7 +63,6 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1)); // Comprobar que contiene 1 elemento
         verify(servicioEventoMock, times(1)).filtrarEventos("creamfields", null, null);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
 
     @Test
@@ -80,7 +78,6 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1));
         verify(servicioEventoMock, times(1)).obtenerTodosLosEventos();
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
 
     @Test
@@ -97,7 +94,6 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1));
         verify(servicioEventoMock, times(1)).filtrarEventos("creamfields", "Buenos Aires", "Morón");
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
 
     @Test
@@ -114,7 +110,6 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1));
         verify(servicioEventoMock, times(1)).filtrarEventos("creamfields", "Buenos Aires", null);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
 
     @Test
@@ -131,7 +126,6 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1));
         verify(servicioEventoMock, times(1)).filtrarEventos(null, "Buenos Aires", "Morón");
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
 
     @Test
@@ -148,15 +142,38 @@ public class ControladorEventoTest {
         assertThat(eventos, hasSize(1));
         verify(servicioEventoMock, times(1)).filtrarEventos(null, "Buenos Aires", null);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
-
     }
-
 
 
     @Test
     public void debeRetornarLaVistaDetalleDeUnEventoCuandoSePresionaEseEventoEnParticular () {
         ModelAndView modelAndView = controladorEvento.mostrarVistas(1L);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("vista"));
+    }
+
+
+    @Test
+    public void debenRetornarEventosDeConciertoAlPresionarElBotonDeConcierto(){
+        List<Evento> listaDeEventos = new ArrayList<>();
+
+        Evento evento = new Evento();
+        evento.setCategoria("Concierto");
+        Evento evento2 = new Evento();
+        evento2.setCategoria("Concierto");
+        Evento evento3 = new Evento();
+        evento3.setCategoria("otro");
+
+        listaDeEventos.add(evento);
+        listaDeEventos.add(evento2);
+
+
+        when(servicioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = controladorEvento.mostrarEventosFiltradosPorCategoria("Concierto");
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+
+        assertThat(eventos, hasSize(2));
+        assertThat(eventos.get(0).getCategoria(), is(equalToIgnoringCase("concierto")));
     }
 
     @Test
@@ -175,12 +192,14 @@ public class ControladorEventoTest {
 
         verify(servicioEventoMock, times(1)).obtenerEventosOrdenadosPorFecha();
     }
+  
     private void seVerificaElOrdenDeLosMismosComparandoSusFechas(List<Evento> eventosOrdenados) {
         assertThat(eventosOrdenados.size(), equalTo(3));
         assertThat(eventosOrdenados.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
         assertThat(eventosOrdenados.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
         assertThat(eventosOrdenados.get(2).getFecha(), equalTo(LocalDate.of(2025, 1, 15)));
     }
+  
     @Test
     public void debenObtenerseTodosLosEventosDentroDeUnRangoDeFechasDado() {
         // PARA IMPLEMTAR USAR:
@@ -204,11 +223,13 @@ public class ControladorEventoTest {
 
         verify(servicioEventoMock, times(1)).obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
+  
     private void seVerificaQueSoloEstenLosEventosCuyasFechasCumplanConElRequerimiento(List<Evento> eventosOrdenados) {
         assertThat(eventosOrdenados.size(), equalTo(2));
         assertThat(eventosOrdenados.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
         assertThat(eventosOrdenados.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
     }
+
 }
 
 

@@ -445,4 +445,34 @@ public class RepositorioEventoImplTest {
     }
 
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoPuedaObtenerEventosPorSuCategoria(){
+        Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
+        evento.setCategoria("concierto");
+        this.repositorioEvento.guardar(evento);
+        Evento eventoDos = new Evento("Lollapalooza", LocalDate.of(2025, 03, 21), "Hipodromo de San Isidro");
+        eventoDos.setCategoria("otro");
+        this.repositorioEvento.guardar(eventoDos);
+        Evento eventoTres = new Evento("Cretive Party", LocalDate.of(2025, 05, 15), "Hipodromo de San Isidro");
+        eventoTres.setCategoria("concierto");
+        this.repositorioEvento.guardar(eventoTres);
+
+        List<Evento> eventos = this.repositorioEvento.obtenerEventosPorCategoria("concierto");
+
+        List<Evento> esperados = new ArrayList<>();
+        esperados.add(evento);
+        esperados.add(eventoTres);
+
+
+        assertThat(eventos.size(), equalTo(2));
+        assertThat(eventos, equalTo(esperados));
+        assertThat(eventos, containsInAnyOrder(evento, eventoTres));
+    }
+
+
+
+
+
 }

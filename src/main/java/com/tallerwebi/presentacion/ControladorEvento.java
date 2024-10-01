@@ -18,10 +18,12 @@ import java.util.List;
 public class ControladorEvento {
 
 private ServicioEvento servicioEvento;
+private ServicioEntrada servicioEntrada;
 
 @Autowired
-public ControladorEvento(ServicioEvento servicioEvento) {
+public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicioEntrada) {
     this.servicioEvento = servicioEvento;
+    this.servicioEntrada = servicioEntrada;
 }
 
     @GetMapping("/eventos")
@@ -50,8 +52,23 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         Evento eventoBuscado = servicioEvento.obtenerEventoPorId(id);
         ModelMap vistas = new ModelMap();
         vistas.put("vista", eventoBuscado);
+
+        if(eventoBuscado != null) {
+            List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
+            vistas.put("entradas", entradas);
+        }
+
         return new ModelAndView("vista", vistas);
     }
+
+    @GetMapping("/eventos/categoria")
+    public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
+        List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
+        ModelMap modelo = new ModelMap();
+        modelo.put("eventos", eventosBuscados);
+        return new ModelAndView("eventos", modelo);
+    }
+
 
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
@@ -60,4 +77,5 @@ public ControladorEvento(ServicioEvento servicioEvento) {
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
+
 }

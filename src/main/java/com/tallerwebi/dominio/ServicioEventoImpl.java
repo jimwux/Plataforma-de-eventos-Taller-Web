@@ -34,11 +34,14 @@ public class ServicioEventoImpl implements ServicioEvento {
         }
     }
 
-
-
     @Override
     public Evento obtenerEventoPorId(Long id) {
         return this.repositorioEvento.obtenerEventoPorId(id);
+    }
+
+    @Override
+    public List<Evento> obtenerEventosPorCategoria(String categoria) {
+        return repositorioEvento.obtenerEventosPorCategoria(categoria);
     }
 
     @Override

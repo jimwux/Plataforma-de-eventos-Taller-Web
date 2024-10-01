@@ -16,10 +16,8 @@
         <li class="boton-nav"><a href="">Usuario</a></li>
     </ul>
 </nav>
-
-
 <section class="contenedor">
-    <article id="datos-evento">
+    <div id="datos-evento">
         <div id="nombre-imagen-evento">
             <h2><span th:text="${vista.nombre}"></span></h2>
             <p>Fecha: <span th:text="${vista.fecha}"></span></p>
@@ -29,7 +27,7 @@
         <div id="info-evento">
             <div id="info-ubicacion-evento">
                 <p id="lugar-evento"><span th:text="${vista.lugar}"></span></p>
-                <p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p>
+                <!--<p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p> -->
             </div>
             <div class="carrito-entradas">
                 <div id="label-carrito">
@@ -37,10 +35,11 @@
                     <label>Cantidad</label>
                 </div>
                 <div id="contenedor_entradas" data-auto-scrollable="true">
-                    <div class="entrada">
-                        <div class="tipo-entrada">
-                            <h4 class="datos-entrada">Nombre/tipo de entrada</h4>
-                            <p class="datos-entrada">$ Precio</p>
+                    <div class="entrada" th:each="entrada : ${entradas}">
+                        <div class="tipo-entrada" >
+
+                            <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
+                            <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </div>
                         <div class="cantidad">
                             <select name="entrada" id="entrada">
@@ -59,20 +58,19 @@
                 </div>
 
                 <button id="boton-comprar">Comprar</button>
-        </div>
+            </div>
 
-    </article>
-
+    </div>
     <section id="acerca-del-evento">
         <div id="acerca">
             <h3>Acerca de <span th:text="${vista.nombre}"></span></h3>
             <p th:text="${vista.acercaDe}"></p>
         </div>
         <div >
-        <a th:href="${vista.instagramUrl}" target="_blank" id="enlace-instagram">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" id="logoInstagram" alt="Instagram Logo"/>
-            <p>Accede al instagram de <span th:text="${vista.nombre}"></span></p>
-        </a>
+            <a th:href="${vista.instagramUrl}" target="_blank" id="enlace-instagram">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" id="logoInstagram" alt="Instagram Logo"/>
+                <p>Accede al instagram de <span th:text="${vista.nombre}"></span></p>
+            </a>
         </div>
     </section>
 
@@ -80,4 +78,3 @@
 
 </body>
 </html>
-
