@@ -17,7 +17,7 @@
     </ul>
 </nav>
 <section class="contenedor">
-    <div id="datos-evento">
+    <article id="datos-evento">
         <div id="nombre-imagen-evento">
             <h2><span th:text="${vista.nombre}"></span></h2>
             <p>Fecha: <span th:text="${vista.fecha}"></span></p>
@@ -59,9 +59,9 @@
 
                 <button id="boton-comprar">Comprar</button>
             </div>
-
-    </div>
-    <section id="acerca-del-evento">
+        </div>
+    </article>
+    <article id="acerca-del-evento">
         <div id="acerca">
             <h3>Acerca de <span th:text="${vista.nombre}"></span></h3>
             <p th:text="${vista.acercaDe}"></p>
@@ -72,7 +72,7 @@
                 <p>Accede al instagram de <span th:text="${vista.nombre}"></span></p>
             </a>
         </div>
-    </section>
+    </article>
 
 </section>
 

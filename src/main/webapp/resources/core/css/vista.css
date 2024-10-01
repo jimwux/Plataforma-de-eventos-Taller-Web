@@ -84,6 +84,7 @@ body{
 .datos-entrada {
     margin: 0.2em;
 }
+
 #info-ubicacion-evento {
     display: flex;
     flex-direction: column;
@@ -135,14 +136,14 @@ body{
 
 #contenedor_entradas {
     display: grid;
-    grid-template-rows: repeat(auto-fill, minmax(11vh, 1fr)); /* Columnas automáticas según el espacio /
+    grid-template-rows: repeat(auto-fill, minmax(11vh, 1fr)); /* Columnas automáticas según el espacio */
     gap: 10px;
     height: 41vh;
-    overflow-y: scroll; / Habilita el scroll vertical */
+    overflow-y: scroll; /* Habilita el scroll vertical */
 }
 
 #acerca-del-evento {
-    width: 72%;
+    width: 71%;
     margin-top: 2em;
     display: flex;
     flex-direction: row;
