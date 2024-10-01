@@ -91,6 +91,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     }
 
     @Override
+    public List<Evento> obtenerEventosOrdenadosPorFecha() {
+        String hql = "FROM Evento ORDER BY fecha ASC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+     
+    }
+    @Override
     public List<Evento> buscarEventosPorCiudad(String nombreCiudad) {
         String hql = "FROM Evento WHERE ciudad.nombre = :nombreCiudad";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
@@ -98,6 +104,14 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return query.getResultList();
     }
 
+    @Override
+    public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        String hql = "FROM Evento WHERE fecha >= :fechaInicio AND fecha <= :fechaFin ORDER BY fecha ASC";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        query.setParameter("fechaInicio", fechaInicio);
+        query.setParameter("fechaFin", fechaFin);
+    }
+  
     @Override
     public List<Evento> buscarEventosPorProvincia(String nombreProvincia) {
         String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia";

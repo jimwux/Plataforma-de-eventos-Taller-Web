@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,8 +44,6 @@ public class ServicioEventoImplTest {
         segundoEvento.setId(segundoId);
 
         devuelveUnaListaConEsosDosElementos(primerEvento, segundoEvento);
-
-
     }
 
 
@@ -200,6 +199,55 @@ public class ServicioEventoImplTest {
     }
 
 
+    @Test
+    public void dadoQueExistenTresEventosConDistintasFechaPodemosObtenerLosEventosOrdenadosPorFechaDeLaMasCercanaALaMasDistante() {
+
+
+        Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.of(2025, 1, 15), "Parque de la Ciudad");
+        Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.of(2024, 12, 25), "CABA");
+        Evento eventoMock3 = new Evento("Primavera Sound", LocalDate.of(2024, 11, 16), "Parque Central");
+
+        List<Evento> eventosOrdenadosMock = List.of(eventoMock3, eventoMock2, eventoMock1);
+
+        when(this.repositorioEventoMock.obtenerEventosOrdenadosPorFecha()).thenReturn(eventosOrdenadosMock);
+
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
+
+        seVerificaElOrdenDeLosMismosComparandoSusFechas(eventosObtenidos);
+
+    }
+
+    private void seVerificaElOrdenDeLosMismosComparandoSusFechas(List<Evento> eventosOrdenados) {
+        assertThat(eventosOrdenados.size(), equalTo(3));
+        assertThat(eventosOrdenados.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
+        assertThat(eventosOrdenados.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
+        assertThat(eventosOrdenados.get(2).getFecha(), equalTo(LocalDate.of(2025, 1, 15)));
+    }
+
+    @Test
+    public void dadoQueExistenTresEventosConDistintasFechaPodemosObtenerLosEventosQueSeRealizanEnUnRangoDeFechasDado() {
+        LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
+        LocalDate fechaFin = LocalDate.of(2024, 12, 31);
+
+        Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.of(2025, 1, 15), "Parque de la Ciudad");
+        Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.of(2024, 12, 25), "CABA");
+        Evento eventoMock3 = new Evento("Primavera Sound", LocalDate.of(2024, 11, 16), "Parque Central");
+
+        List<Evento> eventosEsperadosMock = List.of(eventoMock3, eventoMock2);
+
+        when(this.repositorioEventoMock.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin)).thenReturn(eventosEsperadosMock);
+
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
+
+        seVerificaQueSoloTraigaLosEventosDentroDelRangoDeFechasDado(eventosObtenidos);
+
+    }
+
+    private void seVerificaQueSoloTraigaLosEventosDentroDelRangoDeFechasDado(List<Evento> eventosObtenidos) {
+        assertThat(eventosObtenidos.size(), equalTo(2));
+        assertThat(eventosObtenidos.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
+        assertThat(eventosObtenidos.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
+    }
 
 
 }
