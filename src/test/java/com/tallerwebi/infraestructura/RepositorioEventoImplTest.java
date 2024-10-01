@@ -211,6 +211,43 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosOrdenadosPorFechaEntoncesEstanOrdenadosCorrectamente() {
+
+        seCreanYGuardanTresEventosConDistintasFechas();
+
+        List<Evento> eventosOrdenados = seObtienenLosEventosOrdenadosPorFecha();
+
+        seVerificaElOrdenDeLosMismosComparandoSusFechas(eventosOrdenados);
+
+
+    }
+
+    private void seVerificaElOrdenDeLosMismosComparandoSusFechas(List<Evento> eventosOrdenados) {
+        assertThat(eventosOrdenados.size(), equalTo(3));
+        assertThat(eventosOrdenados.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
+        assertThat(eventosOrdenados.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
+        assertThat(eventosOrdenados.get(2).getFecha(), equalTo(LocalDate.of(2025, 1, 15)));
+    }
+
+    private List<Evento> seObtienenLosEventosOrdenadosPorFecha() {
+        return  this.repositorioEvento.obtenerEventosOrdenadosPorFecha();
+    }
+
+    private void seCreanYGuardanTresEventosConDistintasFechas() {
+
+        Evento evento1 = new Evento("Fiesta de Verano", LocalDate.of(2025, 1, 15), "Parque de la Ciudad");
+        Evento evento2 = new Evento("Festival de Invierno", LocalDate.of(2024, 12, 25), "CABA");
+        Evento evento3 = new Evento("Primavera Sound", LocalDate.of(2024, 11, 16), "Parque Central");
+
+
+        this.repositorioEvento.guardar(evento1);
+        this.repositorioEvento.guardar(evento2);
+        this.repositorioEvento.guardar(evento3);
+    }
+  
+    @Test
+    @Transactional
+    @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudad () {
         Ciudad moron = new Ciudad();
         moron.setNombre("Morón");
@@ -295,6 +332,34 @@ public class RepositorioEventoImplTest {
             assertThat(eventosEncontrados.get(iterador), equalTo(evento));
             iterador++;
         }
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosDentroDeUnRangoDeFechasEntoncesTengoUnaListaDeEstas() {
+
+        seCreanYGuardanTresEventosConDistintasFechas();
+
+        List<Evento> eventosEnElRango = seObtienenLosEventosDentroDeUnRangoDeFechas();
+
+        seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(eventosEnElRango);
+
+
+    }
+
+    private void seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(List<Evento> eventosEnElRango) {
+        assertThat(eventosEnElRango.size(), equalTo(2));
+        assertThat(eventosEnElRango.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
+        assertThat(eventosEnElRango.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
+    }
+
+    private List<Evento> seObtienenLosEventosDentroDeUnRangoDeFechas() {
+        LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
+        LocalDate fechaFin = LocalDate.of(2024, 12, 31);
+
+        return  this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
     }
 
     @Test
