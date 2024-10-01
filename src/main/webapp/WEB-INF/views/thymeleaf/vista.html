@@ -2,37 +2,79 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle</title>
+    <title th:text="${vista.nombre}"></title>
+    <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
     <link rel="stylesheet" th:href="@{/css/vista.css}">
 </head>
 <body>
 
-<h1 class="titulo-evento"><span th:text="${vista.nombre}"></span></h1>
-<div class="detalles">
+<nav id="nav-bar">
+    <h1 id="titulo-pagina">Equipo mokito</h1>
+    <ul id="botones-nav">
+        <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
+        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav"><a href="">Usuario</a></li>
+    </ul>
+</nav>
+<section class="contenedor">
+    <div id="datos-evento">
+        <div id="nombre-imagen-evento">
+            <h2><span th:text="${vista.nombre}"></span></h2>
+            <p>Fecha: <span th:text="${vista.fecha}"></span></p>
+            <img th:src="${vista.imagenUrl}" th:alt="${vista.nombre}" id="imagenEvento">
+        </div>
 
-    <img th:src="${vista.imagenUrl}">
-    <div class="extras">
-        <p>----------------------------------------------------</p>
-        <p> <span class="nombre">Lugar:</span> <span th:text="${vista.lugar}"></span></p>
-        <p> <span class="nombre">Fecha:</span> <span th:text="${vista.fecha}"></span></p>
-        <p>----------------------------------------------------</p>
+        <div id="info-evento">
+            <div id="info-ubicacion-evento">
+                <p id="lugar-evento"><span th:text="${vista.lugar}"></span></p>
+                <!--<p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p> -->
+            </div>
+            <div class="carrito-entradas">
+                <div id="label-carrito">
+                    <label>Tipo de entrada</label>
+                    <label>Cantidad</label>
+                </div>
+                <div id="contenedor_entradas" data-auto-scrollable="true">
+                    <div class="entrada" th:each="entrada : ${entradas}">
+                        <div class="tipo-entrada" >
 
-        <h2>Entradas Disponibles:</h2>
-        <ul>
-            <li th:each="entrada : ${entradas}">
-                <h3 th:text="${entrada.nombre}"></h3>
-                <p th:text="${entrada.precio}"></p>
-            </li>
-        </ul>
+                            <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
+                            <p class="datos-entrada" th:text="${entrada.precio}"></p>
+                        </div>
+                        <div class="cantidad">
+                            <select name="entrada" id="entrada">
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="total-compra-entradas">
+                    <h3>Valor total</h3>
+                    <h3>$0.00</h3>
+                </div>
 
+                <button id="boton-comprar">Comprar</button>
+            </div>
 
     </div>
+    <section id="acerca-del-evento">
+        <div id="acerca">
+            <h3>Acerca de <span th:text="${vista.nombre}"></span></h3>
+            <p th:text="${vista.acercaDe}"></p>
+        </div>
+        <div >
+            <a th:href="${vista.instagramUrl}" target="_blank" id="enlace-instagram">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" id="logoInstagram" alt="Instagram Logo"/>
+                <p>Accede al instagram de <span th:text="${vista.nombre}"></span></p>
+            </a>
+        </div>
+    </section>
 
-</div>
-
-
-
+</section>
 
 </body>
 </html>
-

@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,11 +11,19 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 1000)
+    private String acercaDe;
     private String nombre;
     private LocalDate fecha;
     private String lugar;
     private String imagenUrl;
     private String categoria;
+    private String instagramUrl;
+
+
+    @ManyToOne
+    private Ciudad ciudad;
+
 
     public Evento(String nombre, LocalDate fecha, String lugar) {
         this.nombre = nombre;
@@ -83,11 +88,35 @@ public class Evento {
         this.imagenUrl = imagenUrl;
     }
 
+    public String getAcercaDe() {
+        return acercaDe;
+    }
+
+    public void setAcercaDe(String acercaDe) {
+        this.acercaDe = acercaDe;
+    }
+
     public String getCategoria() {
         return categoria;
     }
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public String getInstagramUrl() {
+        return instagramUrl;
+    }
+
+    public void setInstagramUrl(String instagramUrl) {
+        this.instagramUrl = instagramUrl;
+    }
+
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
     }
 }

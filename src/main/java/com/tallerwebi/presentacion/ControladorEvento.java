@@ -7,9 +7,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,15 +25,22 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 }
 
     @GetMapping("/eventos")
-    public ModelAndView mostrarEventos(@RequestParam(value = "nombre", required = false) String nombre) {
+    public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
+                                            @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
+                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
 
-        if (nombre == null || nombre.isEmpty()) {
+        Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
+                (nombreProvincia == null || nombreProvincia.isEmpty()) &&
+                (nombreCiudad == null || nombreCiudad.isEmpty());
+
+        if (sinFiltros) {
             eventos = this.servicioEvento.obtenerTodosLosEventos();
         } else {
-            eventos = this.servicioEvento.buscarEventosPorNombre(nombre);
+            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
         }
+
         modelo.put("eventos", eventos);
         return new ModelAndView("eventos", modelo);
     }
@@ -43,8 +50,12 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         Evento eventoBuscado = servicioEvento.obtenerEventoPorId(id);
         ModelMap vistas = new ModelMap();
         vistas.put("vista", eventoBuscado);
-        List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
-        vistas.put("entradas", entradas);
+
+        if(eventoBuscado != null) {
+            List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
+            vistas.put("entradas", entradas);
+        }
+
         return new ModelAndView("vista", vistas);
     }
 
