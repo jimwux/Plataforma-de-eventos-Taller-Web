@@ -19,6 +19,7 @@ public class Evento {
     private String imagenUrl;
     private String categoria;
     private String instagramUrl;
+    private String direccionUrl;
 
 
     @ManyToOne
@@ -118,5 +119,13 @@ public class Evento {
 
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public String getDireccionUrl() {
+        return direccionUrl;
+    }
+
+    public void setDireccionUrl(String direccionUrl) {
+        this.direccionUrl = direccionUrl;
     }
 }
