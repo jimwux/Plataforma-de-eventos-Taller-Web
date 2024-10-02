@@ -112,3 +112,9 @@ button {
     color: black;
     text-decoration: none;
 }
+
+.pie-de-pagina {
+    text-align: center;
+    color: white;
+    margin: 4em;
+}

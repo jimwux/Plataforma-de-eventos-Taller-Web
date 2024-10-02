@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -72,6 +73,18 @@ public class ServicioEventoImpl implements ServicioEvento {
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
     }
+
+    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            return this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
+        } else {
+            LocalDate hoy = LocalDate.now();
+            LocalDate dosMesesDespues = hoy.plusMonths(2);
+            return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
+        }
+    }
+
 }
 
 
