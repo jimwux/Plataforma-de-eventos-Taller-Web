@@ -9,7 +9,7 @@
 <body>
 
 <nav id="nav-bar">
-    <h1 id="titulo-pagina">Equipo mokito</h1>
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
     <ul id="botones-nav">
         <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
         <li class="boton-nav"><a href="">Contacto</a></li>
@@ -20,21 +20,21 @@
     <article id="datos-evento">
         <div id="nombre-imagen-evento">
             <h2><span th:text="${vista.nombre}"></span></h2>
-            <p>Fecha: <span th:text="${vista.fecha}"></span></p>
+            <p id="fecha-evento">Fecha: <span th:text="${vista.fecha}"></span></p>
             <img th:src="${vista.imagenUrl}" th:alt="${vista.nombre}" id="imagenEvento">
         </div>
 
         <div id="info-evento">
             <div id="info-ubicacion-evento">
-                <p id="lugar-evento"><span th:text="${vista.lugar}"></span></p>
-                <!--<p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p> -->
+                <a th:href="${vista.direccionUrl}" target="_blank" id="lugar-evento"><span th:text="${vista.lugar}"></span></a>
+                <p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p>
             </div>
             <div class="carrito-entradas">
                 <div id="label-carrito">
                     <label>Tipo de entrada</label>
                     <label>Cantidad</label>
                 </div>
-                <div id="contenedor_entradas" data-auto-scrollable="true">
+                <div id="contenedor_entradas" >
                     <div class="entrada" th:each="entrada : ${entradas}">
                         <div class="tipo-entrada" >
 
