@@ -38,7 +38,7 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
                 (nombreCiudad == null || nombreCiudad.isEmpty());
 
         if (sinFiltros) {
-            eventos = this.servicioEvento.obtenerTodosLosEventos();
+            eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
         } else {
             eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
         }
@@ -56,6 +56,9 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         if(eventoBuscado != null) {
             List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
             vistas.put("entradas", entradas);
+
+            List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
+            vistas.put("eventosCarrousel", eventosCarrousel);
         }
 
         return new ModelAndView("vista", vistas);

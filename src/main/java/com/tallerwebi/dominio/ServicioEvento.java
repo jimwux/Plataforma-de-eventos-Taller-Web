@@ -19,4 +19,5 @@ public interface ServicioEvento {
 
     List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad);
 
+    List<Evento> obtenerEventosAleatorios(String nombreCiudad);
 }

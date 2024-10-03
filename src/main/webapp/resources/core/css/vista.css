@@ -149,7 +149,7 @@ a {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    max-height: 43vh;
+    height: 43vh;
     overflow-y: auto; /* Habilita el scroll vertical */
 }
 
@@ -179,3 +179,41 @@ a {
 #fecha-evento {
     font-size: 1.2em;
 }
+
+.pie-de-pagina {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.evento img{
+    width: 300px;
+    border-radius: 1em;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.evento img:hover {
+    background-color: dimgrey;
+    transform: scale(1.05);
+}
+
+.carrousel-eventos {
+    gap: 3em;
+    margin: 2em;
+    margin-bottom: 3em;
+}
+
+#mas-eventos {
+    display: flex;
+    flex-direction: column;
+    width: 72%;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+#enlace-evento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
