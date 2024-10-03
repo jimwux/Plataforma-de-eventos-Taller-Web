@@ -27,8 +27,8 @@ public class ServicioEventoImplTest {
 
     @Test
     public void alNoExistirEventosDebeDevolverUnaListaVacia () {
-        when(repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
-        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
+        when(this.repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
+        List<Evento> eventos = this.servicioEvento.obtenerTodosLosEventos();
         assertThat(eventos, empty());
     }
 
@@ -50,7 +50,7 @@ public class ServicioEventoImplTest {
     private void devuelveUnaListaConEsosDosElementos(Evento primerEvento, Evento segundoEvento) {
         {
             List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
-            when(repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
+            when(this.repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
             eventos.add(primerEvento);
             eventos.add(segundoEvento);
 
@@ -72,20 +72,20 @@ public class ServicioEventoImplTest {
     }
 
     private void soloDebeDevolverAlPrimeroDeEllos(Evento primerEvento, Evento eventoDuplicado) {
-        List<Evento> eventos = servicioEvento.obtenerTodosLosEventos();
-        when(repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
+        List<Evento> eventos = this.servicioEvento.obtenerTodosLosEventos();
+        when(this.repositorioEventoMock.obtenerTodosLosEventos()).thenReturn(new ArrayList<>());
 
         assertThat(eventos.size(), is(0));
 
-        servicioEvento.agregarEvento(primerEvento);
-        eventos = servicioEvento.obtenerTodosLosEventos();
+        this.servicioEvento.agregarEvento(primerEvento);
+        eventos = this.servicioEvento.obtenerTodosLosEventos();
         eventos.add(primerEvento);
 
         assertThat(eventos.size(), is(1));
         assertThat(eventos.get(0).getId(), is(primerEvento.getId()));
 
-        servicioEvento.agregarEvento(eventoDuplicado);
-        eventos = servicioEvento.obtenerTodosLosEventos();
+        this.servicioEvento.agregarEvento(eventoDuplicado);
+        eventos = this.servicioEvento.obtenerTodosLosEventos();
         //eventos.add(eventoDuplicado); el filtro esta en el metodo "Agregar Evento"
 
         assertThat(eventos.size(), is(1));
@@ -148,13 +148,13 @@ public class ServicioEventoImplTest {
         Evento evento = new Evento();
         List<Evento> eventos = Arrays.asList(evento);
 
-        when(repositorioEventoMock.buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento")).thenReturn(eventos);
+        when(this.repositorioEventoMock.buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", null);
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Evento", "Buenos Aires", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
-        verify(repositorioEventoMock).buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento");
+        verify(this.repositorioEventoMock).buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento");
     }
 
     @Test
@@ -162,13 +162,13 @@ public class ServicioEventoImplTest {
         Evento evento = new Evento();
         List<Evento> eventos = Arrays.asList(evento);
 
-        when(repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventos);
+        when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón");
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón");
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
-        verify(repositorioEventoMock).buscarEventosPorCiudad("Morón");
+        verify(this.repositorioEventoMock).buscarEventosPorCiudad("Morón");
     }
 
     @Test
@@ -176,13 +176,13 @@ public class ServicioEventoImplTest {
         Evento evento = new Evento();
         List<Evento> eventos = Arrays.asList(evento);
 
-        when(repositorioEventoMock.buscarEventosPorProvincia("Buenos Aires")).thenReturn(eventos);
+        when(this.repositorioEventoMock.buscarEventosPorProvincia("Buenos Aires")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos(null, "Buenos Aires", null);
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
-        verify(repositorioEventoMock).buscarEventosPorProvincia("Buenos Aires");
+        verify(this.repositorioEventoMock).buscarEventosPorProvincia("Buenos Aires");
     }
     
     @Test

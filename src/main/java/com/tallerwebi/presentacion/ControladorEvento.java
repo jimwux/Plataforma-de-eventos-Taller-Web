@@ -38,7 +38,7 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
                 (nombreCiudad == null || nombreCiudad.isEmpty());
 
         if (sinFiltros) {
-            eventos = this.servicioEvento.obtenerTodosLosEventos();
+            eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
         } else {
             eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
         }

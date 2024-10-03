@@ -249,25 +249,12 @@ public class RepositorioEventoImplTest {
     @Transactional
     @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudad () {
-        Ciudad moron = new Ciudad();
-        moron.setNombre("Morón");
-        this.sessionFactory.getCurrentSession().save(moron);
+        Ciudad moron = this.creoUnaCiudadYLaGuardo("Morón");
+        Ciudad merlo = this.creoUnaCiudadYLaGuardo("Merlo");
 
-        Ciudad merlo = new Ciudad();
-        merlo.setNombre("Merlo");
-        this.sessionFactory.getCurrentSession().save(merlo);
-
-        Evento eventoUno = new Evento();
-        eventoUno.setCiudad(moron);
-        this.repositorioEvento.guardar(eventoUno);
-
-        Evento eventoDos = new Evento();
-        eventoDos.setCiudad(merlo);
-        this.repositorioEvento.guardar(eventoDos);
-
-        Evento eventoTres = new Evento();
-        eventoTres.setCiudad(moron);
-        this.repositorioEvento.guardar(eventoTres);
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Lollapalooza", merlo);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", moron);
 
         List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorCiudad("Morón");
 
@@ -286,40 +273,16 @@ public class RepositorioEventoImplTest {
     @Transactional
     @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaProvincia () {
-        Provincia buenosAires = new Provincia();
-        buenosAires.setNombre("Buenos Aires");
-        this.sessionFactory.getCurrentSession().save(buenosAires);
+        Provincia buenosAires = this.creoUnaProvinciaYLaGuardo("Buenos Aires");
+        Provincia cordoba = this.creoUnaProvinciaYLaGuardo("Córdoba");
 
-        Provincia cordoba = new Provincia();
-        cordoba.setNombre("Córdoba");
-        this.sessionFactory.getCurrentSession().save(cordoba);
+        Ciudad moron = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Morón", buenosAires);
+        Ciudad merlo = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Merlo", buenosAires);
+        Ciudad villaCarlosPaz = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Villa Carlos Paz", cordoba);
 
-        Ciudad moron = new Ciudad();
-        moron.setNombre("Morón");
-        moron.setProvincia(buenosAires);
-        this.sessionFactory.getCurrentSession().save(moron);
-
-        Ciudad merlo = new Ciudad();
-        merlo.setNombre("Merlo");
-        merlo.setProvincia(buenosAires);
-        this.sessionFactory.getCurrentSession().save(merlo);
-
-        Ciudad villaCarlosPaz = new Ciudad();
-        villaCarlosPaz.setNombre("Villa Carlos Paz");
-        villaCarlosPaz.setProvincia(cordoba);
-        this.sessionFactory.getCurrentSession().save(villaCarlosPaz);
-
-        Evento eventoUno = new Evento();
-        eventoUno.setCiudad(moron);
-        this.repositorioEvento.guardar(eventoUno);
-
-        Evento eventoDos = new Evento();
-        eventoDos.setCiudad(villaCarlosPaz);
-        this.repositorioEvento.guardar(eventoDos);
-
-        Evento eventoTres = new Evento();
-        eventoTres.setCiudad(merlo);
-        this.repositorioEvento.guardar(eventoTres);
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", villaCarlosPaz);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", merlo);
 
         List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvincia("Buenos Aires");
 
@@ -366,28 +329,12 @@ public class RepositorioEventoImplTest {
     @Transactional
     @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYTienenUnNombreParticular () {
-        Ciudad moron = new Ciudad();
-        moron.setNombre("Morón");
-        this.sessionFactory.getCurrentSession().save(moron);
+        Ciudad moron = this.creoUnaCiudadYLaGuardo("Morón");
+        Ciudad merlo = this.creoUnaCiudadYLaGuardo("Merlo");
 
-        Ciudad merlo = new Ciudad();
-        merlo.setNombre("Merlo");
-        this.sessionFactory.getCurrentSession().save(merlo);
-
-        Evento eventoUno = new Evento();
-        eventoUno.setNombre("Parense de Manos");
-        eventoUno.setCiudad(moron);
-        this.repositorioEvento.guardar(eventoUno);
-
-        Evento eventoDos = new Evento();
-        eventoDos.setNombre("Aventuras Perrunas");
-        eventoDos.setCiudad(merlo);
-        this.repositorioEvento.guardar(eventoDos);
-
-        Evento eventoTres = new Evento();
-        eventoTres.setNombre("Aventuras Perrunas");
-        eventoTres.setCiudad(moron);
-        this.repositorioEvento.guardar(eventoTres);
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", merlo);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", moron);
 
         List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorCiudadYNombre("Morón", "Aventuras Perrunas");
 
@@ -400,43 +347,16 @@ public class RepositorioEventoImplTest {
     @Transactional
     @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaProvinciaYTienenUnNombreParticular () {
-        Provincia buenosAires = new Provincia();
-        buenosAires.setNombre("Buenos Aires");
-        this.sessionFactory.getCurrentSession().save(buenosAires);
+        Provincia buenosAires = this.creoUnaProvinciaYLaGuardo("Buenos Aires");
+        Provincia cordoba = this.creoUnaProvinciaYLaGuardo("Córdoba");
 
-        Provincia cordoba = new Provincia();
-        cordoba.setNombre("Córdoba");
-        this.sessionFactory.getCurrentSession().save(cordoba);
+        Ciudad moron = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Morón", buenosAires);
+        Ciudad merlo = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Merlo", buenosAires);
+        Ciudad villaCarlosPaz = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Villa Carlos Paz", cordoba);
 
-        Ciudad moron = new Ciudad();
-        moron.setNombre("Morón");
-        moron.setProvincia(buenosAires);
-        this.sessionFactory.getCurrentSession().save(moron);
-
-        Ciudad merlo = new Ciudad();
-        merlo.setNombre("Merlo");
-        merlo.setProvincia(buenosAires);
-        this.sessionFactory.getCurrentSession().save(merlo);
-
-        Ciudad villaCarlosPaz = new Ciudad();
-        villaCarlosPaz.setNombre("Villa Carlos Paz");
-        villaCarlosPaz.setProvincia(cordoba);
-        this.sessionFactory.getCurrentSession().save(villaCarlosPaz);
-
-        Evento eventoUno = new Evento();
-        eventoUno.setNombre("Parense de Manos");
-        eventoUno.setCiudad(moron);
-        this.repositorioEvento.guardar(eventoUno);
-
-        Evento eventoDos = new Evento();
-        eventoDos.setNombre("Parense de Manos");
-        eventoDos.setCiudad(villaCarlosPaz);
-        this.repositorioEvento.guardar(eventoDos);
-
-        Evento eventoTres = new Evento();
-        eventoTres.setNombre("Aventuras Perrunas");
-        eventoTres.setCiudad(merlo);
-        this.repositorioEvento.guardar(eventoTres);
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", villaCarlosPaz);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", merlo);
 
         List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre("Buenos Aires", "Parense de Manos");
 
@@ -444,6 +364,35 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados.get(0), equalTo(eventoUno));
     }
 
+    private Provincia creoUnaProvinciaYLaGuardo (String nombre) {
+        Provincia provincia = new Provincia();
+        provincia.setNombre(nombre);
+        this.sessionFactory.getCurrentSession().save(provincia);
+        return provincia;
+    }
+
+    private Ciudad creoUnaCiudadYLaGuardo (String nombre) {
+        Ciudad ciudad = new Ciudad();
+        ciudad.setNombre(nombre);
+        this.sessionFactory.getCurrentSession().save(ciudad);
+        return ciudad;
+    }
+
+    private Ciudad creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo (String nombre, Provincia provincia) {
+        Ciudad ciudad = new Ciudad();
+        ciudad.setNombre(nombre);
+        ciudad.setProvincia(provincia);
+        this.sessionFactory.getCurrentSession().save(ciudad);
+        return ciudad;
+    }
+
+    private Evento creoUnEventoLeAsignoUnaCiudadYLoGuardo (String nombre, Ciudad ciudad) {
+        Evento evento = new Evento();
+        evento.setNombre(nombre);
+        evento.setCiudad(ciudad);
+        this.repositorioEvento.guardar(evento);
+        return evento;
+    }
 
     @Test
     @Transactional
