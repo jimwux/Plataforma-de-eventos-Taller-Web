@@ -172,6 +172,17 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosPorUnaFechaEnLaQueNoSeRealizaNingunoSeGeneraUnaExcepcion () {
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerLosEventosPorFecha(LocalDate.of(2024, 11,16));
+        });
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerAquellosQueCorrespondenAMiBusquedaPorNombre () {
         Evento eventoUno = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(eventoUno);
@@ -225,7 +236,6 @@ public class RepositorioEventoImplTest {
     @Transactional
     @Rollback
     public void dadoQueNoExisteEventosQueCorrespondenAMiBusquedaPorIdSeGeneraUnaExcepcion () {
-
         Long idDelEvento = 999L;
 
         // Verificamos que se lance la excepción
@@ -295,6 +305,16 @@ public class RepositorioEventoImplTest {
             iterador++;
         }
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosDeUnaCiudaSeGeneraUnaExcepcionAlBuscarEventosEnLaMisma () {
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorCiudad("Morón");
+        });
+    }
 
     @Test
     @Transactional
@@ -324,6 +344,16 @@ public class RepositorioEventoImplTest {
         }
 
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosDeUnaProvinciaSeGeneraUnaExcepcionAlBuscarEventosEnLaMisma () {
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorProvincia("Buenos Aires");
+        });
+    }
 
     @Test
     @Transactional
@@ -335,8 +365,6 @@ public class RepositorioEventoImplTest {
         List<Evento> eventosEnElRango = seObtienenLosEventosDentroDeUnRangoDeFechas();
 
         seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(eventosEnElRango);
-
-
     }
 
     private void seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(List<Evento> eventosEnElRango) {
@@ -350,6 +378,18 @@ public class RepositorioEventoImplTest {
         LocalDate fechaFin = LocalDate.of(2024, 12, 31);
 
         return  this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosDentroDeUnRangoDeFechasSeGeneraUnaExcepcionAlBuscarEventosEnDichoRango () {
+        LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
+        LocalDate fechaFin = LocalDate.of(2024, 12, 31);
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
+        });
     }
 
     @Test
@@ -367,7 +407,6 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventosEncontrados, hasSize(1));
         assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
-
     }
 
     @Test
