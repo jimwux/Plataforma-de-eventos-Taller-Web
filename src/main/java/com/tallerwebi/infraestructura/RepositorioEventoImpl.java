@@ -1,11 +1,13 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -73,13 +75,19 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("fecha", fecha);
         return query.getResultList();
     }
-
+//TextoDelBuscador
     @Override
     public List<Evento> buscarEventosPorNombre(String busqueda) {
         String hql = "FROM Evento WHERE lower(nombre) LIKE :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", busqueda + "%");  // Concatenamos el valor del nombre con "%"
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos relacionados a " + busqueda);
+        }
+
+        return eventosEncontrados;
+
     }
       
     @Override
@@ -87,7 +95,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "FROM Evento WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
-        return (Evento) query.getSingleResult();
+        try {
+            return (Evento) query.getSingleResult() ; // Retorna el evento si lo encuentra
+        } catch (NoResultException e) {
+            throw new EventoNoEncontradoException("No se encontró el evento con id: " + id);
+        }
+
     }
 
     @Override

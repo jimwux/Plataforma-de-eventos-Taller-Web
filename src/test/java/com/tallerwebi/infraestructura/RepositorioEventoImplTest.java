@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.Ciudad;
 import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioEvento;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
@@ -193,6 +194,18 @@ public class RepositorioEventoImplTest {
         }
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExisteEventosQueCorrespondenAMiBusquedaPorNombreSeGeneraUnaExcepcion () {
+
+        String busqueda = "cre";
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorNombre(busqueda);
+        });
+    }
 
     @Test
     @Transactional
@@ -206,6 +219,20 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventoObtenido.getId(), equalTo(idDelEvento));
         assertThat(eventoObtenido, equalTo(evento));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExisteEventosQueCorrespondenAMiBusquedaPorIdSeGeneraUnaExcepcion () {
+
+        Long idDelEvento = 999L;
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerEventoPorId(idDelEvento);
+
+        });
     }
 
     @Test
