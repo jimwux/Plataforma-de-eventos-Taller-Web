@@ -408,6 +408,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados, hasSize(1));
         assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosCuandoIntentoBuscarlosPorUnaCiudadYUnTextoEnElBuscadorYNoLosEncuentroSeLanzaUnaExcepcion () {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorCiudadYNombre("Morón", "Aventuras Perrunas");
+        });
+    }
 
     @Test
     @Transactional
@@ -429,7 +438,16 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados, hasSize(1));
         assertThat(eventosEncontrados.get(0), equalTo(eventoUno));
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosCuandoIntentoBuscarlosPorUnaProvinciaYUnTextoEnElBuscadorYNoLosEncuentroSeLanzaUnaExcepcion () {
 
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorProvinciaYNombre("Buenos Aires", "Parense de Manos");
+        });
+    }
     private Provincia creoUnaProvinciaYLaGuardo (String nombre) {
         Provincia provincia = new Provincia();
         provincia.setNombre(nombre);
@@ -485,7 +503,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventos, equalTo(esperados));
         assertThat(eventos, containsInAnyOrder(evento, eventoTres));
     }
-
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosCuandoIntentoBuscarlosPorUnaCategoriaYNoLosEncuentroSeLanzaUnaExcepcion () {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerEventosPorCategoria("concierto");
+        });
+    }
 
 
 

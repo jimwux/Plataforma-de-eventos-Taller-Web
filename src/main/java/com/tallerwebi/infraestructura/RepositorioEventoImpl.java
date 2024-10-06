@@ -113,7 +113,11 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "FROM Evento WHERE categoria = :categoria";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("categoria", categoria);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria);
+        }
+        return eventosEncontrados;
     }
 
     @Override
