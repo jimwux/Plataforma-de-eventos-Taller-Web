@@ -145,6 +145,21 @@ public class ControladorEventoTest {
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
     }
 
+    @Test
+    public void debenObtenerseLosEventosCorrespondientesCuandoSeSeleccionaUnaProvinciaCiudadYUnaCategoria() {
+        List<Evento> listaDeEventos = new ArrayList<>();
+        listaDeEventos.add(new Evento());
+
+        when(this.servicioEventoMock.filtrarEventos(null, "Buenos Aires", "La Plata", "deporte")).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", "La Plata", "deporte");
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+        assertThat(eventos, not(empty()));
+        assertThat(eventos, hasSize(1));
+        verify(this.servicioEventoMock, times(1)).filtrarEventos(null, "Buenos Aires", "La Plata", "deporte");
+        assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
+    }
+
 
 
 

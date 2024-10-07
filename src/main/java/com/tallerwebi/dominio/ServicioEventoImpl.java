@@ -67,9 +67,17 @@ public class ServicioEventoImpl implements ServicioEvento {
                     nombreProvincia != null && !nombreProvincia.isEmpty() &&
                     nombreCiudad != null && !nombreCiudad.isEmpty()) {
 
-                // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYCiudad(nombre, nombreCiudad, categoria);
+                // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaProvinciaYCiudad(nombre,nombreProvincia, nombreCiudad, categoria);
 
-            } else if (nombre != null && !nombre.isEmpty() &&
+            }  else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty() &&
+                    categoria != null && !categoria.isEmpty()) {
+
+                  eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaCiudadYCategoria(nombreCiudad, nombreProvincia, categoria);
+//
+            }
+
+            else if (nombre != null && !nombre.isEmpty() &&
                     categoria != null && !categoria.isEmpty() &&
                     nombreProvincia != null && !nombreProvincia.isEmpty()) {
 
@@ -116,74 +124,6 @@ public class ServicioEventoImpl implements ServicioEvento {
             }
 
             return eventosFiltrados;
-        
-
-
-
-
-
-
-
-
-        /**
-        if(nombre != null && !nombre.isEmpty() &&
-                categoria != null && !categoria.isEmpty() &&
-                nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                nombreCiudad != null && !nombreCiudad.isEmpty()) {
-
-            // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYCiudad(nombre, nombreCiudad, categoria);
-        } else if (nombre != null && !nombre.isEmpty() &&
-                nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                nombreCiudad != null && !nombreCiudad.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYNombre(nombreCiudad, nombre);
-
-        } else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                nombreCiudad != null && !nombreCiudad.isEmpty() &&
-                categoria != null && !categoria.isEmpty()) {
-
-            //  eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYCategoria(nombreCiudad, categoria);
-
-        }else if (nombre != null && !nombre.isEmpty() &&
-                categoria != null && !categoria.isEmpty() &&
-                nombreProvincia != null && !nombreProvincia.isEmpty()) {
-
-            //    eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
-
-        } else if (nombre != null && !nombre.isEmpty() &&
-                nombreProvincia != null && !nombreProvincia.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre(nombreProvincia, nombre);
-
-        } else if (nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                nombreCiudad != null && !nombreCiudad.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
-
-        } else if(nombre != null && !nombre.isEmpty() && categoria != null && !categoria.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreYCategoria(nombre, categoria);
-
-        }else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                categoria != null && !categoria.isEmpty()) {
-
-            // eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYCategoria(nombreProvincia, categoria);
-
-        } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
-
-        } else if (nombre != null && !nombre.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorNombre(nombre);
-
-        } else if (categoria != null && !categoria.isEmpty()) {
-
-            eventosFiltrados = this.repositorioEvento.obtenerEventosPorCategoria(categoria);
-
-        }
-
-        return eventosFiltrados; **/
     }
 
 
