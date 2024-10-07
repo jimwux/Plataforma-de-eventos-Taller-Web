@@ -17,10 +17,13 @@ import java.util.Random;
 public class ServicioEventoImpl implements ServicioEvento {
 
     private RepositorioEvento repositorioEvento;
+    private Random random;
 
     @Autowired
     public ServicioEventoImpl(RepositorioEvento repositorioEvento) {
+
         this.repositorioEvento = repositorioEvento;
+        this.random = new Random();
     }
 
     public List<Evento> obtenerTodosLosEventos() {
@@ -75,7 +78,6 @@ public class ServicioEventoImpl implements ServicioEvento {
     }
 
     public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
-        Random random = new Random();
         if (random.nextBoolean()) {
             return this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
         } else {
