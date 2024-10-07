@@ -113,6 +113,26 @@ public class ControladorEventoTest {
     }
 
     @Test
+    public void debenObtenerseLosEventosCorrespondientesCuandoSeBuscaPorNombreEnElBuscadorYSeSeleccionaUnaCategoria() {
+        List<Evento> listaDeEventos = new ArrayList<>();
+
+        Evento evento = new Evento();
+        evento.setNombre("Fiesta privada");
+        evento.setCategoria("fiesta");
+
+        listaDeEventos.add(evento);
+
+        when(this.servicioEventoMock.filtrarEventos("F", null, null, "fiesta")).thenReturn(listaDeEventos);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("F", null, null, "fiesta");
+
+        List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
+        assertThat(eventos, not(empty()));
+        assertThat(eventos, hasSize(1));
+    }
+
+
+
+    @Test
     public void debenObtenerseLosEventosCorrespondientesCuandoSeIngresanLosParametrosProviciaYCiudad() {
         List<Evento> listaDeEventos = new ArrayList<>();
         listaDeEventos.add(new Evento());
@@ -152,29 +172,7 @@ public class ControladorEventoTest {
     }
 
 
-   // @Test
- //   public void debenRetornarEventosDeConciertoAlPresionarElBotonDeConcierto(){
-   //     List<Evento> listaDeEventos = new ArrayList<>();
 
-     //   Evento evento = new Evento();
-      //  evento.setCategoria("Concierto");
-        //Evento evento2 = new Evento();
-        //evento2.setCategoria("Concierto");
-        //Evento evento3 = new Evento();
-        //evento3.setCategoria("otro");
-
-        //listaDeEventos.add(evento);
-        //listaDeEventos.add(evento2);
-
-
-      //  when(this.servicioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(listaDeEventos);
-       // ModelAndView modelAndView = this.controladorEvento.mostrarEventosFiltradosPorCategoria("Concierto");
-
-        //List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
-
-        //assertThat(eventos, hasSize(2));
-        //assertThat(eventos.get(0).getCategoria(), is(equalToIgnoringCase("concierto")));
-    //}
 
     @Test
     public void debenObtenerseTodosLosEventosOrdenadosPorFecha() {
