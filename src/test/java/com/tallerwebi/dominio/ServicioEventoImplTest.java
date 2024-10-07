@@ -345,6 +345,22 @@ public class ServicioEventoImplTest {
     }
 
 
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreProvinciaCiudadYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        Evento eventoDos = new Evento();
+        List<Evento> eventos = Arrays.asList(evento, eventoDos);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreCategoriaProvinciaYCiudad("Mario Bros", "Jujuy", "San Salvador De Jujuy", "familiar")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Mario Bros", "Jujuy", "San Salvador De Jujuy", "familiar");
+
+        assertThat(eventosFiltrados.size(), equalTo(2));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        assertThat(eventosFiltrados.get(1), equalTo(eventoDos));
+    }
+
+
 
 
 

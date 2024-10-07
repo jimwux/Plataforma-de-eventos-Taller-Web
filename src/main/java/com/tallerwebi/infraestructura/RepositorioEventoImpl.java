@@ -187,4 +187,15 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return query.getResultList();
     }
 
+    @Override
+    public List<Evento> buscarEventosPorNombreCategoriaProvinciaYCiudad(String nombre, String nombreProvincia, String nombreCiudad, String categoria) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.nombre) LIKE lower(:nombre) AND e.ciudad.nombre = :nombreCiudad AND e.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombre",nombre.toLowerCase() + "%");
+        query.setParameter("nombreCiudad", nombreCiudad);
+        query.setParameter("nombreProvincia", nombreProvincia);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
 }
