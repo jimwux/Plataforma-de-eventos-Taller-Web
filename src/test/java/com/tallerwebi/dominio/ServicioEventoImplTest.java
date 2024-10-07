@@ -198,7 +198,7 @@ public class ServicioEventoImplTest {
         assertThat(eventoObtenido, equalTo(evento));
     }
 
-  /**  @Test
+     @Test
     public void dadoQueExistenEventosPodemosObtenerlosPorSuCategoriaConcierto() {
         List<Evento> eventosFiltrados = new ArrayList<>();
 
@@ -215,13 +215,13 @@ public class ServicioEventoImplTest {
        eventosFiltrados.add(eventoDos);
 
         when(this.repositorioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(eventosFiltrados);
-        List<Evento> resultado = this.servicioEvento.obtenerEventosPorCategoria("Concierto");
+        List<Evento> resultado = this.servicioEvento.filtrarEventos(null, null, null, "Concierto");
 
         assertThat(resultado.size(), is(2));
         assertThat(resultado.get(0).getNombre(), equalTo(eventoUno.getNombre()));
         assertThat(resultado.get(1).getNombre(), equalTo(eventoDos.getNombre()));
     }
-**/
+
 
     @Test
     public void dadoQueExistenTresEventosConDistintasFechaPodemosObtenerLosEventosOrdenadosPorFechaDeLaMasCercanaALaMasDistante() {
@@ -296,6 +296,23 @@ public class ServicioEventoImplTest {
 
     }
 
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento); //metemos rapidamente un evento en una lista sin tener que agregar uno por uno
+
+        when(this.repositorioEventoMock.buscarEventosPorProvinciaYCategoria("Cordoba", "concierto")).thenReturn(eventos);
+        // al generar el mockeo de que esta parte RETORNA LA LISTA EVENTOS (con un evento sin datos)
+
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Cordoba", null, "concierto");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        //aca no verificamos sus atributos sino el estado de esa lista que nos llego y si el evento que esta dentro corresponde con el esperado
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(this.repositorioEventoMock).buscarEventosPorProvinciaYCategoria("Cordoba", "concierto");
+    }
 
 
 

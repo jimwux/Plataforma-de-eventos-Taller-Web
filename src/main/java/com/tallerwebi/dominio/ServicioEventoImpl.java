@@ -60,12 +60,95 @@ public class ServicioEventoImpl implements ServicioEvento {
         //nombre si, provincia si, ciudad no, categoria no
         //nombre si, provincia si, ciudad no, categoria si
 
-        //NOMBRE SI -- PROVINCIA SI -- CIUDAD SI -- CATEGORIA NO
-        if (nombre != null && !nombre.isEmpty() &&
+
+            // Primero las condiciones más específicas
+            if (nombre != null && !nombre.isEmpty() &&
+                    categoria != null && !categoria.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty()) {
+
+                // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYCiudad(nombre, nombreCiudad, categoria);
+
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    categoria != null && !categoria.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+                // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
+
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    categoria != null && !categoria.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreYCategoria(nombre, categoria);
+//
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYNombre(nombreCiudad, nombre);
+//
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre(nombreProvincia, nombre);
+
+            } else if (nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
+
+            } else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    categoria != null && !categoria.isEmpty()) {
+
+                 eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYCategoria(nombreProvincia, categoria);
+
+            } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
+
+            } else if (nombre != null && !nombre.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorNombre(nombre);
+
+            } else if (categoria != null && !categoria.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.obtenerEventosPorCategoria(categoria);
+    //
+            }
+
+            return eventosFiltrados;
+        
+
+
+
+
+
+
+
+
+        /**
+        if(nombre != null && !nombre.isEmpty() &&
+                categoria != null && !categoria.isEmpty() &&
+                nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                nombreCiudad != null && !nombreCiudad.isEmpty()) {
+
+            // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYCiudad(nombre, nombreCiudad, categoria);
+        } else if (nombre != null && !nombre.isEmpty() &&
                 nombreProvincia != null && !nombreProvincia.isEmpty() &&
                 nombreCiudad != null && !nombreCiudad.isEmpty()) {
 
             eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYNombre(nombreCiudad, nombre);
+
+        } else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                nombreCiudad != null && !nombreCiudad.isEmpty() &&
+                categoria != null && !categoria.isEmpty()) {
+
+            //  eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYCategoria(nombreCiudad, categoria);
+
+        }else if (nombre != null && !nombre.isEmpty() &&
+                categoria != null && !categoria.isEmpty() &&
+                nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+            //    eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
 
         } else if (nombre != null && !nombre.isEmpty() &&
                 nombreProvincia != null && !nombreProvincia.isEmpty()) {
@@ -81,6 +164,11 @@ public class ServicioEventoImpl implements ServicioEvento {
 
             eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreYCategoria(nombre, categoria);
 
+        }else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                categoria != null && !categoria.isEmpty()) {
+
+            // eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYCategoria(nombreProvincia, categoria);
+
         } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
 
             eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
@@ -93,32 +181,9 @@ public class ServicioEventoImpl implements ServicioEvento {
 
             eventosFiltrados = this.repositorioEvento.obtenerEventosPorCategoria(categoria);
 
-        } else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                categoria != null && !categoria.isEmpty()) {
-
-           // eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYCategoria(nombreProvincia, categoria);
-
-        }else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                nombreCiudad != null && !nombreCiudad.isEmpty() &&
-                categoria != null && !categoria.isEmpty()) {
-
-          //  eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYCategoria(nombreCiudad, categoria);
-
-        }else if (nombre != null && !nombre.isEmpty() &&
-                categoria != null && !categoria.isEmpty() &&
-                nombreProvincia != null && !nombreProvincia.isEmpty()) {
-
-        //    eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
-
-        } else if(nombre != null && !nombre.isEmpty() &&
-                categoria != null && !categoria.isEmpty() &&
-                nombreProvincia != null && !nombreProvincia.isEmpty() &&
-                nombreCiudad != null && !nombreCiudad.isEmpty()) {
-
-           // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYCiudad(nombre, nombreCiudad, categoria);
         }
 
-        return eventosFiltrados;
+        return eventosFiltrados; **/
     }
 
 
