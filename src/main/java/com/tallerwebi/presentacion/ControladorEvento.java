@@ -81,4 +81,15 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
 
+
+    @RequestMapping("/formulario")
+    public ModelAndView mostrarFormulario() {
+        ModelMap modelo = new ModelMap();
+        modelo.put("form", null);
+        return new ModelAndView("formularioPago", modelo);
+    }
+
+
+
+
 }

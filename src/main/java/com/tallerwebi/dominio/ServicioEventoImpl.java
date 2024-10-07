@@ -76,6 +76,7 @@ public class ServicioEventoImpl implements ServicioEvento {
 
     public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
         Random random = new Random();
+        //mensajito SEGUNDO PARAMETRO PARA PODER TESTEAR (opcional)
         if (random.nextBoolean()) {
             return this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
         } else {

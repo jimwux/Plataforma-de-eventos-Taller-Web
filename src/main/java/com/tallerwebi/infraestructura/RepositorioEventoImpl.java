@@ -74,6 +74,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return query.getResultList();
     }
 
+    //cambiar nombre del metodo
     @Override
     public List<Evento> buscarEventosPorNombre(String busqueda) {
         String hql = "FROM Evento WHERE lower(nombre) LIKE :nombre";
@@ -116,7 +117,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     @Override
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         String hql = "FROM Evento WHERE fecha >= :fechaInicio AND fecha <= :fechaFin ORDER BY fecha ASC";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         return query.getResultList();

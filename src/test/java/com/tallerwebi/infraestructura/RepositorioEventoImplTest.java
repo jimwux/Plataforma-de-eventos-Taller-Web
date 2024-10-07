@@ -324,11 +324,11 @@ public class RepositorioEventoImplTest {
 
         return  this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
     }
-
+// test de casos negativos // tener en cuenta si se saca el lower (probar ingresando con todos los casos)
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYTienenUnNombreParticular () {
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYLoQueLlegoPorBusqueda () {
         Ciudad moron = this.creoUnaCiudadYLaGuardo("Morón");
         Ciudad merlo = this.creoUnaCiudadYLaGuardo("Merlo");
 

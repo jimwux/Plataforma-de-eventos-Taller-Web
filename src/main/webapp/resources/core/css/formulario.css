@@ -1,0 +1,112 @@
+body{
+    background: linear-gradient(to right, #18181B, black);
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    color: white;
+
+}
+
+.contenedor{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.datos{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cajaUno{
+    margin: 10px;
+    width: 55%
+}
+
+.cajaDos{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    margin: 10px;
+    width: 35%
+}
+
+h2{
+    padding: 0;
+    margin: 0px 0px 15px 0px;
+}
+
+.check{
+    margin: 5px;
+    margin-top: 10px;
+}
+
+.normas{
+    border: none;
+}
+
+li{
+    padding-bottom: 3px;
+}
+
+
+.contenedorEntrada{
+    margin-bottom: 20px;
+}
+
+.botones{
+    margin: 0;
+    width: 70%;
+    background: linear-gradient(to right, #817878, rgb(106, 106, 106));
+    padding: 1em;
+    border: none;
+    border-radius: 15px;
+}
+
+ol{
+    padding-left: 10px;
+}
+
+.data{
+    border: none;
+    border-radius: 5px;
+    padding: 6px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+.data::placeholder{
+    padding-left: 5px;
+}
+
+
+img{
+    border-radius: 20px;
+    width: 350px;
+    height: 550px;
+}
+
+.mensajeAdv{
+    background-color: rgba(167, 184, 193, 0.39);
+    border-radius: 10px;
+    border: none;
+    font-size: 0.9em;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.mensajeAdv p{
+    padding: 3px;
+}
+
+@media (max-width: 940px) {
+    .contenedor{
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
