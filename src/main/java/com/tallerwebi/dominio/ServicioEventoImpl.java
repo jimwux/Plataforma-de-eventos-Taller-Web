@@ -47,21 +47,8 @@ public class ServicioEventoImpl implements ServicioEvento {
 
     @Override
     public List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad, String categoria) {
-
         List<Evento> eventosFiltrados = new ArrayList<>();
 
-        //nombre si, provincia no, ciudad no, categoria no
-        //nombre si, provincia si, ciudad si, categoria no
-        //nombre si, provincia si, ciudad si, categoria si
-        //nombre si, provincia no, ciudad no, categoria si
-        //nombre no, provincia no, ciudad no, categoria si
-        //nombre no, provincia si, ciudad si, categoria si
-        //nombre no, provincia si, ciudad si, categoria no
-        //nombre si, provincia si, ciudad no, categoria no
-        //nombre si, provincia si, ciudad no, categoria si
-
-
-            // Primero las condiciones más específicas
             if (nombre != null && !nombre.isEmpty() &&
                     categoria != null && !categoria.isEmpty() &&
                     nombreProvincia != null && !nombreProvincia.isEmpty() &&
@@ -81,7 +68,8 @@ public class ServicioEventoImpl implements ServicioEvento {
                     categoria != null && !categoria.isEmpty() &&
                     nombreProvincia != null && !nombreProvincia.isEmpty()) {
 
-                // eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
+                 eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
+//
 
             } else if (nombre != null && !nombre.isEmpty() &&
                     categoria != null && !categoria.isEmpty()) {
