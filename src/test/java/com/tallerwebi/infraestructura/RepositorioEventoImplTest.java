@@ -36,6 +36,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateInfraestructuraTestConfig.class})
@@ -419,6 +420,30 @@ public class RepositorioEventoImplTest {
         assertThat(eventos, equalTo(esperados));
         assertThat(eventos, containsInAnyOrder(evento, eventoTres));
     }
+
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueSePuedeFiltrarPorBusquedaDeNombreDelEventoYPorCategoriaQueAlFiltrarPorAmbosCasosDevuelvaLoPropio(){
+        Evento evento = new Evento();
+        evento.setNombre("Fiesta de Verano");
+        evento.setCategoria("fiesta");
+
+        this.repositorioEvento.guardar(evento);
+
+        Evento evento2 = new Evento();
+        evento2.setNombre("Festival de Invierno");
+        evento2.setCategoria("fiesta");
+
+       this.repositorioEvento.guardar(evento2);
+
+        List<Evento> obtenidos = this.repositorioEvento.buscarEventosPorNombreYCategoria("F", "fiesta");
+
+        assertThat(obtenidos.size(), equalTo(2));
+
+    }
+
 
 
 

@@ -35,4 +35,5 @@ public interface RepositorioEvento {
 
     List<Evento> buscarEventosPorProvinciaYNombre(String nombreProvincia, String busqueda);
 
+    List<Evento> buscarEventosPorNombreYCategoria(String nombre, String categoria);
 }

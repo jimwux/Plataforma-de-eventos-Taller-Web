@@ -149,4 +149,13 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return query.getResultList();
     }
 
+    @Override
+    public List<Evento> buscarEventosPorNombreYCategoria(String nombre, String categoria) {
+        String sentencia = "SELECT e FROM Evento e WHERE lower(e.nombre) LIKE lower(:nombre) AND lower(e.categoria) = lower(:categoria)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia);
+        query.setParameter("nombre",  "%" + nombre.toLowerCase() + "%");
+        query.setParameter("categoria", categoria.toLowerCase());
+        return query.getResultList();
+    }
+
 }
