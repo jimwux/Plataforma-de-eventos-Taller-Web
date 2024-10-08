@@ -1,39 +1,48 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Evento;
-import com.tallerwebi.dominio.ServicioEvento;
-import com.tallerwebi.dominio.ServicioEventoImpl;
+import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ControladorEvento {
 
 private ServicioEvento servicioEvento;
+private ServicioEntrada servicioEntrada;
 
 @Autowired
-public ControladorEvento(ServicioEvento servicioEvento) {
+public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicioEntrada) {
     this.servicioEvento = servicioEvento;
+    this.servicioEntrada = servicioEntrada;
 }
 
     @GetMapping("/eventos")
-    public ModelAndView mostrarEventos(@RequestParam(value = "nombre", required = false) String nombre) {
+    public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
+                                            @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
+                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
 
-        if (nombre == null || nombre.isEmpty()) {
-            eventos = this.servicioEvento.obtenerTodosLosEventos();
+        Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
+                (nombreProvincia == null || nombreProvincia.isEmpty()) &&
+                (nombreCiudad == null || nombreCiudad.isEmpty());
+
+        if (sinFiltros) {
+            eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
         } else {
-            eventos = this.servicioEvento.buscarEventosPorNombre(nombre);
+            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
         }
+
         modelo.put("eventos", eventos);
         return new ModelAndView("eventos", modelo);
     }
@@ -43,6 +52,15 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         Evento eventoBuscado = servicioEvento.obtenerEventoPorId(id);
         ModelMap vistas = new ModelMap();
         vistas.put("vista", eventoBuscado);
+
+        if(eventoBuscado != null) {
+            List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
+            vistas.put("entradas", entradas);
+
+            List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
+            vistas.put("eventosCarrousel", eventosCarrousel);
+        }
+
         return new ModelAndView("vista", vistas);
     }
 
@@ -54,5 +72,13 @@ public ControladorEvento(ServicioEvento servicioEvento) {
         return new ModelAndView("eventos", modelo);
     }
 
+
+    public List<Evento> obtenerEventosOrdenadosPorFecha() {
+        return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
+    }
+
+    public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+        return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
+    }
 
 }

@@ -44,4 +44,13 @@ public class RepositorioEntradaImpl implements RepositorioEntrada {
         return (Entrada) query.getSingleResult();
     }
 
+    @Override
+    public List<Entrada> obtenerEntradasDeUnEvento(Long id){
+        String sentencia_sql = "SELECT e FROM Entrada e JOIN Evento ev ON e.evento.id = ev.id WHERE ev.id = :id";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
+        query.setParameter("id", id);
+        return query.getResultList();
+    }
+
+
 }

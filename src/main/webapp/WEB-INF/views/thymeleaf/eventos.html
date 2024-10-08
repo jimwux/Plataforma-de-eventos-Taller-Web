@@ -3,28 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Eventos</title>
-    <!--<link rel="stylesheet" th:href="@{../../../resources/core/css/eventos.css}">-->
+    <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
     <link rel="stylesheet" th:href="@{/css/eventos.css}"/>
 </head>
 <body>
 
-    <nav>
-        <h1>Equipo mokito</h1>
-        <ul class="nav-bar">
-            <li><a href="">Eventos</a></li>
-            <li><a href="">Contacto</a></li>
-            <li><a href="">Usuario</a></li>
+    <nav id="nav-bar">
+        <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+        <ul id="botones-nav">
+            <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
+            <li class="boton-nav"><a href="">Contacto</a></li>
+            <li class="boton-nav"><a href="">Usuario</a></li>
         </ul>
     </nav>
 
     <form action="/equipomokito/eventos" method="get" class="barrita">
         <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
-        <select>
-            <option>Provincia</option>
-        </select>
-        <select>
-            <option>Ciudad</option>
-        </select>
+
+            <select id="provincia" name="provinciaNombre">
+                <option value="">Seleccione una provincia</option>
+                <option th:each="provincia : ${provincias}"
+                        th:value="${provincia.nombre}"
+                        th:text="${provincia.nombre}">Provincia</option>
+            </select>
+
+            <select id="ciudad" name="ciudadNombre">
+                <option value="">Seleccione una ciudad</option>
+            </select>
         <button>Buscar</button>
     </form>
 
@@ -68,5 +73,10 @@
         </div>
     </div>
 
+    <footer class="pie-de-pagina">
+        <p>© 2024 Equipo Mokito</p>
+    </footer>
+
+    <script th:src="@{js/eventos.js}"></script>
 </body>
 </html>

@@ -1,7 +1,9 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.config.HibernateConfig;
+import com.tallerwebi.dominio.Ciudad;
 import com.tallerwebi.dominio.Evento;
+import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioEvento;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hamcrest.Matchers;
@@ -206,6 +208,191 @@ public class RepositorioEventoImplTest {
         assertThat(eventoObtenido, equalTo(evento));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosOrdenadosPorFechaEntoncesEstanOrdenadosCorrectamente() {
+
+        seCreanYGuardanTresEventosConDistintasFechas();
+
+        List<Evento> eventosOrdenados = seObtienenLosEventosOrdenadosPorFecha();
+
+        seVerificaElOrdenDeLosMismosComparandoSusFechas(eventosOrdenados);
+
+
+    }
+
+    private void seVerificaElOrdenDeLosMismosComparandoSusFechas(List<Evento> eventosOrdenados) {
+        assertThat(eventosOrdenados.size(), equalTo(3));
+        assertThat(eventosOrdenados.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
+        assertThat(eventosOrdenados.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
+        assertThat(eventosOrdenados.get(2).getFecha(), equalTo(LocalDate.of(2025, 1, 15)));
+    }
+
+    private List<Evento> seObtienenLosEventosOrdenadosPorFecha() {
+        return  this.repositorioEvento.obtenerEventosOrdenadosPorFecha();
+    }
+
+    private void seCreanYGuardanTresEventosConDistintasFechas() {
+
+        Evento evento1 = new Evento("Fiesta de Verano", LocalDate.of(2025, 1, 15), "Parque de la Ciudad");
+        Evento evento2 = new Evento("Festival de Invierno", LocalDate.of(2024, 12, 25), "CABA");
+        Evento evento3 = new Evento("Primavera Sound", LocalDate.of(2024, 11, 16), "Parque Central");
+
+
+        this.repositorioEvento.guardar(evento1);
+        this.repositorioEvento.guardar(evento2);
+        this.repositorioEvento.guardar(evento3);
+    }
+  
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudad () {
+        Ciudad moron = this.creoUnaCiudadYLaGuardo("Morón");
+        Ciudad merlo = this.creoUnaCiudadYLaGuardo("Merlo");
+
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Lollapalooza", merlo);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", moron);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorCiudad("Morón");
+
+        List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
+        assertThat(eventosEncontrados.size(), equalTo(2));
+
+        // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperados) {
+            assertThat(eventosEncontrados.get(iterador), equalTo(evento));
+            iterador++;
+        }
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaProvincia () {
+        Provincia buenosAires = this.creoUnaProvinciaYLaGuardo("Buenos Aires");
+        Provincia cordoba = this.creoUnaProvinciaYLaGuardo("Córdoba");
+
+        Ciudad moron = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Morón", buenosAires);
+        Ciudad merlo = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Merlo", buenosAires);
+        Ciudad villaCarlosPaz = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Villa Carlos Paz", cordoba);
+
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", villaCarlosPaz);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", merlo);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvincia("Buenos Aires");
+
+        List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
+        assertThat(eventosEncontrados.size(), equalTo(2));
+
+        // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperados) {
+            assertThat(eventosEncontrados.get(iterador), equalTo(evento));
+            iterador++;
+        }
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosDentroDeUnRangoDeFechasEntoncesTengoUnaListaDeEstas() {
+
+        seCreanYGuardanTresEventosConDistintasFechas();
+
+        List<Evento> eventosEnElRango = seObtienenLosEventosDentroDeUnRangoDeFechas();
+
+        seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(eventosEnElRango);
+
+
+    }
+
+    private void seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(List<Evento> eventosEnElRango) {
+        assertThat(eventosEnElRango.size(), equalTo(2));
+        assertThat(eventosEnElRango.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
+        assertThat(eventosEnElRango.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
+    }
+
+    private List<Evento> seObtienenLosEventosDentroDeUnRangoDeFechas() {
+        LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
+        LocalDate fechaFin = LocalDate.of(2024, 12, 31);
+
+        return  this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYTienenUnNombreParticular () {
+        Ciudad moron = this.creoUnaCiudadYLaGuardo("Morón");
+        Ciudad merlo = this.creoUnaCiudadYLaGuardo("Merlo");
+
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", merlo);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", moron);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorCiudadYNombre("Morón", "Aventuras Perrunas");
+
+        assertThat(eventosEncontrados, hasSize(1));
+        assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaProvinciaYTienenUnNombreParticular () {
+        Provincia buenosAires = this.creoUnaProvinciaYLaGuardo("Buenos Aires");
+        Provincia cordoba = this.creoUnaProvinciaYLaGuardo("Córdoba");
+
+        Ciudad moron = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Morón", buenosAires);
+        Ciudad merlo = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Merlo", buenosAires);
+        Ciudad villaCarlosPaz = this.creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo("Villa Carlos Paz", cordoba);
+
+        Evento eventoUno = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", moron);
+        Evento eventoDos = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Parense de Manos", villaCarlosPaz);
+        Evento eventoTres = this.creoUnEventoLeAsignoUnaCiudadYLoGuardo("Aventuras Perrunas", merlo);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre("Buenos Aires", "Parense de Manos");
+
+        assertThat(eventosEncontrados, hasSize(1));
+        assertThat(eventosEncontrados.get(0), equalTo(eventoUno));
+    }
+
+    private Provincia creoUnaProvinciaYLaGuardo (String nombre) {
+        Provincia provincia = new Provincia();
+        provincia.setNombre(nombre);
+        this.sessionFactory.getCurrentSession().save(provincia);
+        return provincia;
+    }
+
+    private Ciudad creoUnaCiudadYLaGuardo (String nombre) {
+        Ciudad ciudad = new Ciudad();
+        ciudad.setNombre(nombre);
+        this.sessionFactory.getCurrentSession().save(ciudad);
+        return ciudad;
+    }
+
+    private Ciudad creoUnaCiudadLeAsignoUnaProvinciaYLaGuardo (String nombre, Provincia provincia) {
+        Ciudad ciudad = new Ciudad();
+        ciudad.setNombre(nombre);
+        ciudad.setProvincia(provincia);
+        this.sessionFactory.getCurrentSession().save(ciudad);
+        return ciudad;
+    }
+
+    private Evento creoUnEventoLeAsignoUnaCiudadYLoGuardo (String nombre, Ciudad ciudad) {
+        Evento evento = new Evento();
+        evento.setNombre(nombre);
+        evento.setCiudad(ciudad);
+        this.repositorioEvento.guardar(evento);
+        return evento;
+    }
 
     @Test
     @Transactional

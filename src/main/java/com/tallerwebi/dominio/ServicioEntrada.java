@@ -6,4 +6,6 @@ public interface ServicioEntrada {
     List<Entrada> obtenerTodasLasEntradas();
 
     Entrada obtenerEntradaPorId(Long id);
+
+    List<Entrada> obtenerEntradasDeUnEvento(Long id);
 }

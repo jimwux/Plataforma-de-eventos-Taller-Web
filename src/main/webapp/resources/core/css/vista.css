@@ -3,35 +3,217 @@ body{
     background: linear-gradient(to right, #18181B, black);
     margin: 0;
     padding : 0;
+    color: white;
 }
 
-h1{
-    text-align: center;
-    background: linear-gradient(dimgray, white) ;
-    margin:0;
-    border-radius: 0 0 10px 10px;
-    padding: 20px;
+a {
+    text-decoration: none;
 }
 
-.detalles{
-   color: #B1B1BB;
-    margin-top:80px;
-    display:flex;
+#imagenEvento{
+    border-radius: 20px;
+    width: 60vh;
+}
+
+#logoInstagram{
+    height: 50px;
+    width: 50px;
+    color: white
+}
+
+.contenedor {
+    display: flex;
     justify-content: center;
-    gap: 30px;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
 }
 
-.extras{
+#datos-evento {
+    width: 80%;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    gap: 4em;
+}
+
+#nombre-imagen-evento {
+    background-color: grey;
+    border-radius:2em;
+    padding:2em;
+}
+
+#nombre-imagen-evento h2 {
+    margin: 0;
+}
+
+#info-evento {
+    width: 74vh;
+}
+
+#label-carrito {
+    margin-bottom: 1em;
+}
+
+#label-carrito, .entrada{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.entrada {
+    align-items: center;
+    padding: 1.2em;
+    background-color: lightgrey;
+    border-radius: 1em;
+    margin: 1.2em;
+    color: black;
+}
+
+.tipo-entrada {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.cantidad select{
+    margin-right: 1em;
+    padding: 0.8em;
+    width: 8em;
+    border-radius: 0.6em;
+    border:none;
+}
+
+.datos-entrada {
+    margin: 0.2em;
+}
+
+#info-ubicacion-evento {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: end;
+    padding: 1.3em;
+    background-color:lightgrey;
+    margin-bottom: 1.5em;
+    border-radius: 1em;
+    color: black;
 }
 
-.nombre{
+#info-ubicacion-evento p {
+    margin: 0.2em;
+    margin-right: 0.6em;
+}
+
+#lugar-evento {
+    font-size: 1.5em;
+    text-decoration: none;
+    color: #3c474c;
+    margin-bottom: 0.2em;
     font-weight: 600;
 }
 
-img{
-    border-radius: 20px;
-    width: 340px;
+#lugar-evento:hover {
+    color: black;
+
 }
+
+#direccion-evento {
+    font-size: 1.2em;
+}
+
+#boton-comprar {
+    width: 100%;
+    padding: 0.8em;
+    font-size: 1.2em;
+    border-radius: 1em;
+    border:none;
+    background-color: grey;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+#boton-comprar:hover {
+    background-color: dimgrey;
+    transform: scale(1.05);
+}
+
+#total-compra-entradas {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 11vh;
+}
+
+#contenedor_entradas {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 43vh;
+    overflow-y: auto; /* Habilita el scroll vertical */
+}
+
+#acerca-del-evento {
+    width: 71%;
+    margin-top: 2em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2em;
+    margin: 2em;
+}
+
+#enlace-instagram {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    gap: 1em;
+    width: 30vh;
+}
+
+#fecha-evento {
+    font-size: 1.2em;
+}
+
+.pie-de-pagina {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.evento img{
+    width: 300px;
+    border-radius: 1em;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.evento img:hover {
+    background-color: dimgrey;
+    transform: scale(1.05);
+}
+
+.carrousel-eventos {
+    gap: 3em;
+    margin: 2em;
+    margin-bottom: 3em;
+}
+
+#mas-eventos {
+    display: flex;
+    flex-direction: column;
+    width: 72%;
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+#enlace-evento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
