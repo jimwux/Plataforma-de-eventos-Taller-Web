@@ -75,7 +75,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     }
 
     @Override
-    public List<Evento> buscarEventosPorNombre(String busqueda) {
+    public List<Evento> buscarEventosPorTextoDelBuscador(String busqueda) {
         String hql = "FROM Evento WHERE lower(nombre) LIKE :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", busqueda + "%");  // Concatenamos el valor del nombre con "%"

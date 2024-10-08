@@ -59,7 +59,7 @@ public class ServicioEventoImpl implements ServicioEvento {
         } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
             eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
         } else if (nombre != null && !nombre.isEmpty()) {
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorNombre(nombre);
+            eventosFiltrados = this.repositorioEvento.buscarEventosPorTextoDelBuscador(nombre);
         }
 
         return eventosFiltrados;

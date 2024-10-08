@@ -121,13 +121,13 @@ public class ServicioEventoImplTest {
         eventoDos.setNombre("CreativeFest");
         List<Evento> eventos = Arrays.asList(eventoUno, eventoDos);
 
-        when(this.repositorioEventoMock.buscarEventosPorNombre("crea")).thenReturn(eventos);
+        when(this.repositorioEventoMock.buscarEventosPorTextoDelBuscador("crea")).thenReturn(eventos);
         List<Evento> resultados = this.servicioEvento.filtrarEventos("crea", null,null);
 
         assertThat(resultados.size(), is(2));
         assertThat(resultados.get(0).getNombre(), equalTo(eventoUno.getNombre()));
         assertThat(resultados.get(1).getNombre(), equalTo(eventoDos.getNombre()));
-        verify(this.repositorioEventoMock).buscarEventosPorNombre("crea");
+        verify(this.repositorioEventoMock).buscarEventosPorTextoDelBuscador("crea");
     }
 
     @Test

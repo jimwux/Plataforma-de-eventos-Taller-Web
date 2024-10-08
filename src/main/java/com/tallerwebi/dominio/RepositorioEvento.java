@@ -17,7 +17,7 @@ public interface RepositorioEvento {
 
     List<Evento> obtenerLosEventosPorFecha(LocalDate of);
 
-    List<Evento> buscarEventosPorNombre(String busqueda);
+    List<Evento> buscarEventosPorTextoDelBuscador(String busqueda);
 
     Evento obtenerEventoPorId(Long id);
 

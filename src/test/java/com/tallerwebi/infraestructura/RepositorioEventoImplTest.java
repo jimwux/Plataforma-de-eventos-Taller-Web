@@ -1,29 +1,23 @@
 package com.tallerwebi.infraestructura;
 
-import com.tallerwebi.config.HibernateConfig;
 import com.tallerwebi.dominio.Ciudad;
 import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioEvento;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
-import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.servlet.ModelAndView;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
@@ -180,7 +174,7 @@ public class RepositorioEventoImplTest {
         this.repositorioEvento.guardar(eventoTres);
 
         String busqueda = "cre";
-        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorNombre(busqueda);
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorTextoDelBuscador(busqueda);
 
         List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
         assertThat(eventosEncontrados.size(), equalTo(2));
