@@ -8,75 +8,65 @@
 </head>
 <body>
 
-    <nav id="nav-bar">
-        <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
-        <ul id="botones-nav">
-            <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
-            <li class="boton-nav"><a href="">Contacto</a></li>
-            <li class="boton-nav"><a href="">Usuario</a></li>
-        </ul>
-    </nav>
+<nav id="nav-bar">
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+    <ul id="botones-nav">
+        <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
+        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav"><a href="">Usuario</a></li>
+    </ul>
+</nav>
 
-    <form action="/equipomokito/eventos" method="get" class="barrita">
-        <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
+<form action="/equipomokito/eventos" method="get" class="barrita">
+    <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
 
-            <select id="provincia" name="provinciaNombre">
-                <option value="">Seleccione una provincia</option>
-                <option th:each="provincia : ${provincias}"
-                        th:value="${provincia.nombre}"
-                        th:text="${provincia.nombre}">Provincia</option>
-            </select>
+    <select id="provincia" name="provinciaNombre">
+        <option value="">Seleccione una provincia</option>
+        <option th:each="provincia : ${provincias}"
+                th:value="${provincia.nombre}"
+                th:text="${provincia.nombre}">Provincia</option>
+    </select>
 
-            <select id="ciudad" name="ciudadNombre">
-                <option value="">Seleccione una ciudad</option>
-            </select>
-        <button>Buscar</button>
-    </form>
+    <select id="ciudad" name="ciudadNombre">
+        <option value="">Seleccione una ciudad</option>
+    </select>
+    <button>Buscar</button>
+</form>
 
 
-    <div class="botones_categorias">
-        <a href="/equipomokito/eventos/categoria?categoria=concierto">
-            <button>Conciertos</button>
-        </a>
-        <a href="/equipomokito/eventos/categoria?categoria=teatro">
-            <button>Teatro</button>
-        </a>
-        <a href="/equipomokito/eventos/categoria?categoria=fiesta">
-            <button>Fiestas</button>
-        </a>
-        <a href="/equipomokito/eventos/categoria?categoria=convencion">
-            <button>Convenciones</button>
-        </a>
-        <a href="/equipomokito/eventos/categoria?categoria=deporte">
-            <button>Deportes</button>
-        </a>
-        <a href="/equipomokito/eventos/categoria?categoria=familia">
-            <button>Familia</button>
-        </a>
-        <a href="/equipomokito/eventos/categoria?categoria=otro">
-            <button>Otros</button>
-        </a>
-    </div>
+<nav class="botones_categorias">
+    <a href="/equipomokito/eventos/categoria?categoria=concierto"><button>Conciertos</button></a>
+    <a href="/equipomokito/eventos/categoria?categoria=teatro"><button>Teatro</button></a>
+    <a href="/equipomokito/eventos/categoria?categoria=fiesta"><button>Fiestas</button></a>
+    <a href="/equipomokito/eventos/categoria?categoria=convencion"><button>Convenciones</button></a>
+    <a href="/equipomokito/eventos/categoria?categoria=deporte"><button>Deportes</button></a>
+    <a href="/equipomokito/eventos/categoria?categoria=familia"><button>Familia</button></a>
+    <a href="/equipomokito/eventos/categoria?categoria=otro"><button>Otros</button></a>
+</nav>
 
-    <h2>Nuestros eventos</h2>
-    <div class="contenedor-evento">
-        <div class="eventos">
-            <!-- th:each sirve para iterar -->
-            <div th:each="evento : ${eventos}" class="evento">
-                <a th:href="@{/eventos/{id}(id=${evento.id})}">
-                    <h3 th:text="${evento.nombre}"></h3>
-                    <p th:text="${evento.lugar}"></p>
-                    <p th:text="${evento.fecha}"></p>
-                    <img th:src="${evento.imagenUrl}" alt="img">
-                </a>
+<main>
+    <section>
+        <h2>Nuestros eventos</h2>
+        <div class="contenedor-evento">
+            <div class="eventos">
+                <!-- Cada evento es un artículo -->
+                <article th:each="evento : ${eventos}" class="evento">
+                    <a th:href="@{/eventos/{id}(id=${evento.id})}">
+                        <h3 th:text="${evento.nombre}"></h3>
+                        <p th:text="${evento.lugar}"></p>
+                        <p th:text="${evento.fecha}"></p>
+                        <img th:src="${evento.imagenUrl}" alt="img">
+                    </a>
+                </article>
             </div>
         </div>
-    </div>
+    </section>
+</main>
 
-    <footer class="pie-de-pagina">
-        <p>© 2024 Equipo Mokito</p>
-    </footer>
+<footer class="pie-de-pagina">
+    <p>© 2024 Equipo Mokito</p>
+</footer>
 
-    <script th:src="@{js/eventos.js}"></script>
+<script th:src="@{js/eventos.js}"></script>
 </body>
 </html>
