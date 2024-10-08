@@ -79,7 +79,8 @@
 
 <footer class="pie-de-pagina">
     <section id="mas-eventos">
-        <h2 id="titulo-mas-evento">Más eventos</h2>
+     <!--   <h2 id="titulo-mas-evento">Más eventos</h2> -->
+        <h2 th:text="${mensajeCarrusel}">Mensaje del carrusel</h2>
         <article class="carrousel-eventos">
             <div th:each="evento : ${eventosCarrousel}" class="evento">
                 <a th:href="@{/eventos/{id}(id=${evento.id})}" id="enlace-evento">

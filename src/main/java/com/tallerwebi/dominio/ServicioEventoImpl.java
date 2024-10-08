@@ -86,7 +86,17 @@ public class ServicioEventoImpl implements ServicioEvento {
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
     }
-
+    public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
+        Boolean tieneMismaCiudad = true;
+        for (Evento evento : eventosAleatorios){
+            if(!evento.getCiudad().getNombre().equals(nombreCiudad)){tieneMismaCiudad = false;}
+        }
+        if (tieneMismaCiudad) {
+            return "Mas eventos en la ciudad de " + nombreCiudad;
+        } else {
+            return "Mas eventos en los proximos meses";
+        }
+    }
 }
 
 

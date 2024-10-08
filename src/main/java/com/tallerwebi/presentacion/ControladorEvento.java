@@ -59,6 +59,8 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
+            String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());
+            vistas.put("mensajeCarrusel", mensajeCarrusel);
         }
 
         return new ModelAndView("vista", vistas);

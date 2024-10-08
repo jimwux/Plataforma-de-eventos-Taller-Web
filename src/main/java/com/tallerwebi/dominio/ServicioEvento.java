@@ -20,4 +20,6 @@ public interface ServicioEvento {
     List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad);
 
     List<Evento> obtenerEventosAleatorios(String nombreCiudad);
+
+    String obtenerMensajeSobreEventosAleatorios(List<Evento> eventosAleatorios,String nombreCiudad);
 }
