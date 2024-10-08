@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,19 +32,28 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
                                             @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
                                             @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
         ModelMap modelo = new ModelMap();
-        List<Evento> eventos;
+        String mensajeException = "";
+        try{
 
-        Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
-                (nombreProvincia == null || nombreProvincia.isEmpty()) &&
-                (nombreCiudad == null || nombreCiudad.isEmpty());
 
-        if (sinFiltros) {
-            eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
-        } else {
-            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
+            List<Evento> eventos;
+
+            Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
+                    (nombreProvincia == null || nombreProvincia.isEmpty()) &&
+                    (nombreCiudad == null || nombreCiudad.isEmpty());
+
+            if (sinFiltros) {
+                eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
+            } else {
+                eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
+            }
+
+            modelo.put("eventos", eventos);
+            return new ModelAndView("eventos", modelo);
+        } catch (EventoNoEncontradoException e) {
+            mensajeException = e.getMensaje();
         }
-
-        modelo.put("eventos", eventos);
+        modelo.put("mensaje", mensajeException);
         return new ModelAndView("eventos", modelo);
     }
 
@@ -66,13 +76,20 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
     @GetMapping("/eventos/categoria")
     public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
-        List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
         ModelMap modelo = new ModelMap();
-        modelo.put("eventos", eventosBuscados);
+        String mensajeException = "";
+        try{
+            List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
+            modelo.put("eventos", eventosBuscados);
+            return new ModelAndView("eventos", modelo);
+        } catch (EventoNoEncontradoException e) {
+            mensajeException = e.getMensaje();
+        }
+        modelo.put("mensaje", mensajeException);
         return new ModelAndView("eventos", modelo);
     }
 
-
+// Que carajos hice aca ...
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }
