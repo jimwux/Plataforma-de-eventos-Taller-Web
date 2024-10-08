@@ -327,4 +327,46 @@ public class ServicioEventoImplTest {
 
     }
 
+    @Test
+    public void dadaUnaListaDeEventosQueTienenUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente(){
+        String nombreCiudad = "Morón";
+
+        Ciudad moron = new Ciudad();
+        moron.setNombre(nombreCiudad);
+
+        Evento evento1 = new Evento();
+        evento1.setCiudad(moron);
+        Evento evento2 = new Evento();
+        evento2.setCiudad(moron);
+
+        List<Evento> eventosDados = List.of(evento1,evento2);
+        String mensajeEsperado = "Mas eventos en la ciudad de " + nombreCiudad;
+        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosDados,nombreCiudad);
+
+        assertThat(mensajeObtenido, equalTo(mensajeEsperado));
+
+    }
+    @Test
+    public void dadaUnaListaDeEventosQueTienenNoUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente(){
+        String nombreCiudad = "Morón";
+        String nombreCiudad2 = "Merlo";
+
+        Ciudad moron = new Ciudad();
+        moron.setNombre(nombreCiudad);
+        Ciudad merlo = new Ciudad();
+        merlo.setNombre(nombreCiudad2);
+
+        Evento evento1 = new Evento();
+        evento1.setCiudad(moron);
+        Evento evento2 = new Evento();
+        evento2.setCiudad(merlo);
+
+        List<Evento> eventosDados = List.of(evento1,evento2);
+        String mensajeEsperado = "Mas eventos en los proximos meses";
+        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosDados,nombreCiudad);
+
+        assertThat(mensajeObtenido, equalTo(mensajeEsperado));
+
+    }
+
 }
