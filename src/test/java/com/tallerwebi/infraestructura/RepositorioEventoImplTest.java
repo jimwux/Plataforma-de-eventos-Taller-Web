@@ -60,11 +60,13 @@ public class RepositorioEventoImplTest {
 
         String hql = "FROM Evento WHERE nombre = :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre", "Creamfields 2024");
+        query.setParameter("nombre", "creamfields 2024");
         Evento eventoEncontrado = (Evento) query.getSingleResult();
 
         assertThat(eventoEncontrado, equalTo(evento));
     }
+
+
 
     @Test
     @Transactional
@@ -186,6 +188,30 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados.size(), equalTo(2));
 
         // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperados) {
+            assertThat(eventosEncontrados.get(iterador), equalTo(evento));
+            iterador++;
+        }
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerAquellosQueCorrespondenAMiBusquedaIgnorandoMayusculasYMinusculas() {
+        Evento eventoUno = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
+        this.repositorioEvento.guardar(eventoUno);
+        Evento eventoDos = new Evento("Lollapalooza", LocalDate.of(2025, 03, 21), "Hipodromo de San Isidro");
+        this.repositorioEvento.guardar(eventoDos);
+        Evento eventoTres = new Evento("Creative Party", LocalDate.of(2025, 05, 15), "Hipodromo de San Isidro");
+        this.repositorioEvento.guardar(eventoTres);
+
+        String busqueda = "CRE";
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorNombre(busqueda);
+
+        List<Evento> eventosEsperados = Arrays.asList(eventoUno, eventoTres);
+        assertThat(eventosEncontrados.size(), equalTo(2));
+
         int iterador = 0;
         for (Evento evento : eventosEsperados) {
             assertThat(eventosEncontrados.get(iterador), equalTo(evento));
