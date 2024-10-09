@@ -21,5 +21,7 @@ public interface ServicioEvento {
 
     List<Evento> obtenerEventosAleatorios(String nombreCiudad);
 
+    List<Evento> obtenerEventos(String nombreCiudad, boolean random);
+
     String obtenerMensajeSobreEventosAleatorios(List<Evento> eventosAleatorios,String nombreCiudad);
 }

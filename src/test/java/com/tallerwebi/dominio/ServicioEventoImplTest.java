@@ -284,10 +284,12 @@ public class ServicioEventoImplTest {
         Random randomMock = mock(Random.class);
         List<Evento> eventosEsperadosMock = List.of(eventoMock1, eventoMock2);
 
-        when(randomMock.nextBoolean()).thenReturn(true);
-        when(this.repositorioEventoMock.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin)).thenReturn(eventosEsperadosMock);
+        when(randomMock.nextBoolean()).thenReturn(false);
+        when(this.repositorioEventoMock.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin)).thenReturn(eventosEsperadosMock);
+        boolean valorRandom = randomMock.nextBoolean();
 
-        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventosAleatorios("Morón");
+
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventos("Morón", valorRandom);
 
         verify(this.repositorioEventoMock, times(1)).obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
         assertThat(eventosObtenidos.size(), equalTo(2));
@@ -311,10 +313,11 @@ public class ServicioEventoImplTest {
         Random randomMock = mock(Random.class);
         List<Evento> eventosEsperadosMock = List.of(eventoMock3);
 
-        when(randomMock.nextBoolean()).thenReturn(false);
+        when(randomMock.nextBoolean()).thenReturn(true);
         when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventosEsperadosMock);
+        boolean valorRandom = randomMock.nextBoolean();
 
-        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventosAleatorios("Morón");
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventos("Morón", valorRandom);
 
         verify(this.repositorioEventoMock, times(1)).buscarEventosPorCiudad("Morón");
         assertThat(eventosObtenidos.size(), equalTo(1));

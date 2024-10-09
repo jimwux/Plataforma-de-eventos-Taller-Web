@@ -76,15 +76,17 @@ public class ServicioEventoImpl implements ServicioEvento {
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
     }
-
-    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
-        if (random.nextBoolean()) {
+    public List<Evento> obtenerEventos(String nombreCiudad, boolean opcion) {
+        if (opcion) {
             return this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
         } else {
             LocalDate hoy = LocalDate.now();
             LocalDate dosMesesDespues = hoy.plusMonths(2);
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
+    }
+    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
+        return obtenerEventos(nombreCiudad, this.random.nextBoolean());
     }
     public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
         Boolean tieneMismaCiudad = true;
