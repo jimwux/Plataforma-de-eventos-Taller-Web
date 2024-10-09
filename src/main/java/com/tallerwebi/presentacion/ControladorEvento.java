@@ -30,23 +30,26 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     @GetMapping("/eventos")
     public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
                                             @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
-                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
+                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
+                                            @RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
         String mensajeException = "";
         try{
 
-
             List<Evento> eventos;
 
-            Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
-                    (nombreProvincia == null || nombreProvincia.isEmpty()) &&
-                    (nombreCiudad == null || nombreCiudad.isEmpty());
 
-            if (sinFiltros) {
-                eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
-            } else {
-                eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
-            }
+        Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
+                (nombreProvincia == null || nombreProvincia.isEmpty()) &&
+                (nombreCiudad == null || nombreCiudad.isEmpty()) &&
+                (categoria == null || categoria.isEmpty());
+
+        if (sinFiltros) {
+            eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
+        } else {
+            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad, categoria);
+        }
+
 
             modelo.put("eventos", eventos);
             return new ModelAndView("eventos", modelo);
@@ -69,6 +72,8 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
+            String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());
+            vistas.put("mensajeCarrusel", mensajeCarrusel);
         }
 
         return new ModelAndView("vista", vistas);
@@ -89,7 +94,7 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         return new ModelAndView("eventos", modelo);
     }
 
-// Que carajos hice aca ...
+
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }
@@ -97,5 +102,9 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
+
+
+
+
 
 }

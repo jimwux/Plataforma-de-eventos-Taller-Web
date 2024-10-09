@@ -37,6 +37,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {HibernateInfraestructuraTestConfig.class})
@@ -379,6 +380,7 @@ public class RepositorioEventoImplTest {
 
         return  this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
     }
+
     @Test
     @Transactional
     @Rollback
@@ -395,7 +397,7 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
-    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYTienenUnNombreParticular () {
+    public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerLosQuePertenecenAUnaCiudadYLoQueLlegoPorBusqueda () {
         Ciudad moron = this.creoUnaCiudadYLaGuardo("Morón");
         Ciudad merlo = this.creoUnaCiudadYLaGuardo("Merlo");
 
@@ -512,6 +514,248 @@ public class RepositorioEventoImplTest {
             this.repositorioEvento.obtenerEventosPorCategoria("concierto");
         });
     }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueSePuedeFiltrarPorBusquedaDeNombreDelEventoYPorCategoriaQueAlFiltrarPorAmbosCasosDevuelvaLoPropio(){
+        Evento evento = new Evento();
+        evento.setNombre("Fiesta de Verano");
+        evento.setCategoria("fiesta");
+
+        this.repositorioEvento.guardar(evento);
+
+        Evento evento2 = new Evento();
+        evento2.setNombre("Festival de Invierno");
+        evento2.setCategoria("fiesta");
+
+       this.repositorioEvento.guardar(evento2);
+
+        List<Evento> obtenidos = this.repositorioEvento.buscarEventosPorNombreYCategoria("F", "fiesta");
+
+        assertThat(obtenidos.size(), equalTo(2));
+
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExistenEventosObtenerAquellosQueSeanDeLaProvinciaDeBuenosAiresYTenganLaCategoriaFiesta() {
+        Provincia buenosAires = new Provincia();
+        buenosAires.setNombre("Buenos Aires");
+        this.sessionFactory.getCurrentSession().save(buenosAires);
+
+        Provincia cordoba = new Provincia();
+        cordoba.setNombre("Cordoba");
+        this.sessionFactory.getCurrentSession().save(cordoba);
+
+        Ciudad laMatanza = new Ciudad();
+        laMatanza.setNombre("La Matanza");
+        laMatanza.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(laMatanza);
+
+        Ciudad laPaz = new Ciudad();
+        laPaz.setNombre("La Paz");
+        laPaz.setProvincia(cordoba);
+        this.sessionFactory.getCurrentSession().save(laPaz);
+
+        Evento evento = new Evento();
+        evento.setNombre("Tropitango");
+        evento.setCiudad(laMatanza);
+        evento.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(evento);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Barnie");
+        eventoDos.setCiudad(laMatanza);
+        eventoDos.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setNombre("Panam");
+        eventoTres.setCiudad(laPaz);
+        eventoTres.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(eventoTres);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvinciaYCategoria("Buenos Aires", "fiesta");
+
+        assertThat(eventosEncontrados.size(), equalTo(2));
+        assertThat(eventosEncontrados.get(0), equalTo(evento));
+        assertThat(eventosEncontrados.get(1), equalTo(eventoDos));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExistenEventosObtenerAquellosQueSeanDeProvinciaDeCordobaDeLaCiudadDeLaPazYTenganLaCategoriaFiesta() {
+        Provincia buenosAires = new Provincia();
+        buenosAires.setNombre("Buenos Aires");
+        this.sessionFactory.getCurrentSession().save(buenosAires);
+
+        Provincia cordoba = new Provincia();
+        cordoba.setNombre("Cordoba");
+        this.sessionFactory.getCurrentSession().save(cordoba);
+
+        Ciudad laMatanza = new Ciudad();
+        laMatanza.setNombre("La Matanza");
+        laMatanza.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(laMatanza);
+
+        Ciudad laPaz = new Ciudad();
+        laPaz.setNombre("La Paz");
+        laPaz.setProvincia(cordoba);
+        this.sessionFactory.getCurrentSession().save(laPaz);
+
+        Evento evento = new Evento();
+        evento.setNombre("Tropitango");
+        evento.setCiudad(laMatanza);
+        evento.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(evento);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Barnie");
+        eventoDos.setCiudad(laMatanza);
+        eventoDos.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setNombre("Panam");
+        eventoTres.setCiudad(laPaz);
+        eventoTres.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(eventoTres);
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorProvinciaCiudadYCategoria("La Paz","Cordoba", "fiesta");
+
+        assertThat(eventosEncontrados.size(), equalTo(1));
+        assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueExistenEventosQueSePuedanBuscarPorNombreEnElBuscadorProvinciaYCategoria() {
+        Provincia buenosAires = new Provincia();
+        buenosAires.setNombre("Buenos Aires");
+        this.sessionFactory.getCurrentSession().save(buenosAires);
+
+        Provincia cordoba = new Provincia();
+        cordoba.setNombre("Cordoba");
+        this.sessionFactory.getCurrentSession().save(cordoba);
+
+        Ciudad laMatanza = new Ciudad();
+        laMatanza.setNombre("La Matanza");
+        laMatanza.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(laMatanza);
+
+        Ciudad laPaz = new Ciudad();
+        laPaz.setNombre("La Paz");
+        laPaz.setProvincia(cordoba);
+        this.sessionFactory.getCurrentSession().save(laPaz);
+
+        Evento evento = new Evento();
+        evento.setNombre("Tropitango");
+        evento.setCiudad(laMatanza);
+        evento.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(evento);
+
+        Evento eventoCinco = new Evento();
+        eventoCinco.setNombre("Tropi");
+        eventoCinco.setCiudad(laPaz);
+        eventoCinco.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(eventoCinco);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Barnie");
+        eventoDos.setCiudad(laMatanza);
+        eventoDos.setCategoria("familiar");
+        this.sessionFactory.getCurrentSession().save(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setNombre("Panam");
+        eventoTres.setCiudad(laPaz);
+        eventoTres.setCategoria("familiar");
+        this.sessionFactory.getCurrentSession().save(eventoTres);
+
+        Evento eventoCuatro = new Evento();
+        eventoCuatro.setNombre("Piñon Fijo");
+        eventoCuatro.setCiudad(laMatanza);
+        eventoCuatro.setCategoria("familiar");
+        this.sessionFactory.getCurrentSession().save(eventoCuatro);
+
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia("Tro", "Buenos Aires", "fiesta");
+
+        assertThat(eventosEncontrados.size(), equalTo(1));
+        assertThat(eventosEncontrados.get(0), equalTo(evento));
+    }
+
+
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueSePuedeFiltrarALosEventosQueSeObtenganAquellosQueCoincidanConElNombreConLaProvinciaLaCiudadYLaCategoria() {
+        Provincia buenosAires = new Provincia();
+        buenosAires.setNombre("Buenos Aires");
+        this.sessionFactory.getCurrentSession().save(buenosAires);
+
+        Provincia cordoba = new Provincia();
+        cordoba.setNombre("Cordoba");
+        this.sessionFactory.getCurrentSession().save(cordoba);
+
+        Ciudad laMatanza = new Ciudad();
+        laMatanza.setNombre("La Matanza");
+        laMatanza.setProvincia(buenosAires);
+        this.sessionFactory.getCurrentSession().save(laMatanza);
+
+        Ciudad laPaz = new Ciudad();
+        laPaz.setNombre("La Paz");
+        laPaz.setProvincia(cordoba);
+        this.sessionFactory.getCurrentSession().save(laPaz);
+
+        Evento evento = new Evento();
+        evento.setNombre("Tropitango");
+        evento.setCiudad(laMatanza);
+        evento.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(evento);
+
+        Evento eventoCinco = new Evento();
+        eventoCinco.setNombre("Tropi");
+        eventoCinco.setCiudad(laPaz);
+        eventoCinco.setCategoria("fiesta");
+        this.sessionFactory.getCurrentSession().save(eventoCinco);
+
+        Evento eventoDos = new Evento();
+        eventoDos.setNombre("Barnie");
+        eventoDos.setCiudad(laMatanza);
+        eventoDos.setCategoria("familiar");
+        this.sessionFactory.getCurrentSession().save(eventoDos);
+
+        Evento eventoTres = new Evento();
+        eventoTres.setNombre("Panam");
+        eventoTres.setCiudad(laPaz);
+        eventoTres.setCategoria("familiar");
+        this.sessionFactory.getCurrentSession().save(eventoTres);
+
+        Evento eventoCuatro = new Evento();
+        eventoCuatro.setNombre("Piñon Fijo");
+        eventoCuatro.setCiudad(laMatanza);
+        eventoCuatro.setCategoria("familiar");
+        this.sessionFactory.getCurrentSession().save(eventoCuatro);
+
+
+        List<Evento> eventosEncontrados = this.repositorioEvento.buscarEventosPorNombreCategoriaProvinciaYCiudad("Tro", "Buenos Aires", "La Matanza","fiesta");
+
+        assertThat(eventosEncontrados.size(), equalTo(1));
+        assertThat(eventosEncontrados.get(0), equalTo(evento));
+    }
+
+
+
+
+
+
+
 
 
 

@@ -81,6 +81,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return eventosEncontrados;
     }
 //TextoDelBuscador
+
     @Override
     public List<Evento> buscarEventosPorNombre(String busqueda) {
         String hql = "FROM Evento WHERE lower(nombre) LIKE :nombre";
@@ -143,7 +144,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     @Override
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         String hql = "FROM Evento WHERE fecha >= :fechaInicio AND fecha <= :fechaFin ORDER BY fecha ASC";
-        Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
         List<Evento> eventosEncontrados = query.getResultList();
@@ -192,6 +193,55 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         }
 
         return eventosEncontrados;
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorNombreYCategoria(String nombre, String categoria) {
+        String sentencia = "SELECT e FROM Evento e WHERE lower(e.nombre) LIKE lower(:nombre) AND lower(e.categoria) = lower(:categoria)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia);
+        query.setParameter("nombre",  "%" + nombre.toLowerCase() + "%");
+        query.setParameter("categoria", categoria.toLowerCase());
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorProvinciaYCategoria(String nombreProvincia, String categoria) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.categoria) = lower(:categoria)";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombreProvincia", nombreProvincia);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorProvinciaCiudadYCategoria(String nombreCiudad, String nombreProvincia, String categoria) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND  e.ciudad.nombre = :nombreCiudad AND e.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombreProvincia", nombreProvincia);
+        query.setParameter("nombreCiudad", nombreCiudad);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorNombreCategoriaYProvincia(String nombre, String nombreProvincia, String categoria) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.nombre) LIKE lower(:nombre) AND e.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombre",nombre.toLowerCase() + "%");
+        query.setParameter("nombreProvincia", nombreProvincia);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Evento> buscarEventosPorNombreCategoriaProvinciaYCiudad(String nombre, String nombreProvincia, String nombreCiudad, String categoria) {
+        String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.nombre) LIKE lower(:nombre) AND e.ciudad.nombre = :nombreCiudad AND e.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("nombre",nombre.toLowerCase() + "%");
+        query.setParameter("nombreCiudad", nombreCiudad);
+        query.setParameter("nombreProvincia", nombreProvincia);
+        query.setParameter("categoria", categoria);
+        return query.getResultList();
     }
 
 }
