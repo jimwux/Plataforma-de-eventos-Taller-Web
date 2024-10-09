@@ -49,23 +49,72 @@ public class ServicioEventoImpl implements ServicioEvento {
     }
 
     @Override
-    public List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad) {
-
+    public List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad, String categoria) {
         List<Evento> eventosFiltrados = new ArrayList<>();
 
-        if (nombre != null && !nombre.isEmpty() && nombreProvincia != null && !nombreProvincia.isEmpty() && nombreCiudad != null && !nombreCiudad.isEmpty()) {
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYNombre(nombreCiudad, nombre);
-        } else if (nombre != null && !nombre.isEmpty() && nombreProvincia != null && !nombreProvincia.isEmpty()) {
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre(nombreProvincia, nombre);
-        } else if (nombreProvincia != null && !nombreProvincia.isEmpty() && nombreCiudad != null && !nombreCiudad.isEmpty()) {
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
-        } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
-        } else if (nombre != null && !nombre.isEmpty()) {
-            eventosFiltrados = this.repositorioEvento.buscarEventosPorNombre(nombre);
-        }
+            if (nombre != null && !nombre.isEmpty() &&
+                    categoria != null && !categoria.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty()) {
 
-        return eventosFiltrados;
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaProvinciaYCiudad(nombre,nombreProvincia, nombreCiudad, categoria);
+//
+            }  else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty() &&
+                    categoria != null && !categoria.isEmpty()) {
+
+                  eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaCiudadYCategoria(nombreCiudad, nombreProvincia, categoria);
+//
+            }
+
+            else if (nombre != null && !nombre.isEmpty() &&
+                    categoria != null && !categoria.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+                 eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia(nombre, nombreProvincia, categoria);
+//
+
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    categoria != null && !categoria.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorNombreYCategoria(nombre, categoria);
+//
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudadYNombre(nombreCiudad, nombre);
+//
+            } else if (nombre != null && !nombre.isEmpty() &&
+                    nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYNombre(nombreProvincia, nombre);
+
+            } else if (nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    nombreCiudad != null && !nombreCiudad.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
+
+            } else if(nombreProvincia != null && !nombreProvincia.isEmpty() &&
+                    categoria != null && !categoria.isEmpty()) {
+
+                 eventosFiltrados = this.repositorioEvento.buscarEventosPorProvinciaYCategoria(nombreProvincia, categoria);
+
+            } else if (nombreProvincia != null && !nombreProvincia.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorProvincia(nombreProvincia);
+
+            } else if (nombre != null && !nombre.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.buscarEventosPorNombre(nombre);
+
+            } else if (categoria != null && !categoria.isEmpty()) {
+
+                eventosFiltrados = this.repositorioEvento.obtenerEventosPorCategoria(categoria);
+    //
+            }
+
+            return eventosFiltrados;
     }
 
 
@@ -84,9 +133,6 @@ public class ServicioEventoImpl implements ServicioEvento {
             LocalDate dosMesesDespues = hoy.plusMonths(2);
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
-    }
-    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
-        return obtenerEventos(nombreCiudad, this.random.nextBoolean());
     }
     public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
         Boolean tieneMismaCiudad = true;

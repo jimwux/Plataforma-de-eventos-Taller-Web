@@ -32,7 +32,7 @@ public class ServicioProvinciaImplTest {
     }
 
     @Test
-    public void dadoQueSeCreanDosProvinciasDebeDevolverUnaListaConEsosDosEventos () {
+    public void dadoQueSeCreanDosProvinciasDebeDevolverUnaListaConEsasDosProvincias () {
        Provincia provinciaUno = new Provincia();
        Provincia provinciaDos = new Provincia();
        List<Provincia> provinciasADevolver = Arrays.asList(provinciaUno, provinciaDos);

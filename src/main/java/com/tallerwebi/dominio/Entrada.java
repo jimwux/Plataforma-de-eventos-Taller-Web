@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 public class Entrada {
-
+// plantear como tipo
     private String nombre;
     private Double precio;
 

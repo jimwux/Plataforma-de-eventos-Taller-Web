@@ -30,7 +30,7 @@ public class RepositorioEntradaImpl implements RepositorioEntrada {
 
     @Override
     public Entrada obtenerEntradaPorId(Long id) {
-        String sentencia_sql = "FROM Entrada WHERE id = :id";
+        String sentencia_sql = "SELECT e FROM Entrada e WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
         query.setParameter("id", id);
         return (Entrada) query.getSingleResult();

@@ -123,7 +123,7 @@ public class ServicioEventoImplTest {
         List<Evento> eventos = Arrays.asList(eventoUno, eventoDos);
 
         when(this.repositorioEventoMock.buscarEventosPorNombre("crea")).thenReturn(eventos);
-        List<Evento> resultados = this.servicioEvento.filtrarEventos("crea", null,null);
+        List<Evento> resultados = this.servicioEvento.filtrarEventos("crea", null,null, null);
 
         assertThat(resultados.size(), is(2));
         assertThat(resultados.get(0).getNombre(), equalTo(eventoUno.getNombre()));
@@ -137,7 +137,7 @@ public class ServicioEventoImplTest {
         List<Evento> eventos = Arrays.asList(evento);
 
         when(repositorioEventoMock.buscarEventosPorCiudadYNombre("Morón", "Evento")).thenReturn(eventos);
-        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", "Morón");
+        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", "Morón", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -151,7 +151,7 @@ public class ServicioEventoImplTest {
 
         when(this.repositorioEventoMock.buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Evento", "Buenos Aires", null);
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Evento", "Buenos Aires", null, null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -165,7 +165,7 @@ public class ServicioEventoImplTest {
 
         when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón");
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -179,7 +179,7 @@ public class ServicioEventoImplTest {
 
         when(this.repositorioEventoMock.buscarEventosPorProvincia("Buenos Aires")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", null);
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", null, null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -199,7 +199,7 @@ public class ServicioEventoImplTest {
         assertThat(eventoObtenido, equalTo(evento));
     }
 
-    @Test
+     @Test
     public void dadoQueExistenEventosPodemosObtenerlosPorSuCategoriaConcierto() {
         List<Evento> eventosFiltrados = new ArrayList<>();
 
@@ -216,7 +216,7 @@ public class ServicioEventoImplTest {
         eventosFiltrados.add(eventoDos);
 
         when(this.repositorioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(eventosFiltrados);
-        List<Evento> resultado = this.servicioEvento.obtenerEventosPorCategoria("Concierto");
+        List<Evento> resultado = this.servicioEvento.filtrarEventos(null, null, null, "Concierto");
 
         assertThat(resultado.size(), is(2));
         assertThat(resultado.get(0).getNombre(), equalTo(eventoUno.getNombre()));
@@ -371,5 +371,103 @@ public class ServicioEventoImplTest {
         assertThat(mensajeObtenido, equalTo(mensajeEsperado));
 
     }
+
+    @Test
+    public void dadoQueSePuedeFiltrarPorBusquedaDeNombreDelEventoYPorCategoriaQueAlFiltrarPorAmbosCasosDevuelvaLoPropio(){
+        List<Evento> eventosEsperados = new ArrayList<>();
+
+        Evento evento = new Evento();
+        evento.setNombre("Fiesta de Verano");
+        evento.setCategoria("fiesta");
+
+        Evento evento2 = new Evento();
+        evento2.setNombre("Festival de Invierno");
+        evento2.setCategoria("fiesta");
+
+        eventosEsperados.add(evento2);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreYCategoria("fes", "fiesta")).thenReturn(eventosEsperados);
+
+        List<Evento> obtenidos = this.servicioEvento.filtrarEventos("fes", null, null, "fiesta");
+
+        assertThat(obtenidos.size(), equalTo(1));
+
+    }
+
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento); //metemos rapidamente un evento en una lista sin tener que agregar uno por uno
+
+        when(this.repositorioEventoMock.buscarEventosPorProvinciaYCategoria("Cordoba", "concierto")).thenReturn(eventos);
+        // al generar el mockeo de que esta parte RETORNA LA LISTA EVENTOS (con un evento sin datos)
+
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Cordoba", null, "concierto");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        //aca no verificamos sus atributos sino el estado de esa lista que nos llego y si el evento que esta dentro corresponde con el esperado
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(this.repositorioEventoMock).buscarEventosPorProvinciaYCategoria("Cordoba", "concierto");
+    }
+
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaCiudadYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento);
+
+        when(this.repositorioEventoMock.buscarEventosPorProvinciaCiudadYCategoria("La Paz", "Cordoba", "concierto")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Cordoba", "La Paz", "concierto");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(this.repositorioEventoMock).buscarEventosPorProvinciaCiudadYCategoria("La Paz", "Cordoba", "concierto");
+    }
+
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreProvinciaYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        Evento eventoDos = new Evento();
+        List<Evento> eventos = Arrays.asList(evento, eventoDos);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreCategoriaYProvincia("Mario Bros", "Jujuy", "familiar")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Mario Bros", "Jujuy", null, "familiar");
+
+        assertThat(eventosFiltrados.size(), equalTo(2));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        assertThat(eventosFiltrados.get(1), equalTo(eventoDos));
+    }
+
+
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreProvinciaCiudadYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        Evento eventoDos = new Evento();
+        List<Evento> eventos = Arrays.asList(evento, eventoDos);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreCategoriaProvinciaYCiudad("Mario Bros", "Jujuy", "San Salvador De Jujuy", "familiar")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Mario Bros", "Jujuy", "San Salvador De Jujuy", "familiar");
+
+        assertThat(eventosFiltrados.size(), equalTo(2));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        assertThat(eventosFiltrados.get(1), equalTo(eventoDos));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

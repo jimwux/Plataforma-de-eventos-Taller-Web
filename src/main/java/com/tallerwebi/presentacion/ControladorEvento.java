@@ -29,18 +29,20 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     @GetMapping("/eventos")
     public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
                                             @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
-                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
+                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
+                                            @RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
 
         Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
                 (nombreProvincia == null || nombreProvincia.isEmpty()) &&
-                (nombreCiudad == null || nombreCiudad.isEmpty());
+                (nombreCiudad == null || nombreCiudad.isEmpty()) &&
+                (categoria == null || categoria.isEmpty());
 
         if (sinFiltros) {
             eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
         } else {
-            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
+            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad, categoria);
         }
 
         modelo.put("eventos", eventos);
@@ -66,13 +68,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         return new ModelAndView("vista", vistas);
     }
 
-    @GetMapping("/eventos/categoria")
-    public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
-        List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
-        ModelMap modelo = new ModelMap();
-        modelo.put("eventos", eventosBuscados);
-        return new ModelAndView("eventos", modelo);
-    }
 
 
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
@@ -82,5 +77,9 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
+
+
+
+
 
 }
