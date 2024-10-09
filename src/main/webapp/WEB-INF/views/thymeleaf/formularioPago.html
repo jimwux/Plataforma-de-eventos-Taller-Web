@@ -76,7 +76,29 @@
 
                 <article class="contenedorEntrada">
 
-                <img src="https://imgs.search.brave.com/LgMuQJdUF3y8I3-ifoKHY7C6hoBwdSTUHtHySYCxHt4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vZmZs/b2FkbWVkaWEuZmV2/ZXJ1cC5jb20vYmFp/cmVzc2VjcmV0YS5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMDUvMjgwNzA1/NTkvdHJlbmR5LWJv/bGljaGVzLWJ1ZW5v/cy1haXJlcy5qcGc">
+                    <!-- <img src="https://imgs.search.brave.com/LgMuQJdUF3y8I3-ifoKHY7C6hoBwdSTUHtHySYCxHt4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vZmZs/b2FkbWVkaWEuZmV2/ZXJ1cC5jb20vYmFp/cmVzc2VjcmV0YS5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMDUvMjgwNzA1/NTkvdHJlbmR5LWJv/bGljaGVzLWJ1ZW5v/cy1haXJlcy5qcGc"> -->
+
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Tipo de Entrada</th>
+                            <th>Cantidad</th>
+                            <th>Precio por Entrada</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Iterar sobre los items del carrito -->
+                        <tr th:each="item : ${entradasCarrito}">
+                            <td th:text="${item.entrada.nombre}">Tipo de Entrada</td>
+                            <td th:text="${item.cantidad}">Cantidad</td>
+                            <td th:text="${item.entrada.precio}">Precio por Entrada</td>
+                            <td th:text="${item.totalCarrito}">Total</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
 
                 </article>
 
