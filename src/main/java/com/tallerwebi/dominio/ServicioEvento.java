@@ -1,5 +1,7 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,4 +22,8 @@ public interface ServicioEvento {
     List<Evento> filtrarEventos(String nombre, String nombreProvincia, String nombreCiudad, String categoria);
 
     List<Evento> obtenerEventosAleatorios(String nombreCiudad);
+
+    EventoNombreDTO autocompletarEvento(String busqueda);
+
+    List<EventoNombreDTO> obtenerNombresDeEventos();
 }

@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,6 +34,8 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         ModelMap modelo = new ModelMap();
         List<Evento> eventos;
 
+
+
         Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
                 (nombreProvincia == null || nombreProvincia.isEmpty()) &&
                 (nombreCiudad == null || nombreCiudad.isEmpty()) &&
@@ -46,6 +48,10 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         }
 
         modelo.put("eventos", eventos);
+
+        List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
+        modelo.put("nombresEventos", nombresEventos);
+
         return new ModelAndView("eventos", modelo);
     }
 
@@ -90,6 +96,9 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         modelo.put("form", null);
         return new ModelAndView("formularioPago", modelo);
     }
+
+
+
 
 
 

@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.Random;
 public class ServicioEventoImpl implements ServicioEvento {
 
     private RepositorioEvento repositorioEvento;
+
 
     @Autowired
     public ServicioEventoImpl(RepositorioEvento repositorioEvento) {
@@ -134,6 +136,23 @@ public class ServicioEventoImpl implements ServicioEvento {
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
     }
+
+    public EventoNombreDTO autocompletarEvento(String busqueda){
+
+    return null;
+    }
+
+    @Override
+    public List<EventoNombreDTO> obtenerNombresDeEventos() {
+        List<EventoNombreDTO> eventosNombre = new ArrayList<>();
+
+        for (Evento evento : repositorioEvento.obtenerTodosLosEventos() ) {
+            eventosNombre.add(new EventoNombreDTO(evento.getNombre()));
+        }
+
+        return eventosNombre ;
+    }
+
 
 }
 
