@@ -1,11 +1,13 @@
 package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -71,16 +73,27 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "FROM Evento WHERE fecha = :fecha";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql, Evento.class);
         query.setParameter("fecha", fecha);
-        return query.getResultList();
-    }
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos en esa fecha");
+        }
 
-    //cambiar nombre del metodo
+        return eventosEncontrados;
+    }
+//TextoDelBuscador
+
     @Override
     public List<Evento> buscarEventosPorNombre(String busqueda) {
         String hql = "FROM Evento WHERE lower(nombre) LIKE :nombre";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", busqueda + "%");  // Concatenamos el valor del nombre con "%"
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos relacionados a " + busqueda);
+        }
+
+        return eventosEncontrados;
+
     }
       
     @Override
@@ -88,7 +101,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "FROM Evento WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("id", id);
-        return (Evento) query.getSingleResult();
+        try {
+            return (Evento) query.getSingleResult() ; // Retorna el evento si lo encuentra
+        } catch (NoResultException e) {
+            throw new EventoNoEncontradoException("No se encontró el evento con id: " + id);
+        }
+
     }
 
     @Override
@@ -96,7 +114,11 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "FROM Evento WHERE categoria = :categoria";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("categoria", categoria);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria);
+        }
+        return eventosEncontrados;
     }
 
     @Override
@@ -111,7 +133,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "FROM Evento WHERE ciudad.nombre = :nombreCiudad";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombreCiudad", nombreCiudad);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos en la ciudad: " + nombreCiudad);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -120,7 +147,11 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("fechaInicio", fechaInicio);
         query.setParameter("fechaFin", fechaFin);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos entre las fechas dadas");
+        }
+        return eventosEncontrados;
     }
   
     @Override
@@ -128,7 +159,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombreProvincia", nombreProvincia);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos en la provicia: " + nombreProvincia);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -137,7 +173,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombreCiudad", nombreCiudad);
         query.setParameter("busqueda", busqueda.toLowerCase() + "%");  // Convertir búsqueda a minúsculas
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos en la ciudad: " + nombreCiudad + " relacionados a la busqueda: " + busqueda);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -146,7 +187,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("busqueda", busqueda.toLowerCase() + "%");  // Convertir búsqueda a minúsculas
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos en la provincia: " + nombreProvincia + " relacionados a la busqueda: " + busqueda);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override

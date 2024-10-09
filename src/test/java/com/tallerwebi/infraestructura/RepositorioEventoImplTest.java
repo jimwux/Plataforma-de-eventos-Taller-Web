@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.Ciudad;
 import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.Provincia;
 import com.tallerwebi.dominio.RepositorioEvento;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import com.tallerwebi.infraestructura.config.HibernateInfraestructuraTestConfig;
 import org.hamcrest.Matchers;
 import org.hibernate.SessionFactory;
@@ -172,6 +173,17 @@ public class RepositorioEventoImplTest {
     @Test
     @Transactional
     @Rollback
+    public void dadoQueExisteUnRepositorioEventoCuandoBuscoEventosPorUnaFechaEnLaQueNoSeRealizaNingunoSeGeneraUnaExcepcion () {
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerLosEventosPorFecha(LocalDate.of(2024, 11,16));
+        });
+    }
+
+    @Test
+    @Transactional
+    @Rollback
     public void dadoQueExisteUnRepositorioEventoConEventosPuedoObtenerAquellosQueCorrespondenAMiBusquedaPorNombre () {
         Evento eventoUno = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
         this.repositorioEvento.guardar(eventoUno);
@@ -194,6 +206,18 @@ public class RepositorioEventoImplTest {
         }
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExisteEventosQueCorrespondenAMiBusquedaPorNombreSeGeneraUnaExcepcion () {
+
+        String busqueda = "cre";
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorNombre(busqueda);
+        });
+    }
 
     @Test
     @Transactional
@@ -207,6 +231,19 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventoObtenido.getId(), equalTo(idDelEvento));
         assertThat(eventoObtenido, equalTo(evento));
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExisteEventosQueCorrespondenAMiBusquedaPorIdSeGeneraUnaExcepcion () {
+        Long idDelEvento = 999L;
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerEventoPorId(idDelEvento);
+
+        });
     }
 
     @Test
@@ -269,6 +306,16 @@ public class RepositorioEventoImplTest {
             iterador++;
         }
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosDeUnaCiudaSeGeneraUnaExcepcionAlBuscarEventosEnLaMisma () {
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorCiudad("Morón");
+        });
+    }
 
     @Test
     @Transactional
@@ -298,6 +345,16 @@ public class RepositorioEventoImplTest {
         }
 
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosDeUnaProvinciaSeGeneraUnaExcepcionAlBuscarEventosEnLaMisma () {
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorProvincia("Buenos Aires");
+        });
+    }
 
     @Test
     @Transactional
@@ -309,8 +366,6 @@ public class RepositorioEventoImplTest {
         List<Evento> eventosEnElRango = seObtienenLosEventosDentroDeUnRangoDeFechas();
 
         seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(eventosEnElRango);
-
-
     }
 
     private void seVerificaElOrdenDeLosMismosYQueEstosEstenEnElRangoDeFechasAdecuado(List<Evento> eventosEnElRango) {
@@ -325,7 +380,20 @@ public class RepositorioEventoImplTest {
 
         return  this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
     }
-// test de casos negativos // tener en cuenta si se saca el lower (probar ingresando con todos los casos)
+
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosDentroDeUnRangoDeFechasSeGeneraUnaExcepcionAlBuscarEventosEnDichoRango () {
+        LocalDate fechaInicio = LocalDate.of(2024, 1, 1);
+        LocalDate fechaFin = LocalDate.of(2024, 12, 31);
+
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas( fechaInicio, fechaFin);
+        });
+    }
+
     @Test
     @Transactional
     @Rollback
@@ -341,7 +409,15 @@ public class RepositorioEventoImplTest {
 
         assertThat(eventosEncontrados, hasSize(1));
         assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
-
+    }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosCuandoIntentoBuscarlosPorUnaCiudadYUnTextoEnElBuscadorYNoLosEncuentroSeLanzaUnaExcepcion () {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorCiudadYNombre("Morón", "Aventuras Perrunas");
+        });
     }
 
     @Test
@@ -364,7 +440,16 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados, hasSize(1));
         assertThat(eventosEncontrados.get(0), equalTo(eventoUno));
     }
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosCuandoIntentoBuscarlosPorUnaProvinciaYUnTextoEnElBuscadorYNoLosEncuentroSeLanzaUnaExcepcion () {
 
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorProvinciaYNombre("Buenos Aires", "Parense de Manos");
+        });
+    }
     private Provincia creoUnaProvinciaYLaGuardo (String nombre) {
         Provincia provincia = new Provincia();
         provincia.setNombre(nombre);
@@ -420,7 +505,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventos, equalTo(esperados));
         assertThat(eventos, containsInAnyOrder(evento, eventoTres));
     }
-
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosCuandoIntentoBuscarlosPorUnaCategoriaYNoLosEncuentroSeLanzaUnaExcepcion () {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.obtenerEventosPorCategoria("concierto");
+        });
+    }
 
     @Test
     @Transactional
