@@ -21,6 +21,12 @@ public interface RepositorioEvento {
 
     Evento obtenerEventoPorId(Long id);
 
+    List<Evento> obtenerEventosPorCategoria(String categoria);
+
+    List<Evento> obtenerEventosOrdenadosPorFecha();
+
+    List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin);
+
     List<Evento> buscarEventosPorCiudad(String nombreCiudad);
 
     List<Evento> buscarEventosPorProvincia(String nombreProvincia);
@@ -28,4 +34,14 @@ public interface RepositorioEvento {
     List<Evento> buscarEventosPorCiudadYNombre(String nombreCiudad, String busqueda);
 
     List<Evento> buscarEventosPorProvinciaYNombre(String nombreProvincia, String busqueda);
+
+    List<Evento> buscarEventosPorNombreYCategoria(String nombre, String categoria);
+
+    List<Evento> buscarEventosPorProvinciaYCategoria(String nombreProvincia, String categoria);
+
+    List<Evento> buscarEventosPorProvinciaCiudadYCategoria(String nombreCiudad, String nombreProvincia, String categoria);
+
+    List<Evento> buscarEventosPorNombreCategoriaYProvincia(String nombre, String nombreProvincia, String categoria);
+
+    List<Evento> buscarEventosPorNombreCategoriaProvinciaYCiudad(String nombre, String nombreProvincia, String nombreCiudad, String categoria);
 }

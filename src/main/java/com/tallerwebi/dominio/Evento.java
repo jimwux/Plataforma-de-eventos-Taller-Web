@@ -13,16 +13,18 @@ public class Evento {
 
     @Column(length = 1000)
     private String acercaDe;
-
     private String nombre;
     private LocalDate fecha;
     private String lugar;
     private String imagenUrl;
+    private String categoria;
     private String instagramUrl;
+    private String direccionUrl;
 
 
     @ManyToOne
     private Ciudad ciudad;
+
 
     public Evento(String nombre, LocalDate fecha, String lugar) {
         this.nombre = nombre;
@@ -87,12 +89,20 @@ public class Evento {
         this.imagenUrl = imagenUrl;
     }
 
-    public Ciudad getCiudad() {
-        return ciudad;
+    public String getAcercaDe() {
+        return acercaDe;
     }
 
-    public void setCiudad(Ciudad ciudad) {
-        this.ciudad = ciudad;
+    public void setAcercaDe(String acercaDe) {
+        this.acercaDe = acercaDe;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getInstagramUrl() {
@@ -103,11 +113,19 @@ public class Evento {
         this.instagramUrl = instagramUrl;
     }
 
-    public String getAcercaDe() {
-        return acercaDe;
+    public Ciudad getCiudad() {
+        return ciudad;
     }
 
-    public void setAcercaDe(String acercaDe) {
-        this.acercaDe = acercaDe;
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getDireccionUrl() {
+        return direccionUrl;
+    }
+
+    public void setDireccionUrl(String direccionUrl) {
+        this.direccionUrl = direccionUrl;
     }
 }

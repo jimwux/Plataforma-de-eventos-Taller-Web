@@ -5,30 +5,30 @@
     <title th:text="${vista.nombre}"></title>
     <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
     <link rel="stylesheet" th:href="@{/css/vista.css}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 </head>
 <body>
 
 <nav id="nav-bar">
-    <h1 id="titulo-pagina">Equipo mokito</h1>
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
     <ul id="botones-nav">
         <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
         <li class="boton-nav"><a href="">Contacto</a></li>
         <li class="boton-nav"><a href="">Usuario</a></li>
     </ul>
 </nav>
-
-
 <section class="contenedor">
     <article id="datos-evento">
         <div id="nombre-imagen-evento">
             <h2><span th:text="${vista.nombre}"></span></h2>
-            <p>Fecha: <span th:text="${vista.fecha}"></span></p>
+            <p id="fecha-evento">Fecha: <span th:text="${vista.fecha}"></span></p>
             <img th:src="${vista.imagenUrl}" th:alt="${vista.nombre}" id="imagenEvento">
         </div>
 
         <div id="info-evento">
             <div id="info-ubicacion-evento">
-                <p id="lugar-evento"><span th:text="${vista.lugar}"></span></p>
+                <a th:href="${vista.direccionUrl}" target="_blank" id="lugar-evento"><span th:text="${vista.lugar}"></span></a>
                 <p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p>
             </div>
             <div class="carrito-entradas">
@@ -36,14 +36,20 @@
                     <label>Tipo de entrada</label>
                     <label>Cantidad</label>
                 </div>
-                <div id="contenedor_entradas" data-auto-scrollable="true">
-                    <div class="entrada">
-                        <div class="tipo-entrada">
-                            <h4 class="datos-entrada">Nombre/tipo de entrada</h4>
-                            <p class="datos-entrada">$ Precio</p>
+                <form th:action="@{/pago}" method="POST">
+                <div id="contenedor_entradas" >
+
+                    <div class="entrada" th:each="entrada : ${entradas}">
+                        <div class="tipo-entrada" >
+                            <input type="hidden" name="idsEntradas" th:value="${entrada.id}" />
+                            <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
+                            <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </div>
                         <div class="cantidad">
-                            <select name="entrada" id="entrada">
+                            <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
+
+
+                            <select name="cantidades" id="entrada">
                                 <option value="0" selected>0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -53,31 +59,44 @@
                         </div>
                     </div>
                 </div>
-                <div id="total-compra-entradas">
-                    <h3>Valor total</h3>
-                    <h3>$0.00</h3>
-                </div>
 
-                <button id="boton-comprar">Comprar</button>
+                <input type="submit" id="boton-comprar" value="Comprar">
+
+                </form>
+            </div>
         </div>
-
     </article>
-
-    <section id="acerca-del-evento">
+    <article id="acerca-del-evento">
         <div id="acerca">
             <h3>Acerca de <span th:text="${vista.nombre}"></span></h3>
             <p th:text="${vista.acercaDe}"></p>
         </div>
         <div >
-        <a th:href="${vista.instagramUrl}" target="_blank" id="enlace-instagram">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" id="logoInstagram" alt="Instagram Logo"/>
-            <p>Accede al instagram de <span th:text="${vista.nombre}"></span></p>
-        </a>
+            <a th:href="${vista.instagramUrl}" target="_blank" id="enlace-instagram">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" id="logoInstagram" alt="Instagram Logo"/>
+                <p>Accede al instagram de <span th:text="${vista.nombre}"></span></p>
+            </a>
         </div>
-    </section>
-
+    </article>
 </section>
+
+<footer class="pie-de-pagina">
+    <section id="mas-eventos">
+        <h2 id="titulo-mas-evento">Más eventos</h2>
+        <article class="carrousel-eventos">
+            <div th:each="evento : ${eventosCarrousel}" class="evento">
+                <a th:href="@{/eventos/{id}(id=${evento.id})}" id="enlace-evento">
+                    <img th:src="${evento.imagenUrl}" alt="img">
+                </a>
+            </div>
+        </article>
+        <p>© 2024 Equipo Mokito</p>
+    </section>
+</footer>
+
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/js/slick.min.js}"></script>
+<script th:src="@{/js/scriptCarrousel.js}"></script>
 
 </body>
 </html>
-
