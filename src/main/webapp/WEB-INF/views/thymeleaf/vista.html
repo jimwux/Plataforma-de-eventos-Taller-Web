@@ -38,7 +38,7 @@
                 </div>
                 <form th:action="@{/pago}" method="POST">
                 <div id="contenedor_entradas" >
-
+                    <input type="hidden" name="eventoId" th:value="${vista.id}" />
                     <div class="entrada" th:each="entrada : ${entradas}">
                         <div class="tipo-entrada" >
                             <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->

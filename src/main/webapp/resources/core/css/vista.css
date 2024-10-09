@@ -149,7 +149,8 @@ a {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 43vh;
+    height: 49vh;
+    margin-bottom: 3em;
     overflow-y: auto; /* Habilita el scroll vertical */
 }
 

@@ -7,6 +7,10 @@ body{
 
 }
 
+a{
+    text-decoration: none;
+}
+
 .contenedor{
     display: flex;
     flex-direction: row;
@@ -114,6 +118,7 @@ ol{
 
 #tabla-resumen-compra {
     width: 100%;
+    margin: 0.5em;
 }
 
 .tipo-entrada {
@@ -130,11 +135,21 @@ ol{
 
 .contenedorEntrada {
     width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #contenedor-precio-final {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 100%
+}
+
+#portada-evento {
+    width: 75%;
+    margin: 1.5em;
+    border-radius: 1em;
 }
 
