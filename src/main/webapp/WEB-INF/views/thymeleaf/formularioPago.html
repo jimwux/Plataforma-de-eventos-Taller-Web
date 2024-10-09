@@ -76,8 +76,8 @@
 
                 <article class="contenedorEntrada">
                   <!--  <span th:text="${evento.nombre}"></span> -->
-                <h2>Resumen de su compra </h2>
-             <!--   <img th:src="${evento.getImagenUrl()}"> -->
+                <h2>Resumen de su compra para <span th:text="${evento.nombre}"></span></h2>
+                <img id="portada-evento" th:src="${evento.imagenUrl}" th:alt="${evento.nombre}">
                     <table id="tabla-resumen-compra">
                         <thead>
                         <tr>

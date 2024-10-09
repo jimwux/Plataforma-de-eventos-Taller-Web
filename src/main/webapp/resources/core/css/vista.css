@@ -132,9 +132,14 @@ a {
     cursor: pointer;
 }
 
-#boton-comprar:hover {
+#boton-comprar:hover:enabled {
     background-color: dimgrey;
-    transform: scale(1.05);
+    transform: scale(1.05); /* Solo se agranda cuando está habilitado */
+}
+
+#boton-comprar:disabled {
+    cursor: default;
+    transform: none;
 }
 
 #total-compra-entradas {
@@ -149,7 +154,8 @@ a {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    height: 43vh;
+    height: 49vh;
+    margin-bottom: 3em;
     overflow-y: auto; /* Habilita el scroll vertical */
 }
 
