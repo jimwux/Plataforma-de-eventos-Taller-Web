@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulario Pago</title>
+
+    <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
+    <link rel="stylesheet" th:href="@{/css/formulario.css}"/>
+</head>
+<body>
+
+<nav id="nav-bar">
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+    <ul id="botones-nav">
+        <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
+        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav"><a href="">Usuario</a></li>
+    </ul>
+</nav>
+
+<main>
+
+    <form action="https://www.google.com/?hl=es" id="formulario">
+
+        <section class="contenedor">
+
+            <article class="cajaUno">
+
+                <article class="datos">
+
+                    <h2>Complete con sus datos</h2>
+
+                    <label for="nombre">Nombre</label>
+                    <input class="data" type="text" id="nombre" name="nombre" placeholder="Ingresar nombre">
+
+                    <label for="apellido">Apellido</label>
+                    <input class="data" type="text" id="apellido" name="apellido" placeholder="Ingresar apellido">
+
+                    <label for="correo">Correo electrónico</label>
+                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico">
+
+                    <label for="correoRep">Repetir correo electrónico</label>
+                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico">
+
+                    <label for="telefono">Número telefónico</label>
+                    <input class="data" type="number" id="telefono" name="telefono" placeholder="Ingresar número">
+
+                    <label for="dni">DNI</label>
+                    <input class="data" type="text" id="dni" name="dni" placeholder="Ingresar número de documento">
+
+                </article>
+
+                <fieldset class="mensajeAdv">
+                    <p>ATENCIÓN: ¡Recuerde revisar que su correo electrónico sea el correcto,
+                    ya que será utilizado para enviar sus accesos al evento!</p>
+                </fieldset>
+
+
+                <input class="check" type="checkbox" id="acepto" name="acepto">
+                <label for="acepto">Acepto los términos y condiciones</label>
+
+                <fieldset class="normas">
+                    <ol>
+                        <li>Una vez realizada la compra, te llegará un mail el código QR que te permitirá entrar al show de manera directa.</li>
+                        <li>También puedes acceder al código QR entrando a la sección "Mis entradas" de tu Perfil de Usuario.</li>
+                        <li>Los tickets adquiridos son válidos solo en el horario del evento.</li>
+                        <li>No se permite la redistribución o difusión del QR de acceso.</li>
+                    </ol>
+                </fieldset>
+
+            </article>
+
+
+            <article class="cajaDos">
+
+                <article class="contenedorEntrada">
+                  <!--  <span th:text="${evento.nombre}"></span> -->
+                <h2>Resumen de su compra para <span th:text="${evento.nombre}"></span></h2>
+                <img id="portada-evento" th:src="${evento.imagenUrl}" th:alt="${evento.nombre}">
+                    <table id="tabla-resumen-compra">
+                        <thead>
+                        <tr>
+                            <th class="tipo-entrada">Tipo de Entrada</th>
+                            <th class="cantidad-entrada">Cantidad</th>
+                            <th class="subtotal-entrada">Subtotal</th>
+                        </tr>
+                        </thead>
+                        <!-- Iterar sobre los items del carrito -->
+                        <tbody>
+                        <tr th:each="item : ${entradasCarrito}">
+                            <td class="tipo-entrada" th:text="${item.entrada.nombre}">Tipo de Entrada</td>
+                            <td class="cantidad-entrada" th:text="${item.cantidad}">Cantidad</td>
+                            <td class="subtotal-entrada" th:text="${item.totalCarrito}">Subtotal</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div id="contenedor-precio-final">
+                        <h3>Precio final</h3>
+                        <h3 id="precio-final">$ <span th:text="${totalCarrito}"></span></h3>
+                    </div>
+
+                </article>
+
+                <input class="botones" type="submit" value="Abonar">
+
+                <input class="botones" type="button" value="Volver"> <!-- debe volver a la página anterior -->
+
+            </article>
+
+        </section>
+
+    </form>
+
+
+
+</main>
+
+<script th:src="@{js/formularioPago.js}"></script>
+</body>
+</html>

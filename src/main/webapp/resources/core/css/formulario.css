@@ -1,0 +1,155 @@
+body{
+    background: linear-gradient(to right, #18181B, black);
+    margin: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    color: white;
+
+}
+
+a{
+    text-decoration: none;
+}
+
+.contenedor{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+}
+
+.datos{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.cajaUno{
+    margin: 10px;
+    width: 55%
+}
+
+.cajaDos{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    margin: 10px;
+    width: 35%
+}
+
+h2{
+    padding: 0;
+    margin: 0px 0px 15px 0px;
+}
+
+.check{
+    margin: 5px;
+    margin-top: 10px;
+}
+
+.normas{
+    border: none;
+}
+
+li{
+    padding-bottom: 3px;
+}
+
+.contenedorEntrada h2{
+    text-align: center;
+}
+
+.contenedorEntrada{
+    margin-bottom: 20px;
+    background-color: #3c474c;
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0.7;
+}
+
+.botones{
+    margin: 0;
+    width: 70%;
+    background: linear-gradient(to right, #817878, rgb(106, 106, 106));
+    padding: 1em;
+    border: none;
+    border-radius: 15px;
+}
+
+ol{
+    padding-left: 10px;
+}
+
+.data{
+    border: none;
+    border-radius: 5px;
+    padding: 6px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+.data::placeholder{
+    padding-left: 5px;
+}
+
+
+.mensajeAdv{
+    background-color: rgba(167, 184, 193, 0.39);
+    border-radius: 10px;
+    border: none;
+    font-size: 0.9em;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.mensajeAdv p{
+    padding: 3px;
+}
+
+@media (max-width: 940px) {
+    .contenedor{
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
+#tabla-resumen-compra {
+    width: 100%;
+    margin: 0.5em;
+}
+
+.tipo-entrada {
+    text-align: start;
+}
+
+.cantidad-entrada {
+    text-align: center;
+}
+
+.subtotal-entrada {
+    text-align: end;
+}
+
+.contenedorEntrada {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#contenedor-precio-final {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%
+}
+
+#portada-evento {
+    width: 75%;
+    margin: 1.5em;
+    border-radius: 1em;
+}
+
