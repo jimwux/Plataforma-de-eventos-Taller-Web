@@ -4,8 +4,7 @@ public class Carrito {
 
     private Entrada entrada;  // El id de la entrada (general, vip, etc.)
     private Integer cantidad;  // Cantidad de entradas seleccionadas
-    private Double totalCarrito;  // Precio total por este tipo de entrada
-
+    private Double totalCarrito;// Precio total por este tipo de entrada
 
     public Carrito(Entrada entrada, Integer cantidad, Double totalCarrito ) {
         this.cantidad = cantidad;
