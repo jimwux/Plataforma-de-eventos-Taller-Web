@@ -33,6 +33,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
 
     @Override
     public void guardar(Evento evento) {
+        evento.setNombre(evento.getNombre().toLowerCase());
         this.sessionFactory.getCurrentSession().save(evento);
     }
 
@@ -84,7 +85,8 @@ public class RepositorioEventoImpl implements RepositorioEvento {
 
     @Override
     public List<Evento> buscarEventosPorNombre(String busqueda) {
-        String hql = "FROM Evento WHERE lower(nombre) LIKE :nombre";
+        String busquedaNormalizada = busqueda.toLowerCase();
+        String hql = "FROM Evento WHERE nombre LIKE :busqueda";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombre", busqueda + "%");  // Concatenamos el valor del nombre con "%"
         List<Evento> eventosEncontrados = query.getResultList();
