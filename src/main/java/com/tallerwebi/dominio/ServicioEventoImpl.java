@@ -117,6 +117,11 @@ public class ServicioEventoImpl implements ServicioEvento {
             return eventosFiltrados;
     }
 
+    @Override
+    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
+        return obtenerEventos(nombreCiudad, this.random.nextBoolean());
+    }
+
 
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.repositorioEvento.obtenerEventosOrdenadosPorFecha();
