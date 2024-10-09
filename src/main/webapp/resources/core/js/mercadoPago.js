@@ -32,11 +32,13 @@ const MP = async () => {
             bricksBuilder.create("wallet", "wallet_container", {
                 initialization: {
                     preferenceId: preferenceId_OK,
+                    buttonBackground: 'black',
                     redirectMode: "blank"
                 },
                 customization: {
                     texts: {
-                        valueProp: 'smart_option',
+                        action: 'buy',
+                        valueProp: 'security_details',
                     },
                 },
             });

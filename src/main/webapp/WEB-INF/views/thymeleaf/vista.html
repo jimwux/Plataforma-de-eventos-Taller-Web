@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${vista.nombre}"></title>
-    <script src="https://sdk.mercadopago.com/js/v2" ></script>
     <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
     <link rel="stylesheet" th:href="@{/css/vista.css}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
@@ -97,7 +96,7 @@
 <script th:src="@{/js/slick.min.js}"></script>
 <script th:src="@{/js/scriptCarrousel.js}"></script>
 <script th:src="@{/js/mercadoPago.js}"></script>
-
+<script src="https://sdk.mercadopago.com/js/v2" defer></script>
 
 </body>
 </html>
