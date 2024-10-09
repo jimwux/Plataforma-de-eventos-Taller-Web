@@ -44,6 +44,7 @@
                             <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </div>
                         <div class="cantidad">
+                            <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
                             <select name="entrada" id="entrada">
                                 <option value="0" selected>0</option>
                                 <option value="1">1</option>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formulario Pago</title>
+
+    <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
+    <link rel="stylesheet" th:href="@{/css/formulario.css}"/>
+</head>
+<body>
+
+<nav id="nav-bar">
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+    <ul id="botones-nav">
+        <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
+        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav"><a href="">Usuario</a></li>
+    </ul>
+</nav>
+
+<main>
+
+    <form action="">
+
+        <section class="contenedor">
+
+            <article class="cajaUno">
+
+                <article class="datos">
+
+                    <h2>Complete con sus datos</h2>
+
+                    <label for="nombre">Nombre</label>
+                    <input class="data" type="text" id="nombre" name="nombre" placeholder="Ingresar nombre">
+
+                    <label for="apellido">Apellido</label>
+                    <input class="data" type="text" id="apellido" name="apellido" placeholder="Ingresar apellido">
+
+                    <label for="correo">Correo electrónico</label>
+                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico">
+
+                    <label for="correoRep">Repetir correo electrónico</label>
+                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico">
+
+                    <label for="telefono">Número telefónico</label>
+                    <input class="data" type="number" id="telefono" name="telefono" placeholder="Ingresar número">
+
+                    <label for="dni">DNI</label>
+                    <input class="data" type="text" id="dni" name="dni" placeholder="Ingresar número de documento">
+
+                </article>
+
+                <fieldset class="mensajeAdv">
+                    <p>ATENCIÓN: ¡Recuerde revisar que su correo electrónico sea el correcto,
+                    ya que será utilizado para enviar sus accesos al evento!</p>
+                </fieldset>
+
+
+                <input class="check" type="checkbox" id="acepto" name="acepto">
+                <label for="acepto">Acepto los términos y condiciones</label>
+
+                <fieldset class="normas">
+                    <ol>
+                        <li>Una vez realizada la compra, te llegará un mail el código QR que te permitirá entrar al show de manera directa.</li>
+                        <li>También puedes acceder al código QR entrando a la sección "Mis entradas" de tu Perfil de Usuario.</li>
+                        <li>Los tickets adquiridos son válidos solo en el horario del evento.</li>
+                        <li>No se permite la redistribución o difusión del QR de acceso.</li>
+                    </ol>
+                </fieldset>
+
+            </article>
+
+
+            <article class="cajaDos">
+
+                <article class="contenedorEntrada">
+
+                <img src="https://imgs.search.brave.com/LgMuQJdUF3y8I3-ifoKHY7C6hoBwdSTUHtHySYCxHt4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vZmZs/b2FkbWVkaWEuZmV2/ZXJ1cC5jb20vYmFp/cmVzc2VjcmV0YS5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMDUvMjgwNzA1/NTkvdHJlbmR5LWJv/bGljaGVzLWJ1ZW5v/cy1haXJlcy5qcGc">
+
+                </article>
+
+                <input class="botones" type="submit" value="Abonar">
+
+                <input class="botones" type="button" value="Volver" onclick=""> <!-- debe volver a la página anterior -->
+
+            </article>
+
+        </section>
+
+    </form>
+
+
+
+</main>
+
+</body>
+</html>
