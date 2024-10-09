@@ -201,7 +201,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia);
         query.setParameter("nombre",  "%" + nombre.toLowerCase() + "%");
         query.setParameter("categoria", categoria.toLowerCase());
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria + " relacionados a la busqueda: " + nombre);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -210,7 +215,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("categoria", categoria);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria + " en la provincia: " + nombreProvincia );
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -220,7 +230,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("nombreCiudad", nombreCiudad);
         query.setParameter("categoria", categoria);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria + " en la ciudad: " + nombreCiudad);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -230,7 +245,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("nombre",nombre.toLowerCase() + "%");
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("categoria", categoria);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria + " en la provincia: " + nombreProvincia + " relacionados a " + nombre);
+        }
+
+        return eventosEncontrados;
     }
 
     @Override
@@ -241,7 +261,12 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         query.setParameter("nombreCiudad", nombreCiudad);
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("categoria", categoria);
-        return query.getResultList();
+        List<Evento> eventosEncontrados = query.getResultList();
+        if (eventosEncontrados.isEmpty()) {
+            throw new EventoNoEncontradoException("No se encontraron eventos de la categoria: " + categoria + " en la ciudad: " + nombreProvincia + " relacionados a " + nombre);
+        }
+
+        return eventosEncontrados;
     }
 
 }

@@ -78,23 +78,7 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         return new ModelAndView("vista", vistas);
     }
-
-    @GetMapping("/eventos/categoria")
-    public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
-        ModelMap modelo = new ModelMap();
-        String mensajeException = "";
-        try{
-            List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
-            modelo.put("eventos", eventosBuscados);
-            return new ModelAndView("eventos", modelo);
-        } catch (EventoNoEncontradoException e) {
-            mensajeException = e.getMensaje();
-        }
-        modelo.put("mensaje", mensajeException);
-        return new ModelAndView("eventos", modelo);
-    }
-
-
+    
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }

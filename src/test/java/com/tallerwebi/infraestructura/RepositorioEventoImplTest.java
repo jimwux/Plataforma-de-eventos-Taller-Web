@@ -583,7 +583,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados.get(0), equalTo(evento));
         assertThat(eventosEncontrados.get(1), equalTo(eventoDos));
     }
-
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosSeLanzaUnaExcepcionAlBuscarObtenerAquellosQueSeanDeLaProvinciaDeBuenosAiresYTenganLaCategoriaFiesta() {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorProvinciaYCategoria("Buenos Aires", "fiesta");
+        });
+    }
     @Test
     @Transactional
     @Rollback
@@ -629,7 +637,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados.size(), equalTo(1));
         assertThat(eventosEncontrados.get(0), equalTo(eventoTres));
     }
-
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosSeLanzaUnaExcepcionAlBuscarObtenerAquellosQueSeanDeProvinciaDeCordobaDeLaCiudadDeLaPazYTenganLaCategoriaFiesta() {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorProvinciaCiudadYCategoria("La Paz","Cordoba", "fiesta");
+        });
+    }
     @Test
     @Transactional
     @Rollback
@@ -689,7 +705,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados.get(0), equalTo(evento));
     }
 
-
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosSeLanzaUnaExcepcionAlBuscarPorNombreEnElBuscadorProvinciaYCategoria() {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorNombreCategoriaYProvincia("Tro", "Buenos Aires", "fiesta");
+        });
+    }
 
     @Test
     @Transactional
@@ -749,14 +773,15 @@ public class RepositorioEventoImplTest {
         assertThat(eventosEncontrados.size(), equalTo(1));
         assertThat(eventosEncontrados.get(0), equalTo(evento));
     }
-
-
-
-
-
-
-
-
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueNoExistenEventosSeLanzaUnaExcepcionAlBuscarQueSeObtenganAquellosQueCoincidanConElNombreConLaProvinciaLaCiudadYLaCategoria() {
+        // Verificamos que se lance la excepción
+        assertThrows(EventoNoEncontradoException.class, () -> {
+            this.repositorioEvento.buscarEventosPorNombreCategoriaProvinciaYCiudad("Tro", "Buenos Aires", "La Matanza","fiesta");
+        });
+    }
 
 
 
