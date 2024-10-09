@@ -22,7 +22,6 @@ public class ControladorCarrito {
         this.servicioCarrito = servicioCarrito;
     }
 
-
     @PostMapping("/pago")
     public ModelAndView agregarAlCarrito(@RequestParam("idsEntradas") List<Long> idsEntradas,
                                          @RequestParam("cantidades") List<Integer> cantidades) {

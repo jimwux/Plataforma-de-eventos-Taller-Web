@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -12,11 +13,12 @@ public class ServicioCarritoImpl implements ServicioCarrito {
 
     private  RepositorioEntrada repositorioEntrada;
 
+    @Autowired
     public ServicioCarritoImpl(RepositorioEntrada repositorioEntrada) {
         this.repositorioEntrada = repositorioEntrada;
     }
 
-
+    @Override
     public List<Carrito> obtenerEntradasDelCarrito(List<Long> idsEntradas, List<Integer> cantidades) {
         List<Carrito> entradasCarrito = new ArrayList<>();
 
@@ -37,7 +39,7 @@ public class ServicioCarritoImpl implements ServicioCarrito {
         return entradasCarrito;
     }
 
-
+    @Override
     public Double calcularTotalCarrito(List<Carrito> carrito) {
         Double totalCarrito = 0.0;
         for (Carrito itemCarrito : carrito) {

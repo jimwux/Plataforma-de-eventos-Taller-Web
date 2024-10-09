@@ -13,6 +13,10 @@ public class Carrito {
         this.entrada = entrada;
     }
 
+    public Carrito() {
+
+    }
+
     public Integer getCantidad() {
         return cantidad;
     }
