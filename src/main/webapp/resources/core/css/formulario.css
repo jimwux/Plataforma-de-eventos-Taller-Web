@@ -7,6 +7,10 @@ body{
 
 }
 
+a{
+    text-decoration: none;
+}
+
 .contenedor{
     display: flex;
     flex-direction: row;
@@ -52,9 +56,16 @@ li{
     padding-bottom: 3px;
 }
 
+.contenedorEntrada h2{
+    text-align: center;
+}
 
 .contenedorEntrada{
     margin-bottom: 20px;
+    background-color: #3c474c;
+    padding: 20px;
+    border-radius: 10px;
+    opacity: 0.7;
 }
 
 .botones{
@@ -83,12 +94,6 @@ ol{
 }
 
 
-img{
-    border-radius: 20px;
-    width: 350px;
-    height: 550px;
-}
-
 .mensajeAdv{
     background-color: rgba(167, 184, 193, 0.39);
     border-radius: 10px;
@@ -113,6 +118,7 @@ img{
 
 #tabla-resumen-compra {
     width: 100%;
+    margin: 0.5em;
 }
 
 .tipo-entrada {
@@ -129,10 +135,21 @@ img{
 
 .contenedorEntrada {
     width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #contenedor-precio-final {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 100%
 }
+
+#portada-evento {
+    width: 75%;
+    margin: 1.5em;
+    border-radius: 1em;
+}
+

@@ -18,11 +18,14 @@ import java.util.Random;
 public class ServicioEventoImpl implements ServicioEvento {
 
     private RepositorioEvento repositorioEvento;
+    private Random random;
 
 
     @Autowired
     public ServicioEventoImpl(RepositorioEvento repositorioEvento) {
+
         this.repositorioEvento = repositorioEvento;
+        this.random = new Random();
     }
 
     public List<Evento> obtenerTodosLosEventos() {
@@ -116,6 +119,11 @@ public class ServicioEventoImpl implements ServicioEvento {
             return eventosFiltrados;
     }
 
+    @Override
+    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
+        return obtenerEventos(nombreCiudad, this.random.nextBoolean());
+    }
+
 
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.repositorioEvento.obtenerEventosOrdenadosPorFecha();
@@ -124,11 +132,8 @@ public class ServicioEventoImpl implements ServicioEvento {
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
     }
-
-    public List<Evento> obtenerEventosAleatorios(String nombreCiudad) {
-        Random random = new Random();
-        //mensajito SEGUNDO PARAMETRO PARA PODER TESTEAR (opcional)
-        if (random.nextBoolean()) {
+    public List<Evento> obtenerEventos(String nombreCiudad, boolean opcion) {
+        if (opcion) {
             return this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
         } else {
             LocalDate hoy = LocalDate.now();
@@ -136,7 +141,7 @@ public class ServicioEventoImpl implements ServicioEvento {
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
     }
-
+    @Override
     public EventoNombreDTO autocompletarEvento(String busqueda){
 
     return null;
@@ -153,7 +158,18 @@ public class ServicioEventoImpl implements ServicioEvento {
         return eventosNombre ;
     }
 
-
+    @Override
+    public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
+        Boolean tieneMismaCiudad = true;
+        for (Evento evento : eventosAleatorios){
+            if(!evento.getCiudad().getNombre().equals(nombreCiudad)){tieneMismaCiudad = false;}
+        }
+        if (tieneMismaCiudad) {
+            return "Mas eventos en la ciudad de " + nombreCiudad;
+        } else {
+            return "Mas eventos en los proximos meses";
+        }
+    }
 }
 
 

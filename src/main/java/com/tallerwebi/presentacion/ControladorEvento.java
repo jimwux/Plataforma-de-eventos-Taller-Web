@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.presentacion.dto.EventoNombreDTO;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,7 +33,11 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
                                             @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
                                             @RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
-        List<Evento> eventos;
+        String mensajeException = "";
+        try{
+
+            List<Evento> eventos;
+
 
 
 
@@ -47,10 +52,16 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
             eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad, categoria);
         }
 
+
         modelo.put("eventos", eventos);
 
         List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
         modelo.put("nombresEventos", nombresEventos);
+
+        } catch (EventoNoEncontradoException e) {
+            mensajeException = e.getMensaje();
+        }
+        modelo.put("mensaje", mensajeException);
 
         return new ModelAndView("eventos", modelo);
     }
@@ -67,20 +78,13 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
+            String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());
+            vistas.put("mensajeCarrusel", mensajeCarrusel);
         }
 
         return new ModelAndView("vista", vistas);
     }
-
- //   @GetMapping("/eventos/categoria")
-  //  public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
-   //     List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
-     //   ModelMap modelo = new ModelMap();
-      //  modelo.put("eventos", eventosBuscados);
-       // return new ModelAndView("eventos", modelo);
-    //}
-
-
+    
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }
@@ -89,13 +93,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
 
-
-    @RequestMapping("/formulario")
-    public ModelAndView mostrarFormulario() {
-        ModelMap modelo = new ModelMap();
-        modelo.put("form", null);
-        return new ModelAndView("formularioPago", modelo);
-    }
 
 
 

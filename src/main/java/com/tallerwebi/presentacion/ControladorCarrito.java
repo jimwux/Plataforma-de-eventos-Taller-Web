@@ -9,22 +9,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ControladorCarrito {
 
     private ServicioCarrito servicioCarrito;
+    private ServicioEvento servicioEvento;
 
     @Autowired
-    public ControladorCarrito(ServicioCarrito servicioCarrito) {
+    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento) {
         this.servicioCarrito = servicioCarrito;
+        this.servicioEvento = servicioEvento;
     }
 
     @PostMapping("/pago")
     public ModelAndView agregarAlCarrito(@RequestParam("idsEntradas") List<Long> idsEntradas,
-                                         @RequestParam("cantidades") List<Integer> cantidades) {
+                                         @RequestParam("cantidades") List<Integer> cantidades,
+                                         @RequestParam("eventoId") Long eventoId) {
 
         ModelMap modeloEntradas = new ModelMap();
 
@@ -34,8 +36,14 @@ public class ControladorCarrito {
         modeloEntradas.put("entradasCarrito", entradasCarrito);
         modeloEntradas.put("totalCarrito", totalCarrito);
 
+        Evento evento = this.servicioEvento.obtenerEventoPorId(eventoId);
+        modeloEntradas.put("evento", evento);
+
         return new ModelAndView("formularioPago", modeloEntradas);  // Retornar la vista del carrito
     }
+
+
+
 
 
 
