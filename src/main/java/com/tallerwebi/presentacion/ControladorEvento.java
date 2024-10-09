@@ -1,6 +1,7 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
 import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -39,6 +39,8 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
             List<Evento> eventos;
 
 
+
+
         Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
                 (nombreProvincia == null || nombreProvincia.isEmpty()) &&
                 (nombreCiudad == null || nombreCiudad.isEmpty()) &&
@@ -51,12 +53,16 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         }
 
 
-            modelo.put("eventos", eventos);
-            return new ModelAndView("eventos", modelo);
+        modelo.put("eventos", eventos);
+
+        List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
+        modelo.put("nombresEventos", nombresEventos);
+
         } catch (EventoNoEncontradoException e) {
             mensajeException = e.getMensaje();
         }
         modelo.put("mensaje", mensajeException);
+
         return new ModelAndView("eventos", modelo);
     }
 
@@ -86,6 +92,9 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
+
+
+
 
 
 

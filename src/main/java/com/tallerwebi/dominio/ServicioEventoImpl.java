@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class ServicioEventoImpl implements ServicioEvento {
 
     private RepositorioEvento repositorioEvento;
     private Random random;
+
 
     @Autowired
     public ServicioEventoImpl(RepositorioEvento repositorioEvento) {
@@ -139,6 +141,24 @@ public class ServicioEventoImpl implements ServicioEvento {
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
     }
+    @Override
+    public EventoNombreDTO autocompletarEvento(String busqueda){
+
+    return null;
+    }
+
+    @Override
+    public List<EventoNombreDTO> obtenerNombresDeEventos() {
+        List<EventoNombreDTO> eventosNombre = new ArrayList<>();
+
+        for (Evento evento : repositorioEvento.obtenerTodosLosEventos() ) {
+            eventosNombre.add(new EventoNombreDTO(evento.getNombre()));
+        }
+
+        return eventosNombre ;
+    }
+
+    @Override
     public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
         Boolean tieneMismaCiudad = true;
         for (Evento evento : eventosAleatorios){

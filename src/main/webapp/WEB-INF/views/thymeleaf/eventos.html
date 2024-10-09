@@ -18,7 +18,11 @@
     </nav>
 
     <form action="/equipomokito/eventos" method="get" class="barrita">
-        <input type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando...">
+
+        <input id="buscador-eventos" type="text" name="nombre" placeholder="Ingrese el nombre del evento que está buscando..." list="eventos">
+        <datalist id="eventos">
+            <option th:each="evento : ${nombresEventos}" th:value="${evento.nombre}"></option>
+        </datalist>
 
             <select id="provincia" name="provinciaNombre">
                 <option value="">Seleccione una provincia</option>

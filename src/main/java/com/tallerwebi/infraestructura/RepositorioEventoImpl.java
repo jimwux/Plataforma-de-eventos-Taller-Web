@@ -40,7 +40,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     public void actualizarLugar(Evento evento) {
         Evento eventoInexistente = this.sessionFactory.getCurrentSession().get(Evento.class, evento.getId());
 
-        if (eventoInexistente == null){
+        if (eventoInexistente == null) {
             throw new EntityNotFoundException("Evento no encontrado)");
         }
         String hql = "UPDATE Evento SET lugar = :lugar WHERE id = :id";
@@ -95,7 +95,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return eventosEncontrados;
 
     }
-      
+
     @Override
     public Evento obtenerEventoPorId(Long id) {
         String hql = "FROM Evento WHERE id = :id";
@@ -153,7 +153,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         }
         return eventosEncontrados;
     }
-  
+
     @Override
     public List<Evento> buscarEventosPorProvincia(String nombreProvincia) {
         String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia";
@@ -199,7 +199,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     public List<Evento> buscarEventosPorNombreYCategoria(String nombre, String categoria) {
         String sentencia = "SELECT e FROM Evento e WHERE lower(e.nombre) LIKE lower(:nombre) AND lower(e.categoria) = lower(:categoria)";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia);
-        query.setParameter("nombre",  "%" + nombre.toLowerCase() + "%");
+        query.setParameter("nombre", "%" + nombre.toLowerCase() + "%");
         query.setParameter("categoria", categoria.toLowerCase());
         List<Evento> eventosEncontrados = query.getResultList();
         if (eventosEncontrados.isEmpty()) {
@@ -242,7 +242,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     public List<Evento> buscarEventosPorNombreCategoriaYProvincia(String nombre, String nombreProvincia, String categoria) {
         String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.nombre) LIKE lower(:nombre) AND e.categoria = :categoria";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre",nombre.toLowerCase() + "%");
+        query.setParameter("nombre", nombre.toLowerCase() + "%");
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("categoria", categoria);
         List<Evento> eventosEncontrados = query.getResultList();
@@ -257,7 +257,7 @@ public class RepositorioEventoImpl implements RepositorioEvento {
     public List<Evento> buscarEventosPorNombreCategoriaProvinciaYCiudad(String nombre, String nombreProvincia, String nombreCiudad, String categoria) {
         String hql = "SELECT e FROM Evento e WHERE e.ciudad.provincia.nombre = :nombreProvincia AND lower(e.nombre) LIKE lower(:nombre) AND e.ciudad.nombre = :nombreCiudad AND e.categoria = :categoria";
         Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
-        query.setParameter("nombre",nombre.toLowerCase() + "%");
+        query.setParameter("nombre", nombre.toLowerCase() + "%");
         query.setParameter("nombreCiudad", nombreCiudad);
         query.setParameter("nombreProvincia", nombreProvincia);
         query.setParameter("categoria", categoria);
@@ -269,4 +269,8 @@ public class RepositorioEventoImpl implements RepositorioEvento {
         return eventosEncontrados;
     }
 
+
 }
+
+
+
