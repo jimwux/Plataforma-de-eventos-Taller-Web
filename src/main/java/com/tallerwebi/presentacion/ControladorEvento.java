@@ -1,6 +1,8 @@
 package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
+import com.tallerwebi.dominio.excepcion.EventoNoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,21 +30,39 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     @GetMapping("/eventos")
     public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
                                             @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
-                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad) {
+                                            @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
+                                            @RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
-        List<Evento> eventos;
+        String mensajeException = "";
+        try{
+
+            List<Evento> eventos;
+
+
+
 
         Boolean sinFiltros = (nombre == null || nombre.isEmpty()) &&
                 (nombreProvincia == null || nombreProvincia.isEmpty()) &&
-                (nombreCiudad == null || nombreCiudad.isEmpty());
+                (nombreCiudad == null || nombreCiudad.isEmpty()) &&
+                (categoria == null || categoria.isEmpty());
 
         if (sinFiltros) {
             eventos = this.servicioEvento.obtenerEventosOrdenadosPorFecha();
         } else {
-            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad);
+            eventos = this.servicioEvento.filtrarEventos(nombre, nombreProvincia, nombreCiudad, categoria);
         }
 
+
         modelo.put("eventos", eventos);
+
+        List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
+        modelo.put("nombresEventos", nombresEventos);
+
+        } catch (EventoNoEncontradoException e) {
+            mensajeException = e.getMensaje();
+        }
+        modelo.put("mensaje", mensajeException);
+
         return new ModelAndView("eventos", modelo);
     }
 
@@ -59,20 +78,13 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
+            String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());
+            vistas.put("mensajeCarrusel", mensajeCarrusel);
         }
 
         return new ModelAndView("vista", vistas);
     }
-
-    @GetMapping("/eventos/categoria")
-    public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
-        List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
-        ModelMap modelo = new ModelMap();
-        modelo.put("eventos", eventosBuscados);
-        return new ModelAndView("eventos", modelo);
-    }
-
-
+    
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }
@@ -80,5 +92,12 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
+
+
+
+
+
+
+
 
 }

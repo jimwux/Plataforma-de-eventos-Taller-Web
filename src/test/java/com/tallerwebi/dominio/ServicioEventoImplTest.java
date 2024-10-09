@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -122,7 +123,7 @@ public class ServicioEventoImplTest {
         List<Evento> eventos = Arrays.asList(eventoUno, eventoDos);
 
         when(this.repositorioEventoMock.buscarEventosPorNombre("crea")).thenReturn(eventos);
-        List<Evento> resultados = this.servicioEvento.filtrarEventos("crea", null,null);
+        List<Evento> resultados = this.servicioEvento.filtrarEventos("crea", null,null, null);
 
         assertThat(resultados.size(), is(2));
         assertThat(resultados.get(0).getNombre(), equalTo(eventoUno.getNombre()));
@@ -136,7 +137,7 @@ public class ServicioEventoImplTest {
         List<Evento> eventos = Arrays.asList(evento);
 
         when(repositorioEventoMock.buscarEventosPorCiudadYNombre("Morón", "Evento")).thenReturn(eventos);
-        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", "Morón");
+        List<Evento> eventosFiltrados = servicioEvento.filtrarEventos("Evento", "Buenos Aires", "Morón", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -150,7 +151,7 @@ public class ServicioEventoImplTest {
 
         when(this.repositorioEventoMock.buscarEventosPorProvinciaYNombre("Buenos Aires", "Evento")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Evento", "Buenos Aires", null);
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Evento", "Buenos Aires", null, null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -164,7 +165,7 @@ public class ServicioEventoImplTest {
 
         when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón");
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", "Morón", null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -178,7 +179,7 @@ public class ServicioEventoImplTest {
 
         when(this.repositorioEventoMock.buscarEventosPorProvincia("Buenos Aires")).thenReturn(eventos);
 
-        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", null);
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Buenos Aires", null, null);
 
         assertThat(eventosFiltrados.size(), is(1));
         assertThat(eventosFiltrados.get(0), equalTo(evento));
@@ -198,7 +199,7 @@ public class ServicioEventoImplTest {
         assertThat(eventoObtenido, equalTo(evento));
     }
 
-    @Test
+     @Test
     public void dadoQueExistenEventosPodemosObtenerlosPorSuCategoriaConcierto() {
         List<Evento> eventosFiltrados = new ArrayList<>();
 
@@ -212,10 +213,10 @@ public class ServicioEventoImplTest {
         eventoTres.setCategoria("Otro");
 
         eventosFiltrados.add(eventoUno);
-       eventosFiltrados.add(eventoDos);
+        eventosFiltrados.add(eventoDos);
 
         when(this.repositorioEventoMock.obtenerEventosPorCategoria("Concierto")).thenReturn(eventosFiltrados);
-        List<Evento> resultado = this.servicioEvento.obtenerEventosPorCategoria("Concierto");
+        List<Evento> resultado = this.servicioEvento.filtrarEventos(null, null, null, "Concierto");
 
         assertThat(resultado.size(), is(2));
         assertThat(resultado.get(0).getNombre(), equalTo(eventoUno.getNombre()));
@@ -225,7 +226,6 @@ public class ServicioEventoImplTest {
 
     @Test
     public void dadoQueExistenTresEventosConDistintasFechaPodemosObtenerLosEventosOrdenadosPorFechaDeLaMasCercanaALaMasDistante() {
-
 
         Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.of(2025, 1, 15), "Parque de la Ciudad");
         Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.of(2024, 12, 25), "CABA");
@@ -272,6 +272,202 @@ public class ServicioEventoImplTest {
         assertThat(eventosObtenidos.get(0).getFecha(), equalTo(LocalDate.of(2024, 11, 16)));
         assertThat(eventosObtenidos.get(1).getFecha(), equalTo(LocalDate.of(2024, 12, 25)));
     }
+
+    @Test
+    public void dadoQueExistenTresEventosConDistintasFechasYCiudadesCuandoElValorRandomDaTrueAlBuscarEventosDeFormaAleatoriaPodemosObtenerLosEventosQueSeRealizanEnUnRangoDeFechasDado() {
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusMonths(2);
+
+        Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.now().plusDays(1), "Parque de la Ciudad");
+        Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.now().plusMonths(1), "CABA");
+        Evento eventoMock3 = new Evento("Primavera Sound", LocalDate.now().plusYears(1), "Morón");
+        Random randomMock = mock(Random.class);
+        List<Evento> eventosEsperadosMock = List.of(eventoMock1, eventoMock2);
+
+        when(randomMock.nextBoolean()).thenReturn(false);
+        when(this.repositorioEventoMock.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin)).thenReturn(eventosEsperadosMock);
+        boolean valorRandom = randomMock.nextBoolean();
+
+
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventos("Morón", valorRandom);
+
+        verify(this.repositorioEventoMock, times(1)).obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
+        assertThat(eventosObtenidos.size(), equalTo(2));
+        // Verifica que cada evento esperado está en los resultados encontrados
+
+        int iterador = 0;
+        for (Evento evento : eventosEsperadosMock) {
+            assertThat(eventosObtenidos.get(iterador), equalTo(evento));
+            iterador++;
+        }
+
+    }
+    @Test
+    public void dadoQueExistenTresEventosConDistintasFechasYCiudadesCuandoElValorRandomDaFalseAlBuscarEventosDeFormaAleatoriaPodemosObtenerLosEventosDeUnaCiudadDada () {
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusMonths(2);
+
+        Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.now().plusDays(1), "Parque de la Ciudad");
+        Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.now().plusMonths(1), "CABA");
+        Evento eventoMock3 = new Evento("Primavera Sound", LocalDate.now().plusYears(1), "Morón");
+        Random randomMock = mock(Random.class);
+        List<Evento> eventosEsperadosMock = List.of(eventoMock3);
+
+        when(randomMock.nextBoolean()).thenReturn(true);
+        when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventosEsperadosMock);
+        boolean valorRandom = randomMock.nextBoolean();
+
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventos("Morón", valorRandom);
+
+        verify(this.repositorioEventoMock, times(1)).buscarEventosPorCiudad("Morón");
+        assertThat(eventosObtenidos.size(), equalTo(1));
+        // Verifica que cada evento esperado está en los resultados encontrados
+        int iterador = 0;
+        for (Evento evento : eventosEsperadosMock) {
+            assertThat(eventosObtenidos.get(iterador), equalTo(evento));
+            iterador++;
+        }
+
+    }
+
+    @Test
+    public void dadaUnaListaDeEventosQueTienenUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente(){
+        String nombreCiudad = "Morón";
+
+        Ciudad moron = new Ciudad();
+        moron.setNombre(nombreCiudad);
+
+        Evento evento1 = new Evento();
+        evento1.setCiudad(moron);
+        Evento evento2 = new Evento();
+        evento2.setCiudad(moron);
+
+        List<Evento> eventosDados = List.of(evento1,evento2);
+        String mensajeEsperado = "Mas eventos en la ciudad de " + nombreCiudad;
+        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosDados,nombreCiudad);
+
+        assertThat(mensajeObtenido, equalTo(mensajeEsperado));
+
+    }
+    @Test
+    public void dadaUnaListaDeEventosQueTienenNoUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente(){
+        String nombreCiudad = "Morón";
+        String nombreCiudad2 = "Merlo";
+
+        Ciudad moron = new Ciudad();
+        moron.setNombre(nombreCiudad);
+        Ciudad merlo = new Ciudad();
+        merlo.setNombre(nombreCiudad2);
+
+        Evento evento1 = new Evento();
+        evento1.setCiudad(moron);
+        Evento evento2 = new Evento();
+        evento2.setCiudad(merlo);
+
+        List<Evento> eventosDados = List.of(evento1,evento2);
+        String mensajeEsperado = "Mas eventos en los proximos meses";
+        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosDados,nombreCiudad);
+
+        assertThat(mensajeObtenido, equalTo(mensajeEsperado));
+
+    }
+
+    @Test
+    public void dadoQueSePuedeFiltrarPorBusquedaDeNombreDelEventoYPorCategoriaQueAlFiltrarPorAmbosCasosDevuelvaLoPropio(){
+        List<Evento> eventosEsperados = new ArrayList<>();
+
+        Evento evento = new Evento();
+        evento.setNombre("Fiesta de Verano");
+        evento.setCategoria("fiesta");
+
+        Evento evento2 = new Evento();
+        evento2.setNombre("Festival de Invierno");
+        evento2.setCategoria("fiesta");
+
+        eventosEsperados.add(evento2);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreYCategoria("fes", "fiesta")).thenReturn(eventosEsperados);
+
+        List<Evento> obtenidos = this.servicioEvento.filtrarEventos("fes", null, null, "fiesta");
+
+        assertThat(obtenidos.size(), equalTo(1));
+
+    }
+
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento); //metemos rapidamente un evento en una lista sin tener que agregar uno por uno
+
+        when(this.repositorioEventoMock.buscarEventosPorProvinciaYCategoria("Cordoba", "concierto")).thenReturn(eventos);
+        // al generar el mockeo de que esta parte RETORNA LA LISTA EVENTOS (con un evento sin datos)
+
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Cordoba", null, "concierto");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        //aca no verificamos sus atributos sino el estado de esa lista que nos llego y si el evento que esta dentro corresponde con el esperado
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(this.repositorioEventoMock).buscarEventosPorProvinciaYCategoria("Cordoba", "concierto");
+    }
+
+
+    @Test
+    public void dadoQueSeBuscanEventosPorProvinciaCiudadYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        List<Evento> eventos = Arrays.asList(evento);
+
+        when(this.repositorioEventoMock.buscarEventosPorProvinciaCiudadYCategoria("La Paz", "Cordoba", "concierto")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos(null, "Cordoba", "La Paz", "concierto");
+
+        assertThat(eventosFiltrados.size(), is(1));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        verify(this.repositorioEventoMock).buscarEventosPorProvinciaCiudadYCategoria("La Paz", "Cordoba", "concierto");
+    }
+
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreProvinciaYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        Evento eventoDos = new Evento();
+        List<Evento> eventos = Arrays.asList(evento, eventoDos);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreCategoriaYProvincia("Mario Bros", "Jujuy", "familiar")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Mario Bros", "Jujuy", null, "familiar");
+
+        assertThat(eventosFiltrados.size(), equalTo(2));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        assertThat(eventosFiltrados.get(1), equalTo(eventoDos));
+    }
+
+
+    @Test
+    public void dadoQueSeBuscanEventosPorNombreProvinciaCiudadYCategoriaDevuelveEventosFiltrados() {
+        Evento evento = new Evento();
+        Evento eventoDos = new Evento();
+        List<Evento> eventos = Arrays.asList(evento, eventoDos);
+
+        when(this.repositorioEventoMock.buscarEventosPorNombreCategoriaProvinciaYCiudad("Mario Bros", "Jujuy", "San Salvador De Jujuy", "familiar")).thenReturn(eventos);
+
+        List<Evento> eventosFiltrados = this.servicioEvento.filtrarEventos("Mario Bros", "Jujuy", "San Salvador De Jujuy", "familiar");
+
+        assertThat(eventosFiltrados.size(), equalTo(2));
+        assertThat(eventosFiltrados.get(0), equalTo(evento));
+        assertThat(eventosFiltrados.get(1), equalTo(eventoDos));
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
