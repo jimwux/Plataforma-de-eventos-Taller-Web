@@ -41,14 +41,12 @@
 
                     <div class="entrada" th:each="entrada : ${entradas}">
                         <div class="tipo-entrada" >
+                            <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
                             <input type="hidden" name="idsEntradas" th:value="${entrada.id}" />
                             <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
                             <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </div>
                         <div class="cantidad">
-                            <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
-
-
                             <select name="cantidades" id="entrada">
                                 <option value="0" selected>0</option>
                                 <option value="1">1</option>

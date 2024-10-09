@@ -78,27 +78,30 @@
 
                     <!-- <img src="https://imgs.search.brave.com/LgMuQJdUF3y8I3-ifoKHY7C6hoBwdSTUHtHySYCxHt4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9vZmZs/b2FkbWVkaWEuZmV2/ZXJ1cC5jb20vYmFp/cmVzc2VjcmV0YS5j/b20vd3AtY29udGVu/dC91cGxvYWRzLzIw/MjMvMDUvMjgwNzA1/NTkvdHJlbmR5LWJv/bGljaGVzLWJ1ZW5v/cy1haXJlcy5qcGc"> -->
 
-                    <table>
+                <h2>Resumen de su compra</h2>
+
+                    <table id="tabla-resumen-compra">
                         <thead>
                         <tr>
-                            <th>Tipo de Entrada</th>
-                            <th>Cantidad</th>
-                            <th>Precio por Entrada</th>
-                            <th>Total</th>
+                            <th class="tipo-entrada">Tipo de Entrada</th>
+                            <th class="cantidad-entrada">Cantidad</th>
+                            <th class="subtotal-entrada">Subtotal</th>
                         </tr>
                         </thead>
-                        <tbody>
                         <!-- Iterar sobre los items del carrito -->
+                        <tbody>
                         <tr th:each="item : ${entradasCarrito}">
-                            <td th:text="${item.entrada.nombre}">Tipo de Entrada</td>
-                            <td th:text="${item.cantidad}">Cantidad</td>
-                            <td th:text="${item.entrada.precio}">Precio por Entrada</td>
-                            <td th:text="${item.totalCarrito}">Total</td>
+                            <td class="tipo-entrada" th:text="${item.entrada.nombre}">Tipo de Entrada</td>
+                            <td class="cantidad-entrada" th:text="${item.cantidad}">Cantidad</td>
+                            <td class="subtotal-entrada" th:text="${item.totalCarrito}">Subtotal</td>
                         </tr>
                         </tbody>
                     </table>
 
-
+                    <div id="contenedor-precio-final">
+                        <h3>Precio final</h3>
+                        <h3 id="precio-final">$ <span th:text="${totalCarrito}"></span></h3>
+                    </div>
 
                 </article>
 

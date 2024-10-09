@@ -110,3 +110,29 @@ img{
     }
 
 }
+
+#tabla-resumen-compra {
+    width: 100%;
+}
+
+.tipo-entrada {
+    text-align: start;
+}
+
+.cantidad-entrada {
+    text-align: center;
+}
+
+.subtotal-entrada {
+    text-align: end;
+}
+
+.contenedorEntrada {
+    width: 75%;
+}
+
+#contenedor-precio-final {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
