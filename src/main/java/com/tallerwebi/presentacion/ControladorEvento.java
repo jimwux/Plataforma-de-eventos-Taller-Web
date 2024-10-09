@@ -66,13 +66,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         return new ModelAndView("vista", vistas);
     }
 
- //   @GetMapping("/eventos/categoria")
-  //  public ModelAndView mostrarEventosFiltradosPorCategoria(@RequestParam("categoria") String categoria) {
-   //     List<Evento> eventosBuscados = servicioEvento.obtenerEventosPorCategoria(categoria);
-     //   ModelMap modelo = new ModelMap();
-      //  modelo.put("eventos", eventosBuscados);
-       // return new ModelAndView("eventos", modelo);
-    //}
 
 
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
@@ -83,13 +76,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
 
-
-    @RequestMapping("/formulario")
-    public ModelAndView mostrarFormulario() {
-        ModelMap modelo = new ModelMap();
-        modelo.put("form", null);
-        return new ModelAndView("formularioPago", modelo);
-    }
 
 
 

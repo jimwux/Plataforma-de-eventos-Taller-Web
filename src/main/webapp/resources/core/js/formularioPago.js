@@ -1,4 +1,4 @@
-alert("HOLA MUNDO");
+
 
 let formu = document.getElementById("formulario");
 
