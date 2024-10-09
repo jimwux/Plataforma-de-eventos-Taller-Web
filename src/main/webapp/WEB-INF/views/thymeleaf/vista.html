@@ -36,16 +36,20 @@
                     <label>Tipo de entrada</label>
                     <label>Cantidad</label>
                 </div>
+                <form th:action="@{/pago}" method="POST">
                 <div id="contenedor_entradas" >
+
                     <div class="entrada" th:each="entrada : ${entradas}">
                         <div class="tipo-entrada" >
-
+                            <input type="hidden" name="idsEntradas" th:value="${entrada.id}" />
                             <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
                             <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </div>
                         <div class="cantidad">
                             <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
-                            <select name="entrada" id="entrada">
+
+
+                            <select name="cantidades" id="entrada">
                                 <option value="0" selected>0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -55,12 +59,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="total-compra-entradas">
-                    <h3>Valor total</h3>
-                    <h3>$0.00</h3>
-                </div>
 
-                <button id="boton-comprar">Comprar</button>
+                <input type="submit" id="boton-comprar" value="Comprar">
+
+                </form>
             </div>
         </div>
     </article>

@@ -2,9 +2,16 @@ package com.tallerwebi.dominio;
 
 public class Carrito {
 
-    private Long idEntrada;  // El id de la entrada (general, vip, etc.)
+    private Entrada entrada;  // El id de la entrada (general, vip, etc.)
     private Integer cantidad;  // Cantidad de entradas seleccionadas
     private Double totalCarrito;  // Precio total por este tipo de entrada
+
+
+    public Carrito(Entrada entrada, Integer cantidad, Double totalCarrito ) {
+        this.cantidad = cantidad;
+        this.totalCarrito = totalCarrito;
+        this.entrada = entrada;
+    }
 
     public Integer getCantidad() {
         return cantidad;
@@ -22,11 +29,11 @@ public class Carrito {
         this.totalCarrito = totalCarrito;
     }
 
-    public Long getIdEntrada() {
-        return idEntrada;
+    public Entrada getEntrada() {
+        return entrada;
     }
 
-    public void setIdEntrada(Long idEntrada) {
-        this.idEntrada = idEntrada;
+    public void setEntrada(Entrada entrada) {
+        this.entrada = entrada;
     }
 }
