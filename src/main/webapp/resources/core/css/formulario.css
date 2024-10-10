@@ -77,6 +77,10 @@ li{
     border-radius: 15px;
 }
 
+button a{
+    color: black;
+}
+
 ol{
     padding-left: 10px;
 }
