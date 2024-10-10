@@ -21,7 +21,7 @@
 
 <main>
 
-    <form action="https://www.google.com/?hl=es" id="formulario">
+    <form th:action="@{/compraFinalizada}" id="formulario" method="post">
 
         <section class="contenedor">
 
@@ -105,7 +105,7 @@
 
                 <input class="botones" type="submit" value="Abonar">
 
-                <input class="botones" type="button" value="Volver"> <!-- debe volver a la página anterior -->
+                <button class="botones"><a th:href="@{/eventos}">Volver</a></button>
 
             </article>
 

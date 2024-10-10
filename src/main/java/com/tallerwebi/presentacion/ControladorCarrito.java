@@ -43,7 +43,15 @@ public class ControladorCarrito {
     }
 
 
+    @PostMapping("/compraFinalizada")
+    public ModelAndView mostrarVistaCompraFinalizada(@RequestParam("nombre") String nombre,
+                                                     @RequestParam("apellido") String apellido){
+        ModelMap modelo = new ModelMap();
+        modelo.put("nombre", nombre);
+        modelo.put("apellido", apellido);
 
+        return new ModelAndView("compraRealizada", modelo);
+    }
 
 
 
