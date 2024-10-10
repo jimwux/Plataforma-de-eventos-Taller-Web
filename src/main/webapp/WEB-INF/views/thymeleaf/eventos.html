@@ -52,26 +52,26 @@
 
 
     <!-- Mostrar mensaje de excepcion si existe -->
-    <div th:if="${mensaje != null}">
+    <section th:if="${mensaje != null}">
         <h2 th:text="${mensaje}"></h2>
-    </div>
-    <div th:if="${mensaje == null}">
+    </section>
+    <section th:if="${mensaje == null}">
         <h2>Nuestros eventos</h2>
-    </div>
+    </section>
 
-    <div class="contenedor-evento">
-        <div class="eventos">
-            <!-- th:each sirve para iterar -->
-            <div th:each="evento : ${eventos}" class="evento">
+    <section class="contenedor-evento">
+        <ul class="eventos">
+            <!-- Iterar sobre los eventos -->
+            <li th:each="evento : ${eventos}" class="evento">
                 <a th:href="@{/eventos/{id}(id=${evento.id})}">
                     <h3 th:text="${evento.nombre}"></h3>
                     <p th:text="${evento.lugar}"></p>
                     <p th:text="${evento.fecha}"></p>
-                    <img th:src="${evento.imagenUrl}" alt="img">
+                    <img th:src="${evento.imagenUrl}" alt="Imagen del evento">
                 </a>
-            </div>
-        </div>
-    </div>
+            </li>
+        </ul>
+    </section>
 
     <footer class="pie-de-pagina">
         <p>© 2024 Equipo Mokito</p>
