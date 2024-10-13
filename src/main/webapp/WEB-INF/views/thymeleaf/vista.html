@@ -18,7 +18,7 @@
         <li class="boton-nav"><a href="">Usuario</a></li>
     </ul>
 </nav>
-<section class="contenedor">
+<main class="contenedor">
     <article id="datos-evento">
         <div id="nombre-imagen-evento">
             <h2><span th:text="${vista.nombre}"></span></h2>
@@ -26,27 +26,27 @@
             <img th:src="${vista.imagenUrl}" th:alt="${vista.nombre}" id="imagenEvento">
         </div>
 
-        <div id="info-evento">
+        <section id="info-evento">
             <div id="info-ubicacion-evento">
                 <a th:href="${vista.direccionUrl}" target="_blank" id="lugar-evento"><span th:text="${vista.lugar}"></span></a>
                 <p id="direccion-evento"><span th:text="${vista.ciudad.nombre}"></span>, <span th:text="${vista.ciudad.provincia.nombre}"></span></p>
             </div>
-            <div class="carrito-entradas">
+            <article class="carrito-entradas">
                 <div id="label-carrito">
                     <label>Tipo de entrada</label>
                     <label>Cantidad</label>
                 </div>
                 <form th:action="@{/pago}" method="POST" id="formulario-carrito">
-                <div id="contenedor_entradas" >
+                <section id="contenedor_entradas" >
                     <input type="hidden" name="eventoId" th:value="${vista.id}" />
                     <div class="entrada" th:each="entrada : ${entradas}">
-                        <div class="tipo-entrada" >
+                        <article class="tipo-entrada" >
                             <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
                             <input type="hidden" name="idsEntradas" th:value="${entrada.id}" />
                             <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
                             <p class="datos-entrada" th:text="${entrada.precio}"></p>
-                        </div>
-                        <div class="cantidad">
+                        </article>
+                        <article class="cantidad">
                             <select name="cantidades" id="entrada">
                                 <option value="0" selected>0</option>
                                 <option value="1">1</option>
@@ -54,15 +54,15 @@
                                 <option value="3">3</option>
                                 <option value="4">4</option>
                             </select>
-                        </div>
+                        </article>
                     </div>
-                </div>
+                </section>
 
                 <input type="submit" disabled id="boton-comprar" value="Abonar">
 
                 </form>
-            </div>
-        </div>
+            </article>
+        </section>
     </article>
     <article id="acerca-del-evento">
         <div id="acerca">
@@ -76,7 +76,7 @@
             </a>
         </div>
     </article>
-</section>
+</main>
 
 <footer class="pie-de-pagina">
     <section id="mas-eventos">

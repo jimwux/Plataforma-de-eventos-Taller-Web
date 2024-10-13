@@ -59,10 +59,10 @@ function validacionFormularioRegistro(){
     }
 
     if(error){
-        alert("datos incorrectos")
+        alert("Datos invalidos")
     }else{
         formu.submit();
-        alert("Registro Exitoso :D")
+        alert("Compra realizada")
     }
 
 }
