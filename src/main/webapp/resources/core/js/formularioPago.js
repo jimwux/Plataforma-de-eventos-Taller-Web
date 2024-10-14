@@ -22,7 +22,7 @@ function validacionFormularioRegistro(){
 
     let error = false;
 
-    let exp = /^[a-zA-Z]+$/;
+    let exp = /^[a-zA-Z\s]+$/;
 
     if(!exp.test(nombre) || nombre === ""){
         error = true;
@@ -48,7 +48,8 @@ function validacionFormularioRegistro(){
         error = true;
     }
 
-    let expDni = /^\d{2}\.\d{3}\.\d{3}$/;
+    let expDni = /^\d{8}$/;
+
 
     if(!expDni.test(dni) || dni === ""){
         error = true;
