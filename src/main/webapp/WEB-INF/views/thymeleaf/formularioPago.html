@@ -21,7 +21,7 @@
 
 <main>
 
-    <form th:action="@{/compraFinalizada}" id="formulario" method="post">
+    <form th:action="@{/checkout/create-payment}" id="formulario" method="post">
 
         <section class="contenedor">
 
@@ -88,10 +88,24 @@
                         </thead>
                         <!-- Iterar sobre los items del carrito -->
                         <tbody>
-                        <tr th:each="item : ${entradasCarrito}">
-                            <td class="tipo-entrada" th:text="${item.entrada.nombre}">Tipo de Entrada</td>
-                            <td class="cantidad-entrada" th:text="${item.cantidad}">Cantidad</td>
-                            <td class="subtotal-entrada" th:text="${item.totalCarrito}">Subtotal</td>
+                        <tr th:each="item: ${entradasCarrito}">
+                            <td class="tipo-entrada" th:text="${item.entrada.nombre}">Tipo de Entrada
+                              <!--  <input type="hidden" name="tipoEntrada" th:value="${item.entrada.nombre}"/> -->
+
+                            </td>
+                            <td class="cantidad-entrada" th:text="${item.cantidad}">Cantidad
+                               <!-- <input type="hidden" name="cantidades" th:value="${item.cantidad}"/> -->
+                            </td>
+
+                            <td class="subtotal-entrada" th:text="${item.totalCarrito}">Subtotal
+                              <!--  <input type="hidden" name="idsEntradas" th:value="${item.entrada.id}"/>
+                                <input type="hidden" name="subtotales" th:value="${item.totalCarrito}"/> -->
+                            </td>
+
+                            <input type="hidden" name="idsEntradas" th:value="${item.entrada.id}"/>
+                            <input type="hidden" name="cantidades" th:value="${item.cantidad}"/>
+                            <input type="hidden" name="precioEntrada" th:value="${item.entrada.precio}"/>
+                            <input type="hidden" name="tipoEntrada" th:value="${item.entrada.nombre}"/>
                         </tr>
                         </tbody>
                     </table>

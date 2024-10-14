@@ -11,12 +11,10 @@ import com.mercadopago.exceptions.MPException;
 //import com.mercadopago.resources.common.Phone;
 //import com.mercadopago.resources.customer.Identification;
 import com.mercadopago.resources.preference.Preference;
-import com.tallerwebi.dominio.Carrito;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,35 +23,40 @@ import java.util.List;
 @RequestMapping("/checkout")
 public class ControladorMercadoPago {
 
-//    @Autowired
-//    private MercadoPagoConfig mercadoPagoConfig;
-
 
     @PostMapping("/create-payment")
-    public String crearPago(@RequestBody Carrito carrito) throws MPException, MPApiException {
-        MercadoPagoConfig.setAccessToken("APP_USR-1119968299722789-101117-93b5a605f95dc93a7acdbb6162e43da3-1985716471");
+    public void crearPago(HttpServletResponse response,
+                          @RequestParam("cantidades") List<Integer> cantidades,
+                          @RequestParam("idsEntradas") List<Long> idsEntradas,
+                          @RequestParam("precioEntrada") List<Double> precioEntrada,
+                          @RequestParam("tipoEntrada") List<String> tipoEntradas,
+                          @RequestParam("correo") String emailUsuario) throws MPException, MPApiException, IOException {
+        MercadoPagoConfig.setAccessToken("APP_USR-6558400260331558-101319-6cbadc51fd33533cb97b5691213fe4ff-2036459718");
+
 
 // Crea un objeto de preferencia
         PreferenceClient client = new PreferenceClient();
 
 
 // Crea un ítem en la preferencia
-        PreferenceItemRequest item =
-                PreferenceItemRequest.builder()
-                        .title("Hellouda")
-                        .quantity(1)
-                        .currencyId("ARS")
-                        .unitPrice(new BigDecimal("75"))
-                        .build();
-
-
         List<PreferenceItemRequest> items = new ArrayList<>();
-        items.add(item);
+        for (int i = 0; i < idsEntradas.size(); i++) {
+            PreferenceItemRequest item =
+                    PreferenceItemRequest.builder()
 
+                            .title(tipoEntradas.get(i))
+                            .description("Tipo Entrada: " + tipoEntradas.get(i))
+                            .quantity(cantidades.get(i))
+                            .currencyId("ARS")
+                            .unitPrice(BigDecimal.valueOf(precioEntrada.get(i)))
+                            .build();
+
+            items.add(item);
+        }
         PreferencePayerRequest payer = PreferencePayerRequest.builder()
                 .name("Lautaro")
                 .surname("Rosse")
-                .email("user@email.com")
+                .email(emailUsuario)
                 .phone(PhoneRequest.builder()
                     .areaCode("11")
                     .number("4444-4444")
@@ -66,8 +69,8 @@ public class ControladorMercadoPago {
 
 
         PreferenceBackUrlsRequest  backUrls = PreferenceBackUrlsRequest.builder()
-                .success("https://www.success.com")
-                .failure("https://www.failure.com")
+                .success("http://localhost:8080/equipomokito/compraFinalizada")
+                .failure("http://localhost:8080/equipomokito/eventos")
                 .pending("https://www.pending.com")
                 .build();
 
@@ -83,6 +86,6 @@ public class ControladorMercadoPago {
 
         Preference preference = client.create(preferenceRequest);
 
-        return preference.getInitPoint();
+        response.sendRedirect(preference.getInitPoint());
     }
 }

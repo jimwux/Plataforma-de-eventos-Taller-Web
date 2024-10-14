@@ -5,6 +5,7 @@ import com.tallerwebi.dominio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,12 +44,13 @@ public class ControladorCarrito {
     }
 
 
-    @PostMapping("/compraFinalizada")
-    public ModelAndView mostrarVistaCompraFinalizada(@RequestParam("nombre") String nombre,
-                                                     @RequestParam("apellido") String apellido){
+    @GetMapping("/compraFinalizada")
+      public ModelAndView mostrarVistaCompraFinalizada(){
+//                                                     @RequestParam("nombre") String nombre,
+//                                                     @RequestParam("apellido") String apellido
         ModelMap modelo = new ModelMap();
-        modelo.put("nombre", nombre);
-        modelo.put("apellido", apellido);
+//        modelo.put("nombre", nombre);
+//        modelo.put("apellido", apellido);
 
         return new ModelAndView("compraRealizada", modelo);
     }
