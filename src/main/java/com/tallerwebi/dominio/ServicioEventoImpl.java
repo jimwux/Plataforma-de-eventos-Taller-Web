@@ -132,6 +132,7 @@ public class ServicioEventoImpl implements ServicioEvento {
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio, fechaFin);
     }
+
     public List<Evento> obtenerEventos(String nombreCiudad, boolean opcion) {
         if (opcion) {
             return this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
@@ -141,6 +142,7 @@ public class ServicioEventoImpl implements ServicioEvento {
             return this.repositorioEvento.obtenerEventosDentroDeUnRangoDeFechas(hoy, dosMesesDespues);
         }
     }
+
     @Override
     public EventoNombreDTO autocompletarEvento(String busqueda){
 
@@ -160,11 +162,20 @@ public class ServicioEventoImpl implements ServicioEvento {
 
     @Override
     public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
-        Boolean tieneMismaCiudad = true;
+
+        Integer coincidencias = 0;
+        boolean camino = true;
+
+        //List<Evento> eventosObtenidos = obtenerEventos(nombreCiudad, camino);
+        List<Evento> eventosObtenidos = this.repositorioEvento.buscarEventosPorCiudad(nombreCiudad);
         for (Evento evento : eventosAleatorios){
-            if(!evento.getCiudad().getNombre().equals(nombreCiudad)){tieneMismaCiudad = false;}
+            for (Evento eventoObtenido : eventosObtenidos){
+                if(evento.getId().equals(eventoObtenido.getId())){
+                    coincidencias += 1;
+                }
+            }
         }
-        if (tieneMismaCiudad) {
+        if(coincidencias == eventosObtenidos.size() && !eventosObtenidos.isEmpty()){
             return "Mas eventos en la ciudad de " + nombreCiudad;
         } else {
             return "Mas eventos en los proximos meses";

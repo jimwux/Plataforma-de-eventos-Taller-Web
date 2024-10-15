@@ -329,48 +329,59 @@ public class ServicioEventoImplTest {
         }
 
     }
-
     @Test
-    public void dadaUnaListaDeEventosQueTienenUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente(){
-        String nombreCiudad = "Morón";
+    public void dadaUnaListaDeEventosQueTienenUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente () {
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusMonths(2);
 
-        Ciudad moron = new Ciudad();
-        moron.setNombre(nombreCiudad);
+        Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.now().plusDays(1), "Morón");
+        eventoMock1.setId(1L);
+        Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.now().plusMonths(1), "Morón");
+        eventoMock2.setId(2L);
+        Evento eventoMock3 = new Evento("Primavera Sound", LocalDate.now().plusYears(1), "Morón");
+        eventoMock3.setId(3L);
+        Random randomMock = mock(Random.class);
+        List<Evento> eventosEsperadosMock = List.of(eventoMock1,eventoMock2,eventoMock3);
 
-        Evento evento1 = new Evento();
-        evento1.setCiudad(moron);
-        Evento evento2 = new Evento();
-        evento2.setCiudad(moron);
+        when(randomMock.nextBoolean()).thenReturn(true);
+        when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventosEsperadosMock);
+        boolean valorRandom = randomMock.nextBoolean();
 
-        List<Evento> eventosDados = List.of(evento1,evento2);
-        String mensajeEsperado = "Mas eventos en la ciudad de " + nombreCiudad;
-        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosDados,nombreCiudad);
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventos("Morón", valorRandom);
+
+        String mensajeEsperado = "Mas eventos en la ciudad de Morón";
+        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosObtenidos,"Morón");
 
         assertThat(mensajeObtenido, equalTo(mensajeEsperado));
 
     }
     @Test
-    public void dadaUnaListaDeEventosQueTienenNoUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente(){
-        String nombreCiudad = "Morón";
-        String nombreCiudad2 = "Merlo";
+    public void dadaUnaListaDeEventosQueNoTienenUnaMismaCiudadDebemosObtenerElMensajeCorrespondiente () {
+        LocalDate fechaInicio = LocalDate.now();
+        LocalDate fechaFin = fechaInicio.plusMonths(2);
 
-        Ciudad moron = new Ciudad();
-        moron.setNombre(nombreCiudad);
-        Ciudad merlo = new Ciudad();
-        merlo.setNombre(nombreCiudad2);
+        Evento eventoMock1 = new Evento("Fiesta de Verano", LocalDate.now().plusDays(1), "Parque de la Ciudad");
+        eventoMock1.setId(1L);
+        Evento eventoMock2 = new Evento("Festival de Invierno", LocalDate.now().plusDays(2), "CABA");
+        eventoMock2.setId(2L);
+        Evento eventoMock3 = new Evento("Primavera Sound", LocalDate.now().plusDays(3), "Morón");
+        eventoMock3.setId(3L);
+        Random randomMock = mock(Random.class);
+        List<Evento> eventosEsperadosMock = List.of(eventoMock1,eventoMock2,eventoMock3);
 
-        Evento evento1 = new Evento();
-        evento1.setCiudad(moron);
-        Evento evento2 = new Evento();
-        evento2.setCiudad(merlo);
+        when(randomMock.nextBoolean()).thenReturn(false);
+        when(this.repositorioEventoMock.buscarEventosPorCiudad("Morón")).thenReturn(eventosEsperadosMock);
+        boolean valorRandom = randomMock.nextBoolean();
 
-        List<Evento> eventosDados = List.of(evento1,evento2);
+        List<Evento> eventosObtenidos = this.servicioEvento.obtenerEventos("Morón", valorRandom);
+
         String mensajeEsperado = "Mas eventos en los proximos meses";
-        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosDados,nombreCiudad);
+        String mensajeObtenido = this.servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosObtenidos,"Morón");
 
         assertThat(mensajeObtenido, equalTo(mensajeEsperado));
 
     }
+
 
     @Test
     public void dadoQueSePuedeFiltrarPorBusquedaDeNombreDelEventoYPorCategoriaQueAlFiltrarPorAmbosCasosDevuelvaLoPropio(){
