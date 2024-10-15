@@ -30,6 +30,7 @@ public class ControladorMercadoPago {
                           @RequestParam("idsEntradas") List<Long> idsEntradas,
                           @RequestParam("precioEntrada") List<Double> precioEntrada,
                           @RequestParam("tipoEntrada") List<String> tipoEntradas,
+                          @RequestParam("nombreEvento") String nombreEvento,
                           @RequestParam("correo") String emailUsuario) throws MPException, MPApiException, IOException {
         MercadoPagoConfig.setAccessToken("APP_USR-6558400260331558-101319-6cbadc51fd33533cb97b5691213fe4ff-2036459718");
 
@@ -44,7 +45,7 @@ public class ControladorMercadoPago {
             PreferenceItemRequest item =
                     PreferenceItemRequest.builder()
 
-                            .title(tipoEntradas.get(i))
+                            .title(nombreEvento + " - " + tipoEntradas.get(i))
                             .description("Tipo Entrada: " + tipoEntradas.get(i))
                             .quantity(cantidades.get(i))
                             .currencyId("ARS")

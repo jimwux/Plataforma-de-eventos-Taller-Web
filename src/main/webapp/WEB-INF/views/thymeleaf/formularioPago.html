@@ -21,7 +21,7 @@
 
 <main>
 
-    <form th:action="@{/checkout/create-payment}" id="formulario" method="post">
+    <form th:action="@{/checkout/create-payment}" id="formulario" method="post" >
 
         <section class="contenedor">
 
@@ -77,6 +77,7 @@
                 <article class="contenedorEntrada">
                   <!--  <span th:text="${evento.nombre}"></span> -->
                 <h2>Resumen de su compra para <span th:text="${evento.nombre}"></span></h2>
+                <input type="hidden" name="nombreEvento" th:value="${evento.nombre}"/>
                 <img id="portada-evento" th:src="${evento.imagenUrl}" th:alt="${evento.nombre}">
                     <table id="tabla-resumen-compra">
                         <thead>

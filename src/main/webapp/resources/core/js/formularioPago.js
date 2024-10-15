@@ -22,7 +22,7 @@ function validacionFormularioRegistro(){
 
     let error = false;
 
-    let exp = /^[a-zA-Z\s]+$/;
+    let exp = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
     if(!exp.test(nombre) || nombre === ""){
         error = true;
