@@ -23,8 +23,6 @@ public interface ServicioEvento {
 
     List<Evento> obtenerEventosAleatorios(String nombreCiudad);
 
-    EventoNombreDTO autocompletarEvento(String busqueda);
-
     List<EventoNombreDTO> obtenerNombresDeEventos();
 
     List<Evento> obtenerEventos(String nombreCiudad, boolean random);

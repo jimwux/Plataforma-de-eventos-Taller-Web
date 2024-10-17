@@ -33,7 +33,7 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
                                             @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
                                             @RequestParam(value = "categoria", required = false) String categoria) {
         ModelMap modelo = new ModelMap();
-        String mensajeException = "";
+
         try{
 
             List<Evento> eventos;
@@ -59,9 +59,10 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         modelo.put("nombresEventos", nombresEventos);
 
         } catch (EventoNoEncontradoException e) {
-            mensajeException = e.getMensaje();
+            String mensajeException =  e.getMensaje();
+            modelo.put("mensaje", mensajeException);
         }
-        modelo.put("mensaje", mensajeException);
+
 
         return new ModelAndView("eventos", modelo);
     }

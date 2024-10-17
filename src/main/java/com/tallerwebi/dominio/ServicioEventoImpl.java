@@ -144,12 +144,6 @@ public class ServicioEventoImpl implements ServicioEvento {
     }
 
     @Override
-    public EventoNombreDTO autocompletarEvento(String busqueda){
-
-    return null;
-    }
-
-    @Override
     public List<EventoNombreDTO> obtenerNombresDeEventos() {
         List<EventoNombreDTO> eventosNombre = new ArrayList<>();
 
