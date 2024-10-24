@@ -70,7 +70,7 @@ public class ServicioCarritoImplTest {
         List<Carrito> carrito = servicioCarrito.obtenerEntradasDelCarrito(idsEntradas, cantidades);
         Double totalObtenido = servicioCarrito.calcularTotalCarrito(carrito);
 
-        assertThat(totalObtenido, equalTo(totalObtenido));
+        assertThat(totalEsperado, equalTo(totalObtenido));
     }
 
 
