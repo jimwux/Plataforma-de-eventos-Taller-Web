@@ -8,4 +8,12 @@ public interface ServicioCarrito {
 
     Double calcularTotalCarrito(List<Carrito> carrito);
 
+    String generarCodigoDescuento();
+
+    void guardarCodigoDescuento(String codigo);
+
+    Boolean esCodigoDescuentoValido(String codigo);
+
+    Double calcularTotalCarritoConDescuento(Double totalCarrito);
+
 }
