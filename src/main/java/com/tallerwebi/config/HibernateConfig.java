@@ -1,7 +1,9 @@
 package com.tallerwebi.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -12,15 +14,25 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class HibernateConfig {
+
+    @Value("${database.url}")
+    private String urlDatabase;
+
+    @Value("${database.username}")
+    private String userName;
+
+    @Value("${database.password}")
+    private String password;
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/tw1");
-        dataSource.setUsername("root");
-        dataSource.setPassword("TPtaller1");
+        dataSource.setUrl(urlDatabase);
+        dataSource.setUsername(userName);
+        dataSource.setPassword(password);
         return dataSource;
     }
 
@@ -49,3 +61,4 @@ public class HibernateConfig {
     }
 
 }
+

@@ -11,6 +11,7 @@ import com.mercadopago.exceptions.MPException;
 //import com.mercadopago.resources.common.Phone;
 //import com.mercadopago.resources.customer.Identification;
 import com.mercadopago.resources.preference.Preference;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,9 @@ import java.util.List;
 public class ControladorMercadoPago {
 
 
+    @Value("${mercadoPago.accessToken}")
+    private String mercadoPagoAccessToken;
+
     @PostMapping("/create-payment")
     public void crearPago(HttpServletResponse response,
                           @RequestParam("cantidades") List<Integer> cantidades,
@@ -32,8 +36,7 @@ public class ControladorMercadoPago {
                           @RequestParam("tipoEntrada") List<String> tipoEntradas,
                           @RequestParam("nombreEvento") String nombreEvento,
                           @RequestParam("correo") String emailUsuario) throws MPException, MPApiException, IOException {
-        MercadoPagoConfig.setAccessToken("APP_USR-6558400260331558-101319-6cbadc51fd33533cb97b5691213fe4ff-2036459718");
-
+        MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
 // Crea un objeto de preferencia
         PreferenceClient client = new PreferenceClient();
