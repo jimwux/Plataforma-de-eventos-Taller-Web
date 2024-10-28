@@ -7,12 +7,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
 
 public class ControladorCarritoTest {
 
@@ -71,6 +74,32 @@ public class ControladorCarritoTest {
         verify(this.servicioCarritoMock).calcularTotalCarrito(carritoMock);
     }
 
+    @Test
+    public void alAplicarUnCodigoValidoObtendremosElPrecioFinalConDescuento() {
+        String codigoDescuento = "b5d21f4a";
+        Double totalCarrito = 100.0;
+        Double totalConDescuento = 80.0; // 20% de descuento
+
+        when(servicioCarritoMock.esCodigoDescuentoValido(eq(codigoDescuento), any(LocalDateTime.class))).thenReturn(true);
+        when(servicioCarritoMock.calcularTotalCarritoConDescuento(totalCarrito)).thenReturn(totalConDescuento);
+
+        Map<String, Object> resultado = controladorCarrito.aplicarDescuento(codigoDescuento, totalCarrito);
+
+        assertThat(resultado.get("descuentoAplicado"), is(true));
+        assertThat(resultado.get("totalConDescuento"), equalTo(totalConDescuento));
+    }
+
+    @Test
+    public void alAplicarUnCodigoInvalidoNoObtendremosElPrecioFinalConDescuento() {
+        String codigoDescuento = "d5gf43aa";
+        Double totalCarrito = 100.0;
+
+        when(servicioCarritoMock.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now())).thenReturn(false);
+        Map<String, Object> resultado = controladorCarrito.aplicarDescuento(codigoDescuento, totalCarrito);
+
+        assertThat(resultado.get("descuentoAplicado"), is(false));
+        assertThat(resultado.get("totalConDescuento"), equalTo(null));
+    }
 
 
 }

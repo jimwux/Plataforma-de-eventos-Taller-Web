@@ -14,11 +14,13 @@ import com.mercadopago.resources.preference.Preference;
 import com.tallerwebi.dominio.ServicioCarrito;
 import com.tallerwebi.dominio.ServicioEvento;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class ControladorMercadoPago {
         this.servicioCarrito = servicioCarrito;
     }
 
+    @Value("${mercadoPago.accessToken}")
+    private String mercadoPagoAccessToken;
+
     @PostMapping("/create-payment")
     public void crearPago(HttpServletResponse response,
                           @RequestParam("cantidades") List<Integer> cantidades,
@@ -42,11 +47,11 @@ public class ControladorMercadoPago {
                           @RequestParam("nombreEvento") String nombreEvento,
                           @RequestParam("correo") String emailUsuario,
                           @RequestParam(value = "codigoDescuento", required = false) String codigoDescuento) throws MPException, MPApiException, IOException {
-        MercadoPagoConfig.setAccessToken("APP_USR-6558400260331558-101319-6cbadc51fd33533cb97b5691213fe4ff-2036459718");
+        MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
 // Calcular el descuento si hay un código válido
         Double porcentajeDescuento = 0.20;
-        boolean descuentoAplicado = codigoDescuento != null && this.servicioCarrito.esCodigoDescuentoValido(codigoDescuento); // Valida aquí tu código de descuento real
+        boolean descuentoAplicado = codigoDescuento != null && this.servicioCarrito.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now()); // Valida aquí tu código de descuento real
 
 // Crea un objeto de preferencia
         PreferenceClient client = new PreferenceClient();

@@ -62,9 +62,9 @@ public class ServicioCarritoImpl implements ServicioCarrito {
     }
 
     @Override
-    public Boolean esCodigoDescuentoValido(String codigo) {
+    public Boolean esCodigoDescuentoValido(String codigo, LocalDateTime ahora) {
         LocalDateTime expiracion = codigosDescuento.get(codigo);
-        if (expiracion == null || LocalDateTime.now().isAfter(expiracion)) {
+        if (expiracion == null || ahora.isAfter(expiracion)) {
             codigosDescuento.remove(codigo);
             return false;
         }

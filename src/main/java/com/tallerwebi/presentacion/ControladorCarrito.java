@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +67,7 @@ public class ControladorCarrito {
                                                 @RequestParam("totalCarrito") Double totalCarrito) {
         Map<String, Object> resultado = new HashMap<>();
 
-        if (servicioCarrito.esCodigoDescuentoValido(codigoDescuento)) {
+        if (servicioCarrito.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now())) {
             Double totalConDescuento = servicioCarrito.calcularTotalCarritoConDescuento(totalCarrito);
             resultado.put("descuentoAplicado", true);
             resultado.put("totalConDescuento", totalConDescuento);
