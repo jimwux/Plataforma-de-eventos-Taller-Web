@@ -808,6 +808,7 @@ public class RepositorioEventoImplTest {
         assertThrows(EventoNoEncontradoException.class, () -> {
             this.repositorioEvento.buscarEventosPorNombreCategoriaProvinciaYCiudad("Tro", "Buenos Aires", "La Matanza","fiesta");
         });
+        // primer parametro : clase la cual se espera al ejecutarse ese metodo
     }
 
 

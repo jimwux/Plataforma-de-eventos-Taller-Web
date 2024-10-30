@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
     <link rel="stylesheet" th:href="@{/css/formulario.css}"/>
+
 </head>
 <body>
 
@@ -88,6 +89,7 @@
                         </tr>
                         </thead>
                         <!-- Iterar sobre los items del carrito -->
+
                         <tbody>
                         <tr th:each="item: ${entradasCarrito}">
                             <td class="tipo-entrada" th:text="${item.entrada.nombre}">Tipo de Entrada
@@ -98,14 +100,18 @@
                                <!-- <input type="hidden" name="cantidades" th:value="${item.cantidad}"/> -->
                             </td>
 
-                            <td class="subtotal-entrada" th:text="${item.totalCarrito}">Subtotal
+                            <td class="subtotal-entrada" th:attr="data-id=${item.totalCarrito}" th:text="${item.totalCarrito}">Subtotal
                               <!--  <input type="hidden" name="idsEntradas" th:value="${item.entrada.id}"/>
                                 <input type="hidden" name="subtotales" th:value="${item.totalCarrito}"/> -->
                             </td>
 
+                            <td>
+                                <button class="borrar" id="tachito" th:attr="data-id=${item.entrada.id}" >borrar</button>
+                            </td>
+
                             <input type="hidden" name="idsEntradas" th:value="${item.entrada.id}"/>
-                            <input type="hidden" name="cantidades" th:value="${item.cantidad}"/>
-                            <input type="hidden" name="precioEntrada" th:value="${item.entrada.precio}"/>
+                            <input type="hidden" class="cantidad" name="cantidades" th:value="${item.cantidad}"/>
+                            <input type="hidden" class="precioEntrada" name="precioEntrada" th:value="${item.entrada.precio}"/>
                             <input type="hidden" name="tipoEntrada" th:value="${item.entrada.nombre}"/>
                         </tr>
                         </tbody>
@@ -118,7 +124,7 @@
 
                 </article>
 
-                <input class="botones" type="submit" value="Abonar">
+                <input class="botones enviar" type="submit" value="Abonar">
 
                 <button class="botones"><a th:href="@{/eventos}">Volver</a></button>
 
@@ -131,7 +137,8 @@
 
 
 </main>
-
+<script th:src="@{js/borrarEntradas.js}"></script>
 <script th:src="@{js/formularioPago.js}"></script>
+
 </body>
 </html>
