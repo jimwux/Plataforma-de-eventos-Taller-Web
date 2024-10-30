@@ -2,6 +2,7 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.Carrito;
 import com.tallerwebi.dominio.ServicioCarrito;
+import com.tallerwebi.dominio.ServicioEmail;
 import com.tallerwebi.dominio.ServicioEvento;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,15 @@ public class ControladorCarritoTest {
     private ControladorCarrito controladorCarrito;
     private ServicioCarrito servicioCarritoMock;
     private ServicioEvento servicioEventoMock;
+    private ServicioEmail servicioEmailMock;
 
 
     @BeforeEach
     public void init(){
         this.servicioCarritoMock = mock(ServicioCarrito.class);
         this.servicioEventoMock = mock(ServicioEvento.class);
-        this.controladorCarrito = new ControladorCarrito(servicioCarritoMock, servicioEventoMock);
+        this.servicioEmailMock = mock(ServicioEmail.class);
+        this.controladorCarrito = new ControladorCarrito(servicioCarritoMock, servicioEventoMock, servicioEmailMock);
     }
 
     @Test

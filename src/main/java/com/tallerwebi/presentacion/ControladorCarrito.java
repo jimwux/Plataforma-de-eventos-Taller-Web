@@ -21,11 +21,13 @@ public class ControladorCarrito {
 
     private ServicioCarrito servicioCarrito;
     private ServicioEvento servicioEvento;
+    private ServicioEmail servicioEmail;
 
     @Autowired
-    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento) {
+    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento, ServicioEmail servicioEmail) {
         this.servicioCarrito = servicioCarrito;
         this.servicioEvento = servicioEvento;
+        this.servicioEmail = servicioEmail;
     }
 
     @PostMapping("/pago")
@@ -53,10 +55,12 @@ public class ControladorCarrito {
 
         ModelMap modelo = new ModelMap();
 
-        String codigoDescuento = servicioCarrito.generarCodigoDescuento();
-        servicioCarrito.guardarCodigoDescuento(codigoDescuento);
+        String codigoDescuento = this.servicioCarrito.generarCodigoDescuento();
+        this.servicioCarrito.guardarCodigoDescuento(codigoDescuento);
 
         modelo.put("codigoDescuento", codigoDescuento);
+
+        this.servicioEmail.enviarCodigoDescuento("jimenagomezwusi@hotmail.com", codigoDescuento);
 
         return new ModelAndView("compraRealizada", modelo);
     }

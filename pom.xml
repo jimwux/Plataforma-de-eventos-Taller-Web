@@ -23,6 +23,8 @@
         <hsqldb.version>2.3.2</hsqldb.version>
         <mysql.version>8.0.33</mysql.version>
         <javaxmail.version>1.6.2</javaxmail.version>
+        <jakarta.version>2.0.1</jakarta.version>
+        <jakartaactivation.version>1.2.2</jakartaactivation.version>
     </properties>
 
     <dependencies>
@@ -137,10 +139,18 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>javax.mail</artifactId>
             <version>${javaxmail.version}</version>
         </dependency>
+
+
 
         <dependency>
             <groupId>commons-beanutils</groupId>
