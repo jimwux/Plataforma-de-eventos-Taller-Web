@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -16,16 +17,28 @@ import java.util.Properties;
 @Transactional
 public class ServicioEmailImpl implements ServicioEmail{
 
+    @Value("${spring.mail.username}")
+    private String remitente;
+    @Value("${spring.mail.password}")
+    private String contrasenia;
+    @Value("${spring.mail.host}")
+    private String host;
+    @Value("${spring.mail.port}")
+    private String port;
+    @Value("${spring.mail.properties.mail.smtp.auth}")
+    private String auth;
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+    private String starttls_enable;
+
+
     @Override
     public void enviarCodigoDescuento(String email, String codigoDescuento) {
-        String remitente = "equipomokito1@gmail.com";
-        String contrasenia = "mhjf mrrh vmhu wuda";
 
         Properties propiedades = new Properties();
-        propiedades.put("mail.smtp.host", "smtp.gmail.com");
-        propiedades.put("mail.smtp.port", "587");
-        propiedades.put("mail.smtp.auth", "true");
-        propiedades.put("mail.smtp.starttls.enable", "true");
+        propiedades.put("mail.smtp.host", host);
+        propiedades.put("mail.smtp.port", port);
+        propiedades.put("mail.smtp.auth", auth);
+        propiedades.put("mail.smtp.starttls.enable", starttls_enable);
 
         Session sesion = Session.getInstance(propiedades, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
