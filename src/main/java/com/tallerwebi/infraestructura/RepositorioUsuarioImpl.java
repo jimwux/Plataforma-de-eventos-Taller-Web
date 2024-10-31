@@ -5,10 +5,12 @@ import com.tallerwebi.dominio.Usuario;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+
 
 @Repository("repositorioUsuario")
 public class RepositorioUsuarioImpl implements RepositorioUsuario {
@@ -31,11 +33,28 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .uniqueResult();
     }
 
-    @Override
+  /*  @Override
     @Transactional
     public void guardar(Usuario usuario) {
         sessionFactory.getCurrentSession().save(usuario);
-    }
+    }*/
+
+@Override
+@Transactional
+public void guardar(@org.jetbrains.annotations.NotNull Usuario usuario) {
+    String sql = "INSERT INTO Usuario (email, password, nombre, apellido, telefono, dni) VALUES (:email, :password, :nombre, :apellido, :telefono, :dni)";
+
+    Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
+    query.setParameter("email", usuario.getEmail());
+    query.setParameter("password", usuario.getPassword());
+    query.setParameter("nombre", usuario.getNombre());
+    query.setParameter("apellido", usuario.getApellido());
+    query.setParameter("telefono", usuario.getTelefono());
+    query.setParameter("dni", usuario.getDni());
+
+    query.executeUpdate();
+}
+
 
     @Override
     @Transactional

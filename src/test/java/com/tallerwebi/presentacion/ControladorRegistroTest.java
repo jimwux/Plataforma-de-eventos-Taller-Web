@@ -27,7 +27,7 @@ public class ControladorRegistroTest {
 
     @Test
     public void verificarRegistroExitoso() throws UsuarioExistente {
-        Usuario usuario = new Usuario("brian", "a@gmail.com", "12345");
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", 1123895568, 23895568);
 
         when(servicioRegistro.registrar(usuario)).thenReturn("Registro Exitoso");
 
@@ -52,7 +52,8 @@ public class ControladorRegistroTest {
     @Test
     public void errorEnRegistrarmeDeberiaVolverAFormularioYMostrarError() throws UsuarioExistente {
         // preparacion
-        Usuario usuario = new Usuario("brian", "a@gmail.com", "12345");
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", 1123895568, 23895568);
+
         doThrow(RuntimeException.class).when(servicioRegistro).registrar(usuario);
 
         // ejecucion
@@ -81,7 +82,8 @@ public class ControladorRegistroTest {
     @Test
     public void verificarDetallesDeUsuarioConRegistroExitoso() throws UsuarioExistente {
         // preparacion
-        Usuario usuario = new Usuario("brian", "a@gmail.com", "12345");
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", 1123895568, 23895568);
+
         when(servicioRegistro.registrar(usuario)).thenReturn("Registro Exitoso");
 
         // ejecucion
@@ -95,7 +97,8 @@ public class ControladorRegistroTest {
     @Test
     public void verificarSiElEmailExisteEntoncesDebeVolverAlFormularioYMostrarError() throws UsuarioExistente {
         // preparacion
-        Usuario usuario = new Usuario("brian", "a@gmail.com", "12345");
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", 1123895568, 23895568);
+
         doThrow(new UsuarioExistente("Email existente")).when(servicioRegistro).registrar(usuario);
 
         // ejecucion
@@ -109,7 +112,8 @@ public class ControladorRegistroTest {
     @Test
     public void alRegistrarseConUnEmailInvalidoDebeVolverAlFormularioYMostrarError() throws UsuarioExistente {
         // preparacion
-        Usuario usuario = new Usuario("brian", "email-invalido", "12345");
+        Usuario usuario = new Usuario("email-invalido", "12345", "brian", "hidalgo", 1123895568, 23895568);
+
         ModelMap model = new ModelMap();
 
         // ejecucion
