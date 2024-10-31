@@ -14,12 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ControladorRegistro {
-    private final RepositorioUsuarioImpl repositorioUsuario;
     private ServicioRegistro servicioRegistro;
 
-    public ControladorRegistro(ServicioRegistro servicioRegistro, RepositorioUsuarioImpl repositorioUsuario) {
+    public ControladorRegistro(ServicioRegistro servicioRegistro) {
     this.servicioRegistro = servicioRegistro;
-        this.repositorioUsuario = repositorioUsuario;
     }
 
     public String registrar(Usuario usuario) throws UsuarioExistente {

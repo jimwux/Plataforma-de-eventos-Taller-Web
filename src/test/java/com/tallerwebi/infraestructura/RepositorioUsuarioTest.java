@@ -37,7 +37,7 @@ public class RepositorioUsuarioTest {
     public void dadoQueSeRegistraUnUsuarioEsteSeGuardaEnLaBaseDeDatos(){
 
         // preparacion
-        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", 1123895568, 23895568);
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", "1123895568", "23895568");
 
         // ejecucion
         repositorioUsuario.guardar(usuario);
@@ -55,7 +55,7 @@ public class RepositorioUsuarioTest {
     @Rollback
     public void dadoQueQuieroModificarLosDatosDelUsuarioEsteSeModifica(){
         // preparacion
-        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", 1123895568, 23895568);
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", "1123895568", "23895568");
 
         // ejecucion
         usuario.setEmail("b@gmail.com");
