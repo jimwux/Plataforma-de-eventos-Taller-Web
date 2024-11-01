@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -25,12 +26,16 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     @Override
     @Transactional
     public Usuario buscarUsuario(String email, String password) {
-
         final Session session = sessionFactory.getCurrentSession();
-        return (Usuario) session.createCriteria(Usuario.class)
+        Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
                 .add(Restrictions.eq("email", email))
-                .add(Restrictions.eq("password", password))
                 .uniqueResult();
+
+        if (usuario != null && new BCryptPasswordEncoder().matches(password, usuario.getPassword())) {
+            return usuario;
+        }
+
+        return null;
     }
 
     @Override
@@ -65,6 +70,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
                 .add(Restrictions.eq("email", email))
                 .uniqueResult();
     }
+
 
     @Override
     @Transactional

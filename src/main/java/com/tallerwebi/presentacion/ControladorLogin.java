@@ -2,16 +2,15 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ControladorLogin {
@@ -19,48 +18,36 @@ public class ControladorLogin {
     private ServicioLogin servicioLogin;
 
     @Autowired
-    public ControladorLogin(ServicioLogin servicioLogin){
+    public ControladorLogin(ServicioLogin servicioLogin) {
         this.servicioLogin = servicioLogin;
     }
 
-    @RequestMapping("/login")
-    public ModelAndView irALogin() {
-
-        ModelMap modelo = new ModelMap();
-        modelo.put("datosLogin", new DatosLogin());
-        return new ModelAndView("login", modelo);
+    @RequestMapping(path = "/login", method = RequestMethod.GET)
+    public ModelAndView mostrarFormularioLogin() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject("datosLoginDTO", new DatosLoginDTO());
+        return modelAndView;
     }
 
-    @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
-    public ModelAndView validarLogin(@ModelAttribute("datosLogin") DatosLogin datosLogin) {
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public ModelAndView validarLogin(@ModelAttribute("datosLoginDTO") DatosLoginDTO datosLoginDTO) {
         ModelMap model = new ModelMap();
 
-        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword());
+        Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
         if (usuarioBuscado != null) {
-            return new ModelAndView("redirect:/home");
+            return new ModelAndView("redirect:/eventos");
         } else {
             model.put("error", "Usuario o clave incorrecta");
+            model.put("datosLoginDTO", new DatosLoginDTO());
+            return new ModelAndView("login", model);
         }
-        return new ModelAndView("login", model);
+    }
+
+    @GetMapping("/eventos/login")
+    public String irAHome() {
+        return "home";
     }
 
 
 
-    @RequestMapping(path = "/nuevo-usuario", method = RequestMethod.GET)
-    public ModelAndView nuevoUsuario() {
-        ModelMap model = new ModelMap();
-        model.put("usuario", new Usuario());
-        return new ModelAndView("nuevo-usuario", model);
-    }
-
-    @RequestMapping(path = "/home", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
-        return new ModelAndView("home");
-    }
-
-    @RequestMapping(path = "/", method = RequestMethod.GET)
-    public ModelAndView inicio() {
-        return new ModelAndView("redirect:/login");
-    }
 }
-

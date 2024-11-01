@@ -66,5 +66,22 @@ public class RepositorioUsuarioTest {
         assertThat(usuario.getPassword(), equalTo("54321"));
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void dadoQueHayUnUsuarioGuardadoEnLaBaseDeDatosQuieroBuscarloParaLoguearlo(){
+        // preparacion
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", "1123895568", "23895568");
+
+        // ejecucion
+        repositorioUsuario.guardar(usuario);
+        Usuario usuarioBuscado = repositorioUsuario.buscarUsuario("a@gmail.com", "12345");
+
+        // validacion
+        assertThat(usuario,is(notNullValue()));
+        assertThat(usuario.getEmail(),equalTo("a@gmail.com"));
+        assertThat(usuario.getPassword(),equalTo("12345"));
+    }
+
 
 }
