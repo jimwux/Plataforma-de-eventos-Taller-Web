@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ControladorLogin {
@@ -30,11 +31,12 @@ public class ControladorLogin {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ModelAndView validarLogin(@ModelAttribute("datosLoginDTO") DatosLoginDTO datosLoginDTO) {
+    public ModelAndView validarLogin(@ModelAttribute("datosLoginDTO") DatosLoginDTO datosLoginDTO, HttpSession session) {
         ModelMap model = new ModelMap();
-
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
+
         if (usuarioBuscado != null) {
+            session.setAttribute("usuarioLogueado", usuarioBuscado);
             return new ModelAndView("redirect:/eventos");
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -43,10 +45,18 @@ public class ControladorLogin {
         }
     }
 
+    @RequestMapping(path = "/logout", method = RequestMethod.GET)
+    public String logout(HttpSession session) {
+        session.removeAttribute("usuarioLogueado");
+        return "redirect:/login";
+    }
+
     @GetMapping("/eventos/login")
     public String irAHome() {
         return "home";
     }
+
+
 
 
 

@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -85,7 +88,31 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         return new ModelAndView("vista", vistas);
     }
-    
+
+    @GetMapping("/eventos")
+    public ModelAndView mostrarEventos(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("eventos");
+        boolean logueado = session.getAttribute("usuarioLogueado") != null;
+        modelAndView.addObject("logueado", logueado);
+        return modelAndView;
+    }
+  /*  @RequestMapping(path = "/eventos", method = RequestMethod.GET)
+    public ModelAndView mostrarEventos() {
+        ModelAndView modelAndView = new ModelAndView("eventos");
+        boolean logueado = false;
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            logueado = true;
+        }
+
+        modelAndView.addObject("logueado", logueado);
+        return modelAndView;
+    }*/
+
+
+
+
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }

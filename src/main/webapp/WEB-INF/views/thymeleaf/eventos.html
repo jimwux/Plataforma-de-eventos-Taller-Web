@@ -13,7 +13,9 @@
         <ul id="botones-nav">
             <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
             <li class="boton-nav"><a href="">Contacto</a></li>
-            <li class="boton-nav"><a href="">Usuario</a></li>
+            <li class="boton-nav">
+                <a href="#" th:text="${logueado != null and logueado ? 'Usuario' : 'Ingresar'}"></a>
+            </li>
         </ul>
     </nav>
 
