@@ -30,7 +30,7 @@ function validacionFormularioRegistro() {
         error = true;
     }
 
-    let expCorreo = /^(.+\@.+\..+)$/;
+    let expCorreo = /^(.+@.+\..+)$/;
 
     if (!expCorreo.test(correo) || correo === "") {
         error = true;
@@ -117,6 +117,7 @@ function actualizarSubtotal(subtotal, cantidad, precioUnitario) {
     subtotal.textContent = (cantidad * precioUnitario).toFixed(2);
     //nos traemos el subtotal, la cantidad y el precio unitario que tenemos dentro del evento
 }
+
 
 function actualizarPrecioFinal() {
     let total = 0;
