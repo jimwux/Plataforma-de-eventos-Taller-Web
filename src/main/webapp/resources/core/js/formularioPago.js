@@ -64,41 +64,70 @@ function validacionFormularioRegistro() {
     }
 }
 
-const botonesBorrar = document.querySelectorAll('.borrar');
-botonesBorrar.forEach(boton => {
+//seleccionamos todos los botones con la clase .borrar, los cuales esten
+//en el front cargados
+
+let botones = document.querySelectorAll('.borrar');
+
+//recorre los botones que seleccionamos anteriormente
+botones.forEach(boton => {
+    //se le agrega un evento click a cada boton, es decir que cuando se clickee cualquiera
+    //de ellos, los mismos realizaran lo asignado a ese evento
     boton.addEventListener('click', (event) => {
+        //previene el envio del formulario
         event.preventDefault();
 
-        const fila = event.target.closest('tr');
-        const cantidadInput = fila.querySelector('.cantidad-entrada');
-        let cantidad = parseInt(cantidadInput.textContent);
-        const subtotalElement = fila.querySelector('.subtotal-entrada');
-        const precioUnitario = parseFloat(fila.querySelector('.precioEntrada').value);
-        const cantidadOculta = fila.querySelector('.cantidad');
+        //al boton que se clickeo, le buscamos su elemento tr MAS cercano que contenga
+        //el boton, es decir la fila que representamos
+        let fila = event.target.closest('tr');
 
+        //selecciona la cantidad que muestra en la pantalla
+        let cantidadInput = fila.querySelector('.cantidad-entrada');
+        //parseamos su contenido a int para no generar conflictos
+        let cantidad = parseInt(cantidadInput.textContent);
+        //selecciona el subtotal mostrado en pantalla
+        let subtotalElement = fila.querySelector('.subtotal-entrada');
+        //nos traemos el precio unitario oculto en la pagina para luego realizar calculos con el
+        let precioUnitario = parseFloat(fila.querySelector('.precioEntrada').value);
+        //seleccionamos la cantidad oculta, la cual pasara por nuestro array que llega a mercado pago
+        let cantidadOculta = fila.querySelector('.cantidad');
+
+
+        //verificamos esa cantidad para que en el caso que tengamos + de 1
+        //se descuente de la cantidad y se modifique su precio subtotal
+        //DEBEMOS CAMBIAR EL OCULTO PARA NO GENERAR CONFLICTO EN EL ARRAY QUE LLEGA A MP
         if (cantidad > 1) {
             cantidad--;
             cantidadInput.textContent = cantidad;
             cantidadOculta.value = cantidad; // Sincroniza la cantidad oculta
             actualizarSubtotal(subtotalElement, cantidad, precioUnitario);
         } else {
-            if (confirm("¿Está seguro de que desea eliminar esta entrada?")) {
+            //en caso de existir una sola entrada, mostramos un mensaje para confirmar la eliminacion
+            //y borramos esa fila
+            if (confirm("¿Esta seguro de que desea eliminar esta entrada?")) {
                 fila.remove();
             }
         }
+        //actualizamos el total
         actualizarPrecioFinal();
     });
 });
 
 function actualizarSubtotal(subtotal, cantidad, precioUnitario) {
     subtotal.textContent = (cantidad * precioUnitario).toFixed(2);
+    //nos traemos el subtotal, la cantidad y el precio unitario que tenemos dentro del evento
 }
 
 function actualizarPrecioFinal() {
     let total = 0;
-    const subtotales = document.querySelectorAll('.subtotal-entrada');
+    //nos traemos todos los subtotales y los recorremos para ir creando nuestro nuevo total en caso
+    // de haber eliminado alguna entrada
+    let subtotales = document.querySelectorAll('.subtotal-entrada');
     subtotales.forEach(subtotal => {
         total += parseFloat(subtotal.textContent) || 0;
+        //caso de devolver un NaN,mostrara 0 en pantalla
     });
+    //modificamos precio total en la vista
     document.getElementById('precio-final').querySelector('span').textContent = total.toFixed(2);
 }
+
