@@ -9,9 +9,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.ModelAndView;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,8 +34,17 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
                                             @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
                                             @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
-                                            @RequestParam(value = "categoria", required = false) String categoria) {
-        ModelMap modelo = new ModelMap();
+                                            @RequestParam(value = "categoria", required = false) String categoria,
+                                            HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        Long usuarioId = (session != null) ? (Long) session.getAttribute("ID") : null;
+
+//        if (usuarioId == null) {
+//            return new ModelAndView("redirect:/login");
+//        }
+
+    ModelMap modelo = new ModelMap();
 
         try{
 
@@ -85,7 +97,8 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         return new ModelAndView("vista", vistas);
     }
-    
+
+
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }
