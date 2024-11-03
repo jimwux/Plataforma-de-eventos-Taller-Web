@@ -47,6 +47,7 @@ public class ControladorMercadoPago {
                           @RequestParam("nombreEvento") String nombreEvento,
                           @RequestParam("correo") String emailUsuario,
                           @RequestParam(value = "codigoDescuento", required = false) String codigoDescuento) throws MPException, MPApiException, IOException {
+      
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
 // Calcular el descuento si hay un código válido
@@ -79,7 +80,7 @@ public class ControladorMercadoPago {
         }
         PreferencePayerRequest payer = PreferencePayerRequest.builder()
                 .name("Lautaro")
-                .surname("Rosse")
+                .surname("Rossi")
                 .email(emailUsuario)
                 .phone(PhoneRequest.builder()
                     .areaCode("11")
