@@ -96,17 +96,17 @@ botones.forEach(boton => {
         //verificamos esa cantidad para que en el caso que tengamos + de 1
         //se descuente de la cantidad y se modifique su precio subtotal
         //DEBEMOS CAMBIAR EL OCULTO PARA NO GENERAR CONFLICTO EN EL ARRAY QUE LLEGA A MP
-        if (cantidad > 1) {
+        let botonBorrar = document.getElementById("tachito");
+        let precioTotal = document.getElementById('precio-final').querySelector('span').textContent;
+
+        if (precioTotal > precioUnitario) {
+            if(cantidad == 1){fila.remove();}
             cantidad--;
             cantidadInput.textContent = cantidad;
             cantidadOculta.value = cantidad; // Sincroniza la cantidad oculta
             actualizarSubtotal(subtotalElement, cantidad, precioUnitario);
         } else {
-            //en caso de existir una sola entrada, mostramos un mensaje para confirmar la eliminacion
-            //y borramos esa fila
-            if (confirm("¿Esta seguro de que desea eliminar esta entrada?")) {
-                fila.remove();
-            }
+            botonBorrar.disabled();
         }
         //actualizamos el total
         actualizarPrecioFinal();
