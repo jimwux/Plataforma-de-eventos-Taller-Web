@@ -80,9 +80,7 @@ public class Usuario {
     public void setDni(String dni) {
         this.dni = dni;
     }
-
-
-
-
-
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
