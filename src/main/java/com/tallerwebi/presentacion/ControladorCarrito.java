@@ -8,20 +8,26 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ControladorCarrito {
 
     private ServicioCarrito servicioCarrito;
     private ServicioEvento servicioEvento;
+    private ServicioEmail servicioEmail;
 
     @Autowired
-    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento) {
+    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento, ServicioEmail servicioEmail) {
         this.servicioCarrito = servicioCarrito;
         this.servicioEvento = servicioEvento;
+        this.servicioEmail = servicioEmail;
     }
 
     @PostMapping("/pago")
@@ -46,22 +52,33 @@ public class ControladorCarrito {
 
     @GetMapping("/compraFinalizada")
       public ModelAndView mostrarVistaCompraFinalizada(){
-//                                                     @RequestParam("nombre") String nombre,
-//                                                     @RequestParam("apellido") String apellido
+
         ModelMap modelo = new ModelMap();
-//        modelo.put("nombre", nombre);
-//        modelo.put("apellido", apellido);
+
+        String codigoDescuento = this.servicioCarrito.generarCodigoDescuento();
+        this.servicioCarrito.guardarCodigoDescuento(codigoDescuento);
+
+        modelo.put("codigoDescuento", codigoDescuento);
+
+        this.servicioEmail.enviarCodigoDescuento("jimenagomezwusi@hotmail.com", codigoDescuento);
 
         return new ModelAndView("compraRealizada", modelo);
     }
 
+    @GetMapping("/aplicarDescuento")
+    @ResponseBody
+    public Map<String, Object> aplicarDescuento(@RequestParam("codigoDescuento") String codigoDescuento,
+                                                @RequestParam("totalCarrito") Double totalCarrito) {
+        Map<String, Object> resultado = new HashMap<>();
 
-
-
-
-
-
-
-
+        if (servicioCarrito.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now())) {
+            Double totalConDescuento = servicioCarrito.calcularTotalCarritoConDescuento(totalCarrito);
+            resultado.put("descuentoAplicado", true);
+            resultado.put("totalConDescuento", totalConDescuento);
+        } else {
+            resultado.put("descuentoAplicado", false);
+        }
+        return resultado;
+    }
 
 }

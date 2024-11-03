@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -72,6 +73,51 @@ public class ServicioCarritoImplTest {
 
         assertThat(totalObtenido, equalTo(totalObtenido));
     }
+
+
+    @Test
+    public void alGenerarUnCodigoDeDescuentoEsteTieneElLargoDeseado() {
+        String codigo = servicioCarrito.generarCodigoDescuento();
+        assertThat(codigo, hasLength(8));
+    }
+
+    @Test
+    public void alCargarUnCodigoDeDescuentoDentroDeLosDosMinutosEsteResultaValido() {
+        String codigo = servicioCarrito.generarCodigoDescuento();
+        servicioCarrito.guardarCodigoDescuento(codigo);
+
+        assertThat(servicioCarrito.esCodigoDescuentoValido(codigo, LocalDateTime.now().plusMinutes(1)), is(true));
+    }
+
+    @Test
+    public void alCargarUnCodigoDeDescuentoExpiradoEsteResultaInvalido() {
+        String codigo = servicioCarrito.generarCodigoDescuento();
+        servicioCarrito.guardarCodigoDescuento(codigo);
+
+        assertThat(servicioCarrito.esCodigoDescuentoValido(codigo, LocalDateTime.now().plusMinutes(3)), is(false));
+    }
+
+    @Test
+    public void alCalcularElTotalDelCarritoConDescuentoDescuentaElVeintePorciento() {
+        Double totalCarrito = 100.0;
+        Double totalConDescuento = servicioCarrito.calcularTotalCarritoConDescuento(totalCarrito);
+
+        assertThat(totalConDescuento, equalTo(80.0));
+    }
+
+    @Test
+    public void alCalcularElTotalDelCarritoConDescuentoNuncaDaNegativoPorMasBajoQueSeaElTotalOriginal() {
+        Double totalCarrito = 1.0;
+        Double totalConDescuento = servicioCarrito.calcularTotalCarritoConDescuento(totalCarrito);
+
+        assertThat((totalConDescuento >= 0), is(true));
+    }
+
+
+
+
+
+
 
 
 }

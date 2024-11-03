@@ -22,6 +22,9 @@
         <playwright.version>1.36.0</playwright.version>
         <hsqldb.version>2.3.2</hsqldb.version>
         <mysql.version>8.0.33</mysql.version>
+        <javaxmail.version>1.6.2</javaxmail.version>
+        <jakarta.version>2.0.1</jakarta.version>
+        <jakartaactivation.version>1.2.2</jakartaactivation.version>
     </properties>
 
     <dependencies>
@@ -123,8 +126,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
             <scope>runtime</scope>
         </dependency>
@@ -135,6 +138,20 @@
             <artifactId>dom4j</artifactId>
             <version>2.1.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>${javaxmail.version}</version>
+        </dependency>
+
+
 
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -154,6 +171,7 @@
             <version>3.2.2</version>
         </dependency>
 
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
@@ -164,6 +182,14 @@
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>
             <version>3.1.0.RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.22</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

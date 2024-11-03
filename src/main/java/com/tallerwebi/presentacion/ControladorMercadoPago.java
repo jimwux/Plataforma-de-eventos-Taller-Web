@@ -11,11 +11,16 @@ import com.mercadopago.exceptions.MPException;
 //import com.mercadopago.resources.common.Phone;
 //import com.mercadopago.resources.customer.Identification;
 import com.mercadopago.resources.preference.Preference;
+import com.tallerwebi.dominio.ServicioCarrito;
+import com.tallerwebi.dominio.ServicioEvento;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +28,15 @@ import java.util.List;
 @RequestMapping("/checkout")
 public class ControladorMercadoPago {
 
+    private ServicioCarrito servicioCarrito;
+
+    @Autowired
+    public ControladorMercadoPago(ServicioCarrito servicioCarrito) {
+        this.servicioCarrito = servicioCarrito;
+    }
+
+    @Value("${mercadoPago.accessToken}")
+    private String mercadoPagoAccessToken;
 
     @PostMapping("/create-payment")
     public void crearPago(HttpServletResponse response,
@@ -31,17 +45,27 @@ public class ControladorMercadoPago {
                           @RequestParam("precioEntrada") List<Double> precioEntrada,
                           @RequestParam("tipoEntrada") List<String> tipoEntradas,
                           @RequestParam("nombreEvento") String nombreEvento,
-                          @RequestParam("correo") String emailUsuario) throws MPException, MPApiException, IOException {
-        MercadoPagoConfig.setAccessToken("APP_USR-6558400260331558-101319-6cbadc51fd33533cb97b5691213fe4ff-2036459718");
+                          @RequestParam("correo") String emailUsuario,
+                          @RequestParam(value = "codigoDescuento", required = false) String codigoDescuento) throws MPException, MPApiException, IOException {
+      
+        MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
+// Calcular el descuento si hay un código válido
+        Double porcentajeDescuento = 0.20;
+        boolean descuentoAplicado = codigoDescuento != null && this.servicioCarrito.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now()); // Valida aquí tu código de descuento real
 
 // Crea un objeto de preferencia
         PreferenceClient client = new PreferenceClient();
 
-
 // Crea un ítem en la preferencia
         List<PreferenceItemRequest> items = new ArrayList<>();
         for (int i = 0; i < idsEntradas.size(); i++) {
+
+            Double precio = precioEntrada.get(i);
+            if (descuentoAplicado) {
+                precio = precio - (precio * porcentajeDescuento); // Aplica el descuento
+            }
+
             PreferenceItemRequest item =
                     PreferenceItemRequest.builder()
 
@@ -49,14 +73,14 @@ public class ControladorMercadoPago {
                             .description("Tipo Entrada: " + tipoEntradas.get(i))
                             .quantity(cantidades.get(i))
                             .currencyId("ARS")
-                            .unitPrice(BigDecimal.valueOf(precioEntrada.get(i)))
+                            .unitPrice(BigDecimal.valueOf(precio))
                             .build();
 
             items.add(item);
         }
         PreferencePayerRequest payer = PreferencePayerRequest.builder()
                 .name("Lautaro")
-                .surname("Rosse")
+                .surname("Rossi")
                 .email(emailUsuario)
                 .phone(PhoneRequest.builder()
                     .areaCode("11")
