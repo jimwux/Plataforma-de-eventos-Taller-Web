@@ -97,7 +97,7 @@ botones.forEach(boton => {
         //se descuente de la cantidad y se modifique su precio subtotal
         //DEBEMOS CAMBIAR EL OCULTO PARA NO GENERAR CONFLICTO EN EL ARRAY QUE LLEGA A MP
         let botonBorrar = document.getElementById("tachito");
-        let precioTotal = document.getElementById('precio-final').querySelector('span').textContent;
+        let precioTotal = parseFloat(document.getElementById('precio-final-valor-original').textContent) || 0;
 
         if (precioTotal > precioUnitario) {
             if(cantidad == 1){fila.remove();}
@@ -129,6 +129,6 @@ function actualizarPrecioFinal() {
         //caso de devolver un NaN,mostrara 0 en pantalla
     });
     //modificamos precio total en la vista
-    document.getElementById('precio-final').querySelector('span').textContent = total.toFixed(2);
+    document.getElementById('precio-final-valor-original').textContent = total.toFixed(2);
 }
 
