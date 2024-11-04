@@ -58,17 +58,71 @@
                 </fieldset>
 
 
-                <input class="check" type="checkbox" id="acepto" name="acepto">
-                <label for="acepto">Acepto los términos y condiciones</label>
+                <input class="check" type="checkbox" id="aceptacionTerminos" name="aceptacionTerminos" onclick="mostrarTermYCond()">
+                <label for="aceptacionTerminos">Acepto los términos y condiciones.</label>
 
-                <fieldset class="normas">
-                    <ol>
-                        <li>Una vez realizada la compra, te llegará un mail el código QR que te permitirá entrar al show de manera directa.</li>
-                        <li>También puedes acceder al código QR entrando a la sección "Mis entradas" de tu Perfil de Usuario.</li>
-                        <li>Los tickets adquiridos son válidos solo en el horario del evento.</li>
-                        <li>No se permite la redistribución o difusión del QR de acceso.</li>
-                    </ol>
-                </fieldset>
+                <div id="termsPopup" class="modal hidden">
+                    <div id="popup-contenido" class="modal-content">
+                        <h2>Terminos y Condiciones</h2>
+                            <div class="terminos_contenido">
+                                <ol type="1">
+                                    <li> <h3>Objeto</h3>
+                                        Este sitio web ofrece un servicio de venta de entradas para eventos como recitales y obras de teatro.
+                                        Al realizar una compra, el usuario acepta estos términos y condiciones.</li>
+                                    <li> <h3>Compra de Entradas</h3>
+                                        Todas las compras son definitivas y están sujetas a la disponibilidad de entradas en el momento de la transacción.</li>
+                                    <li> <h3>Uso Personal</h3>
+                                        Las entradas adquiridas son para uso personal y no se permite su reventa, cesión, o distribución sin autorización.
+                                    </li>
+                                    <li> <h3>Política de Reembolso</h3>
+                                        No se aceptan devoluciones ni cambios una vez completada la compra, excepto en casos de cancelación del evento.
+                                    </li>
+                                    <li> <h3>Cancelación de Eventos</h3>
+                                        En caso de cancelación o cambio de fecha, el usuario será notificado a través del correo electrónico proporcionado
+                                        al momento de la compra y podrá optar por el reembolso según nuestras políticas.
+                                    </li>
+                                    <li> <h3>Limitación de Responsabilidad</h3>
+                                        La empresa no se responsabiliza por pérdidas o daños relacionados con el uso o asistencia al evento.
+                                    </li>
+                                    <li> <h3>Derechos de Admisión</h3>
+                                        La organización del evento se reserva el derecho de admisión y permanencia en el recinto.
+                                    </li>
+                                    <li> <h3>Condiciones de Acceso</h3>
+                                        Las entradas deben presentarse impresas o en formato digital válido y serán verificadas en el ingreso al evento.
+                                    </li>
+                                    <li> <h3>Prohibiciones</h3>
+                                        Queda prohibido ingresar con objetos peligrosos, alcohol, o sustancias ilícitas al recinto del evento.
+                                    </li>
+                                    <li> <h3>Responsabilidad del Usuario</h3>
+                                        El usuario es responsable de proporcionar información verídica y actualizada durante el proceso de compra.
+                                    </li>
+                                    <li> <h3>Modificaciones en el Programa</h3>
+                                        La empresa se reserva el derecho de modificar el programa del evento sin previo aviso, por motivos de
+                                        fuerza mayor o ajenos a su control.
+                                    </li>
+                                    <li> <h3>Privacidad de Datos</h3>
+                                        Los datos proporcionados por el usuario serán tratados de acuerdo con nuestra política de privacidad y
+                                        no serán compartidos sin su consentimiento.
+                                    </li>
+                                    <li> <h3>Edad Mínima</h3>
+                                        Algunos eventos pueden tener restricciones de edad. Es responsabilidad del usuario verificar estos
+                                        requisitos antes de realizar la compra.
+                                    </li>
+                                    <li> <h3>Condiciones de Entrega</h3>
+                                        Las entradas serán enviadas electrónicamente al correo proporcionado por el usuario. No nos
+                                        responsabilizamos por la entrega fallida debido a errores en la información.
+                                    </li>
+                                    <li> <h3>Aceptación de Términos</h3>
+                                        Al realizar la compra, el usuario acepta cumplir con estos términos y condiciones en su totalidad.
+                                    </li>
+                                </ol>
+                            </div>
+                        <div id="botonesTerminosYCond">
+                        <button id="aceptarTerminosBoton" onclick="aceptarTYC()">Aceptar</button>
+                        <button id="cancelarTerminosBoton" onclick="cerrarTerminosPopup()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
 
             </article>
 
@@ -153,7 +207,8 @@
 
 
 </main>
-  
+
+<script th:src="@{js/verificarTYC.js}"></script>
 <script th:src="@{js/formularioPago.js}"></script>
 <script th:src="@{js/codigoDescuento.js}"></script>
 </body>

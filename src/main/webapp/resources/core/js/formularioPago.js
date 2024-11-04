@@ -16,7 +16,7 @@ function validacionFormularioRegistro() {
     let correoRep = document.getElementById("correoRep").value;
     let telefono = document.getElementById("telefono").value;
     let dni = document.getElementById("dni").value;
-    let acepto = document.getElementById("acepto").checked;
+    let aceptacionTerminos = document.getElementById("aceptacionTerminos").checked;
 
     let error = false;
 
@@ -52,7 +52,7 @@ function validacionFormularioRegistro() {
         error = true;
     }
 
-    if (!acepto) {
+    if (!aceptacionTerminos) {
         error = true;
     }
 
