@@ -60,7 +60,6 @@ function validacionFormularioRegistro() {
         alert("Datos invalidos");
     } else {
         formu.submit();
-        alert("Compra realizada");
     }
 }
 

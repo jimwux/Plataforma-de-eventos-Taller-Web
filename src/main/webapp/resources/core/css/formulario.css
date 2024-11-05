@@ -75,6 +75,27 @@ li{
     padding: 1em;
     border: none;
     border-radius: 15px;
+    cursor: pointer;
+}
+
+#boton-enviar:hover{
+    background: darkgreen;
+    font-weight: bold;
+    color: #cccccc;
+}
+
+#boton-enviar:active{
+    transform: scale(0.9);
+}
+
+#boton-volver:hover{
+    color: #cccccc;
+    background: darkred;
+    font-weight: bold;
+}
+
+#boton-volver:hover a{
+    color: #cccccc;
 }
 
 button a{
@@ -144,6 +165,24 @@ ol{
     align-items: center;
 }
 
+#tachito {
+         background: none;
+         border: none;
+         color: #fff;
+         cursor: pointer;
+         font-size: 14px;
+}
+
+#tachito:hover {
+    color: #f14d4d;
+    cursor: pointer;
+}
+
+#tachito:active {
+    transform: scale(0.7);
+}
+
+
 .contenedor-precio {
     display: flex;
     flex-direction: row;
@@ -169,10 +208,15 @@ ol{
     padding: 0.5em;
     border-radius: 0.5em;
     border: none;
+    cursor: pointer;
 }
 
 #contenedor-descuento button:hover {
     background-color: #b5b5b5;
+}
+
+#contenedor-descuento button:active {
+    transform: scale(0.9);
 }
 
 #portada-evento {
