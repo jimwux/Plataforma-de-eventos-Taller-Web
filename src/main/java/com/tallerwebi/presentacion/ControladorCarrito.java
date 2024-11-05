@@ -22,12 +22,20 @@ public class ControladorCarrito {
     private ServicioCarrito servicioCarrito;
     private ServicioEvento servicioEvento;
     private ServicioEmail servicioEmail;
+    private ServicioDatosCompra servicioDatosCompra;
+    private ServicioLogin servicioLogin;
+    private ServicioEntrada servicioEntrada;
+    private ServicioEntradaUsuario servicioEntradaUsuario;
 
     @Autowired
-    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento, ServicioEmail servicioEmail) {
+    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento, ServicioEmail servicioEmail, ServicioDatosCompra servicioDatosCompra, ServicioLogin servicioLogin, ServicioEntrada servicioEntrada, ServicioEntradaUsuario servicioEntradaUsuario) {
         this.servicioCarrito = servicioCarrito;
         this.servicioEvento = servicioEvento;
         this.servicioEmail = servicioEmail;
+        this.servicioDatosCompra = servicioDatosCompra;
+        this.servicioLogin = servicioLogin;
+        this.servicioEntrada = servicioEntrada;
+        this.servicioEntradaUsuario = servicioEntradaUsuario;
     }
 
     @PostMapping("/pago")
@@ -51,18 +59,41 @@ public class ControladorCarrito {
 
 
     @GetMapping("/compraFinalizada")
-      public ModelAndView mostrarVistaCompraFinalizada(){
+      public ModelAndView mostrarVistaCompraFinalizada(@RequestParam("codigoTransaccion") String codigoTransaccion,
+                                                       @RequestParam("status") String status){
 
         ModelMap modelo = new ModelMap();
 
-        String codigoDescuento = this.servicioCarrito.generarCodigoDescuento();
-        this.servicioCarrito.guardarCodigoDescuento(codigoDescuento);
+        if ("approved".equals(status)) {
+            DatosCompra datosCompra = this.servicioDatosCompra.obtenerCompraPorCodigoTransaccion(codigoTransaccion);
+            datosCompra.setEstado("completada");
 
-        modelo.put("codigoDescuento", codigoDescuento);
+            String emailUsuario = datosCompra.getEmailUsuario();
+            Usuario user = this.servicioLogin.verificarSiExiste(emailUsuario);
 
-        this.servicioEmail.enviarCodigoDescuento("jimenagomezwusi@hotmail.com", codigoDescuento);
+            List<EntradaCompra> datosEntradas = datosCompra.getEntradasCompradas();
+
+            for (EntradaCompra entradaCompra : datosEntradas) {
+                Entrada entradaActual = this.servicioEntrada.obtenerEntradaPorId(entradaCompra.getIdEntrada());
+                this.servicioEntradaUsuario.guardarEntradasDeTipo(entradaCompra.getCantidad(), user,  entradaActual, codigoTransaccion);
+            }
+
+
+            // Enviar correo y generar código de descuento
+            String codigoDescuento = servicioCarrito.generarCodigoDescuento();
+            servicioCarrito.guardarCodigoDescuento(codigoDescuento);
+            servicioEmail.enviarCodigoDescuento(emailUsuario, codigoDescuento);
+
+            modelo.put("codigoDescuento", codigoDescuento);
+
+        } else {
+            // Si el pago no fue aprobado, eliminar la compra pendiente
+            servicioDatosCompra.eliminarCompraPorCodigoTransaccion(codigoTransaccion);
+            modelo.put("error", "La compra no se completó con éxito y ha sido eliminada.");
+        }
 
         return new ModelAndView("compraRealizada", modelo);
+
     }
 
     @GetMapping("/aplicarDescuento")

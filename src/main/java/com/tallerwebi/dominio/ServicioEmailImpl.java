@@ -31,27 +31,29 @@ public class ServicioEmailImpl implements ServicioEmail{
     private String starttls_enable;
 
 
-    @Override
-    public void enviarCodigoDescuento(String email, String codigoDescuento) {
-
+    private Session configurarSesionCorreo() {
         Properties propiedades = new Properties();
         propiedades.put("mail.smtp.host", host);
         propiedades.put("mail.smtp.port", port);
         propiedades.put("mail.smtp.auth", auth);
         propiedades.put("mail.smtp.starttls.enable", starttls_enable);
 
-        Session sesion = Session.getInstance(propiedades, new javax.mail.Authenticator() {
+        return Session.getInstance(propiedades, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(remitente, contrasenia);
             }
         });
+    }
+
+    private void enviarCorreo(String email, String asunto, String mensajeTexto) {
+        Session sesion = configurarSesionCorreo();
 
         try {
             Message mensaje = new MimeMessage(sesion);
             mensaje.setFrom(new InternetAddress(remitente));
             mensaje.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            mensaje.setSubject("Código de Descuento para tu próxima compra");
-            mensaje.setText("¡Gracias por tu compra! Usa este código de descuento para tu próxima compra: " + codigoDescuento + "\nTenés dos minutos para utilizarlo :)");
+            mensaje.setSubject(asunto);
+            mensaje.setText(mensajeTexto);
 
             Transport.send(mensaje);
             System.out.println("Correo enviado con éxito a " + email);
@@ -60,4 +62,19 @@ public class ServicioEmailImpl implements ServicioEmail{
             throw new RuntimeException("Error al enviar correo", e);
         }
     }
+
+    @Override
+    public void enviarCodigoDescuento(String email, String codigoDescuento) {
+        String asunto = "Código de Descuento para tu próxima compra";
+        String mensajeTexto = "¡Gracias por tu compra! Usa este código de descuento para tu próxima compra: " + codigoDescuento + "\nTenés dos minutos para utilizarlo :)";
+        enviarCorreo(email, asunto, mensajeTexto);
+    }
+
+    @Override
+    public void enviarContraseniaAUsuarios(String email, String contrasenia) {
+        String asunto = "¡Bienvenido a MokitoPass!";
+        String mensajeTexto = "Hola,\n\nTu contraseña es: " + contrasenia + "\nPor favor, cámbiala después de iniciar sesión.";
+        enviarCorreo(email, asunto, mensajeTexto);
+    }
+
 }

@@ -11,53 +11,83 @@ import com.mercadopago.exceptions.MPException;
 //import com.mercadopago.resources.common.Phone;
 //import com.mercadopago.resources.customer.Identification;
 import com.mercadopago.resources.preference.Preference;
-import com.tallerwebi.dominio.ServicioCarrito;
-import com.tallerwebi.dominio.ServicioEvento;
+import com.tallerwebi.dominio.*;
+import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/checkout")
 public class ControladorMercadoPago {
 
     private ServicioCarrito servicioCarrito;
+    private ServicioRegistro servicioRegistro;
+    private ServicioLogin servicioLogin;
+    private ServicioEmail servicioEmail;
+    private ServicioEntradaUsuario servicioEntradaUsuario;
+    private ServicioDatosCompra servicioDatosCompra;
+    private ServicioEntradaCompra servicioEntradaCompra;
+    private String baseUrl;
+
 
     @Autowired
-    public ControladorMercadoPago(ServicioCarrito servicioCarrito) {
+    public ControladorMercadoPago(ServicioCarrito servicioCarrito, ServicioRegistro servicioRegistro, ServicioLogin servicioLogin, ServicioEmail servicioEmail, ServicioEntradaUsuario servicioEntradaUsuario, ServicioDatosCompra servicioDatosCompra, ServicioEntradaCompra servicioEntradaCompra) {
         this.servicioCarrito = servicioCarrito;
+        this.servicioRegistro = servicioRegistro;
+        this.servicioLogin = servicioLogin;
+        this.servicioEmail = servicioEmail;
+        this.servicioEntradaUsuario = servicioEntradaUsuario;
+        this.servicioDatosCompra = servicioDatosCompra;
+        this.servicioEntradaCompra = servicioEntradaCompra;
     }
 
     @Value("${mercadoPago.accessToken}")
     private String mercadoPagoAccessToken;
 
     @PostMapping("/create-payment")
-    public void crearPago(HttpServletResponse response,
+    public void crearPago(HttpServletRequest request, HttpServletResponse response,
                           @RequestParam("cantidades") List<Integer> cantidades,
                           @RequestParam("idsEntradas") List<Long> idsEntradas,
                           @RequestParam("precioEntrada") List<Double> precioEntrada,
                           @RequestParam("tipoEntrada") List<String> tipoEntradas,
                           @RequestParam("nombreEvento") String nombreEvento,
                           @RequestParam("correo") String emailUsuario,
-                          @RequestParam(value = "codigoDescuento", required = false) String codigoDescuento) throws MPException, MPApiException, IOException {
-      
+                          @RequestParam("nombre") String nombre,
+                          @RequestParam("apellido") String apellido,
+                          @RequestParam("telefono") String telefono,
+                          @RequestParam("dni") String dni,
+                          @RequestParam(value = "codigoDescuento", required = false) String codigoDescuento) throws MPException, MPApiException, IOException, UsuarioExistente, UsuarioExistente {
+
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
-// Calcular el descuento si hay un código válido
+        Usuario user = this.servicioLogin.verificarSiExiste(emailUsuario);
+
+        if(user == null){
+            String pass = this.servicioRegistro.generarContrasena();
+            user = new Usuario(emailUsuario, pass, nombre, apellido, telefono, dni);
+            this.servicioRegistro.registrar(user);
+            this.servicioEmail.enviarContraseniaAUsuarios(emailUsuario, pass);
+        }
+
+
+    // Calcular el descuento si hay un código válido
         Double porcentajeDescuento = 0.20;
         boolean descuentoAplicado = codigoDescuento != null && this.servicioCarrito.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now()); // Valida aquí tu código de descuento real
 
-// Crea un objeto de preferencia
+    // Crea un objeto de preferencia
         PreferenceClient client = new PreferenceClient();
 
-// Crea un ítem en la preferencia
+    // Crea un ítem en la preferencia
         List<PreferenceItemRequest> items = new ArrayList<>();
         for (int i = 0; i < idsEntradas.size(); i++) {
 
@@ -79,23 +109,24 @@ public class ControladorMercadoPago {
             items.add(item);
         }
         PreferencePayerRequest payer = PreferencePayerRequest.builder()
-                .name("Lautaro")
-                .surname("Rossi")
-                .email(emailUsuario)
+                .name(user.getNombre())
+                .surname(user.getApellido())
+                .email(user.getEmail())
                 .phone(PhoneRequest.builder()
-                    .areaCode("11")
-                    .number("4444-4444")
+                    .areaCode(user.getTelefono().substring(0, 2))
+                    .number(user.getTelefono().substring(2, 8))
                     .build())
                 .identification(IdentificationRequest.builder()
                     .type("DNI")
-                    .number("19119119100")
+                    .number(user.getDni())
                     .build())
                 .build();
 
+        String codigoTransaccion = UUID.randomUUID().toString();
 
         PreferenceBackUrlsRequest  backUrls = PreferenceBackUrlsRequest.builder()
-                .success("http://localhost:8080/equipomokito/compraFinalizada")
-                .failure("http://localhost:8080/equipomokito/eventos")
+                .success("http://localhost:8080/equipomokito/compraFinalizada?codigoTransaccion=" + codigoTransaccion)
+                .failure("http://localhost:8080/equipomokito/compraFinalizada?codigoTransaccion=" + codigoTransaccion)
                 .pending("https://www.pending.com")
                 .build();
 
@@ -107,9 +138,15 @@ public class ControladorMercadoPago {
                         .payer(payer)
                         .build();
 
-
-
         Preference preference = client.create(preferenceRequest);
+
+        DatosCompra datosCompraPendiente = new DatosCompra(codigoTransaccion, emailUsuario);
+        for (int i = 0; i < idsEntradas.size(); i++) {
+            EntradaCompra entradaCompra = datosCompraPendiente.agregarEntrada(idsEntradas.get(i), cantidades.get(i));
+            this.servicioEntradaCompra.guardar(entradaCompra);
+        }
+        this.servicioDatosCompra.guardar(datosCompraPendiente);
+
 
         response.sendRedirect(preference.getInitPoint());
     }
