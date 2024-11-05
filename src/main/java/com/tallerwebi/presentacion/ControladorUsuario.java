@@ -31,6 +31,7 @@ public class ControladorUsuario {
             modelo.put("usuarioVistaDTO", usuarioVistaDTO);
         }
 
+
         return new ModelAndView("usuario", modelo);
     }
 }

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Generar Código QR</title>
+</head>
+<body>
+
+<h1>Código QR Generado</h1>
+<img th:src="@{'/generate-qr?text=' + ${textoParaQR}}" alt="Código QR"/>
+
+</body>
+</html>
+<!--
+/generate-qr?text=hola
+se usa una etencion asi en la url para convertir lo que sea texto en la url, sino no anda
+ -->
