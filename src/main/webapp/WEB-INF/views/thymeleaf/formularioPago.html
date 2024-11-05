@@ -16,7 +16,12 @@
     <ul id="botones-nav">
         <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
         <li class="boton-nav"><a href="">Contacto</a></li>
-        <li class="boton-nav"><a href="">Usuario</a></li>
+        <li class="boton-nav" th:if="${session.ID == null}">
+            <a th:href="@{/login}">Ingresar</a>
+        </li>
+        <li class="boton-nav" th:if="${session.ID != null}">
+            <a th:href="@{/usuario}">Usuario</a>
+        </li>
     </ul>
 </nav>
 
@@ -117,9 +122,25 @@
                         </tbody>
                     </table>
 
-                    <div id="contenedor-precio-final">
+                    <div class="contenedor-precio">
                         <h3>Precio final</h3>
-                        <h3 id="precio-final">$ <span th:text="${totalCarrito}"></span></h3>
+                        <h3>$ <span th:text="${totalCarrito}" id="precio-final-valor-original"></span></h3>
+                    </div>
+
+                    <div id="contenedor-descuento">
+                        <h3>Código de Descuento</h3>
+                        <input type="text" id="codigoDescuento" name="codigoDescuento" placeholder="Ingrese su código de descuento">
+                        <button type="button" onclick="aplicarDescuento()">Aplicar descuento</button>
+                    </div>
+
+                    <div id="descuento-aplicado" class="contenedor-precio" style="display: none;">
+                        <h3>Descuento 20%</h3>
+                        <h3>- $ <span id="valor-descuento">0.00</span></h3>
+                    </div>
+
+                    <div id="precio-final-con-descuento" class="contenedor-precio" style="display: none;">
+                        <h3>Precio final con descuento</h3>
+                        <h3>$ <span id="precio-final-valor-con-descuento">0.00</span></h3>
                     </div>
 
                 </article>
@@ -137,7 +158,8 @@
 
 
 </main>
+  
 <script th:src="@{js/formularioPago.js}"></script>
-
+<script th:src="@{js/codigoDescuento.js}"></script>
 </body>
 </html>

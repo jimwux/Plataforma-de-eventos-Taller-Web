@@ -13,7 +13,12 @@
         <ul id="botones-nav">
             <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
             <li class="boton-nav"><a href="">Contacto</a></li>
-            <li class="boton-nav"><a href="">Usuario</a></li>
+            <li class="boton-nav" th:if="${session.ID == null}">
+                <a th:href="@{/login}">Ingresar</a>
+            </li>
+            <li class="boton-nav" th:if="${session.ID != null}">
+                <a th:href="@{/usuario}">Usuario</a>
+            </li>
         </ul>
     </nav>
 

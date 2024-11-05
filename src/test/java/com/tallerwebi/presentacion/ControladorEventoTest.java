@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,17 +22,18 @@ public class ControladorEventoTest {
     private ControladorEvento controladorEvento;
     private ServicioEventoImpl servicioEventoMock;
     private ServicioEntradaImpl servicioEntradaMock;
-
+    private HttpServletRequest request;
 
     @BeforeEach
     public void init(){
         this.servicioEventoMock = mock(ServicioEventoImpl.class);
         this.controladorEvento = new ControladorEvento(servicioEventoMock, servicioEntradaMock);
+        this.request = mock(HttpServletRequest.class);
     }
 
     @Test
     public void debeRetornarLaVistaEventosCuandoSeEjecutaElMetodoMostrarEventos() {
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, null, null, null);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, null, null, null, request);
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("eventos"));
     }
 
@@ -40,7 +43,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(new Evento());
 
         when(this.servicioEventoMock.obtenerEventosOrdenadosPorFecha()).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, null, null, null);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, null, null, null, request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -56,7 +59,7 @@ public class ControladorEventoTest {
 
         // Mock del nuevo metodo filtrarEventos
         when(this.servicioEventoMock.filtrarEventos("creamfields", null, null, null)).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("creamfields", null, null, null);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("creamfields", null, null, null, request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -71,7 +74,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(new Evento());
 
         when(this.servicioEventoMock.obtenerEventosOrdenadosPorFecha()).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("", "", "", "");
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("", "", "", "", request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, is(not(empty())));
@@ -87,7 +90,7 @@ public class ControladorEventoTest {
 
         // Mock del metodo filtrarEventos con nombre, provincia y ciudad
         when(servicioEventoMock.filtrarEventos("creamfields", "Buenos Aires", "Morón", null)).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos("creamfields", "Buenos Aires", "Morón", null);
+        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos("creamfields", "Buenos Aires", "Morón", null, request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -103,7 +106,7 @@ public class ControladorEventoTest {
 
         // Mock del metodo filtrarEventos con nombre y provincia
         when(this.servicioEventoMock.filtrarEventos("creamfields", "Buenos Aires", null, null)).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("creamfields", "Buenos Aires", null, null);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("creamfields", "Buenos Aires", null, null, request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -123,7 +126,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(evento);
 
         when(this.servicioEventoMock.filtrarEventos("F", null, null, "fiesta")).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("F", null, null, "fiesta");
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("F", null, null, "fiesta", request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -136,7 +139,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(new Evento());
 
         when(this.servicioEventoMock.filtrarEventos(null, "Santa Fe", null, "deporte")).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Santa Fe", null, "deporte");
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Santa Fe", null, "deporte", request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -151,7 +154,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(new Evento());
 
         when(this.servicioEventoMock.filtrarEventos(null, "Buenos Aires", "La Plata", "deporte")).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", "La Plata", "deporte");
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", "La Plata", "deporte", request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -166,7 +169,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(new Evento());
 
         when(this.servicioEventoMock.filtrarEventos("Wasabi", "Buenos Aires", null, "fiesta")).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("Wasabi", "Buenos Aires", null, "fiesta");
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("Wasabi", "Buenos Aires", null, "fiesta", request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -179,7 +182,7 @@ public class ControladorEventoTest {
         listaDeEventos.add(new Evento());
 
         when(this.servicioEventoMock.filtrarEventos("Wasabi", "Buenos Aires", "Capital", "fiesta")).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("Wasabi", "Buenos Aires", "Capital", "fiesta");
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos("Wasabi", "Buenos Aires", "Capital", "fiesta", request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -196,7 +199,7 @@ public class ControladorEventoTest {
 
         // Mock del metodo filtrarEventos con provincia y ciudad
         when(this.servicioEventoMock.filtrarEventos(null, "Buenos Aires", "Morón", null)).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", "Morón", null);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", "Morón", null, request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
@@ -212,7 +215,7 @@ public class ControladorEventoTest {
 
         // Mock del metodo filtrarEventos con provincia
         when(this.servicioEventoMock.filtrarEventos(null, "Buenos Aires", null, null)).thenReturn(listaDeEventos);
-        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", null, null);
+        ModelAndView modelAndView = this.controladorEvento.mostrarVistaEventos(null, "Buenos Aires", null, null, request);
 
         List<Evento> eventos = (List<Evento>) modelAndView.getModel().get("eventos");
         assertThat(eventos, not(empty()));
