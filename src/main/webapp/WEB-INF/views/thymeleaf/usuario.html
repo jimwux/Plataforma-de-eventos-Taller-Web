@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Eventos</title>
+    <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
+    <link rel="stylesheet" th:href="@{/css/usuario.css}"/>
+</head>
+<body>
+
+<nav id="nav-bar">
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+    <ul id="botones-nav">
+        <li class="boton-nav"><a href="" id="boton_eventos">Eventos</a></li>
+        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav" th:if="${session.ID == null}">
+            <a th:href="@{/login}">Ingresar</a>
+        </li>
+        <li class="boton-nav" th:if="${session.ID != null}">
+            <a th:href="@{/usuario}">Usuario</a>
+        </li>
+    </ul>
+</nav>
+
+<div th:if="${usuarioVistaDTO != null}">
+    <h2>Información del Usuario</h2>
+    <h4 color = "white" >Nombre: <span th:text="${usuarioVistaDTO.nombre}"></span></h4>
+    <h4 >Apellido: <span th:text="${usuarioVistaDTO.apellido}"></span></h4>
+    <h4>Email: <span th:text="${usuarioVistaDTO.email}"></span></h4>
+    <h4>Telefono: <span th:text="${usuarioVistaDTO.telefono}"></span></h4>
+    <h4>Documento: <span th:text="${usuarioVistaDTO.dni}"></span></h4>
+</div>
+
+
+<footer class="pie-de-pagina">
+    <p>© 2024 Equipo Mokito</p>
+</footer>
+</body>
+</html>

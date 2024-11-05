@@ -1,24 +1,42 @@
 package com.tallerwebi.presentacion.dto;
 
+import com.tallerwebi.dominio.Usuario;
+
+import javax.persistence.Column;
+
 public class UsuarioVistaDTO {
 
-    private Long id;
+    private String nombre;
+    private String apellido;
+    private String telefono;
+    private String dni;
     private String email;
-    private String rol;
 
-    public UsuarioVistaDTO(Long id, String email, String rol) {
-        this.id = id;
-        this.email = email;
-        this.rol = rol;
+    public UsuarioVistaDTO(Usuario usuario) {
+        this.nombre = usuario.getNombre();
+        this.apellido = usuario.getApellido();
+        this.telefono = usuario.getTelefono();
+        this.dni = usuario.getDni();
+        this.email = usuario.getEmail();
     }
 
-    public Long getId() {
-        return id;
+    public String getNombre() {
+        return nombre;
     }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
     public String getEmail() {
         return email;
-    }
-    public String getRol() {
-        return rol;
     }
 }
