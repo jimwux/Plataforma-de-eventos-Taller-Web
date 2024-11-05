@@ -66,63 +66,23 @@ public class ControladorCarrito {
 
         if ("approved".equals(status)) {
             DatosCompra datosCompra = this.servicioDatosCompra.obtenerCompraPorCodigoTransaccion(codigoTransaccion);
-            if (datosCompra == null) {
-                modelo.put("error", "No se encontró la compra con el ID proporcionado.");
-                return new ModelAndView("error", modelo);
-            }
-
-
             datosCompra.setEstado("completada");
 
             String emailUsuario = datosCompra.getEmailUsuario();
-            if (emailUsuario == null) {
-                modelo.put("error", "No se encontró el correo electrónico del usuario en la compra.");
-                return new ModelAndView("error", modelo);
-            }
-
             Usuario user = this.servicioLogin.verificarSiExiste(emailUsuario);
-            if (user == null) {
-                modelo.put("error", "No se encontró el usuario en el sistema.");
-                return new ModelAndView("error", modelo);
-            }
 
             List<EntradaCompra> datosEntradas = datosCompra.getEntradasCompradas();
 
-            if (datosEntradas == null) {
-                modelo.put("error", "Faltan detalles de las entradas en la compra.");
-                return new ModelAndView("error", modelo);
-            }
-
-
             for (EntradaCompra entradaCompra : datosEntradas) {
-
-                for (int j = 0; j < entradaCompra.getCantidad(); j++) {
-
-                    Entrada entradaActual = this.servicioEntrada.obtenerEntradaPorId(entradaCompra.getIdEntrada());
-
-                    EntradaUsuario entradaUsuario = new EntradaUsuario(user, entradaActual, codigoTransaccion);
-
-                    if (entradaActual == null) {
-                        System.err.println("Error: No se encontró Entrada con ID " + entradaCompra.getIdEntrada());
-                        continue; // Pasa al siguiente registro si no se encuentra
-                    }
-
-                    try {
-                        this.servicioEntradaUsuario.guardar(entradaUsuario);
-                    } catch (Exception e) {
-                        // Aquí podrías registrar el error
-                        System.err.println("Error al guardar EntradaUsuario: " + e.getMessage());
-                        e.printStackTrace(); // Imprimir el stack trace para más detalles
-                    }
-                }
+                Entrada entradaActual = this.servicioEntrada.obtenerEntradaPorId(entradaCompra.getIdEntrada());
+                this.servicioEntradaUsuario.guardarEntradasDeTipo(entradaCompra.getCantidad(), user,  entradaActual, codigoTransaccion);
             }
-
 
 
             // Enviar correo y generar código de descuento
             String codigoDescuento = servicioCarrito.generarCodigoDescuento();
             servicioCarrito.guardarCodigoDescuento(codigoDescuento);
-            servicioEmail.enviarCodigoDescuento(datosCompra.getEmailUsuario(), codigoDescuento);
+            servicioEmail.enviarCodigoDescuento(emailUsuario, codigoDescuento);
 
             modelo.put("codigoDescuento", codigoDescuento);
 

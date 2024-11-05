@@ -7,4 +7,7 @@ public interface ServicioRegistro {
     String registrar(Usuario usuario) throws UsuarioExistente;
 
     String generarContrasena();
+
+
+
 }

@@ -74,8 +74,9 @@ public class ControladorMercadoPago {
 
         if(user == null){
             String pass = this.servicioRegistro.generarContrasena();
-            user = new Usuario(emailUsuario, nombre, apellido, telefono, dni, pass);
+            user = new Usuario(emailUsuario, pass, nombre, apellido, telefono, dni);
             this.servicioRegistro.registrar(user);
+            this.servicioEmail.enviarContraseniaAUsuarios(emailUsuario, pass);
         }
 
 
@@ -125,7 +126,7 @@ public class ControladorMercadoPago {
 
         PreferenceBackUrlsRequest  backUrls = PreferenceBackUrlsRequest.builder()
                 .success("http://localhost:8080/equipomokito/compraFinalizada?codigoTransaccion=" + codigoTransaccion)
-                .failure("http://localhost:8080/equipomokito/eventos")
+                .failure("http://localhost:8080/equipomokito/compraFinalizada?codigoTransaccion=" + codigoTransaccion)
                 .pending("https://www.pending.com")
                 .build();
 

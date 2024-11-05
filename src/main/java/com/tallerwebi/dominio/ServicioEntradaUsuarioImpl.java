@@ -19,4 +19,12 @@ public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
     public void guardar(EntradaUsuario entradaUsuario) {
         this.repositorioEntradaUsuario.guardar(entradaUsuario);
     }
+
+    @Override
+    public void guardarEntradasDeTipo(Integer cantidad, Usuario user, Entrada entradaActual, String codigoTransaccion) {
+        for (int i = 0; i < cantidad; i++) {
+            EntradaUsuario entradaUsuario = new EntradaUsuario(user, entradaActual, codigoTransaccion);
+            this.repositorioEntradaUsuario.guardar(entradaUsuario);
+        }
+    }
 }
