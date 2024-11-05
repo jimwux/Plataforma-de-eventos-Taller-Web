@@ -1,10 +1,10 @@
-
-
 body{
     background: linear-gradient(to right, #18181B, black);
     margin: 0;
     font-family: sans-serif;
     padding: 0;
+    color: white;
+    text-align: center;
 }
 
 h2{

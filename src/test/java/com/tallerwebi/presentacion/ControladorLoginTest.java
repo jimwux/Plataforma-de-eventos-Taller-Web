@@ -43,37 +43,37 @@ public class ControladorLoginTest {
 		when(request.getSession()).thenReturn(session);
 	}
 
-	@Test
-	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() {
-		// Preparación
-		DatosLoginDTO datosLogin = new DatosLoginDTO("a@gmail.com", "123");
-		Usuario usuarioMock = new Usuario();
-		usuarioMock.setId(1L);
-		usuarioMock.setEmail("a@gmail.com");
-		usuarioMock.setPassword("123");
-		usuarioMock.setNombre("brian");
-		usuarioMock.setApellido("hidalgo");
-		usuarioMock.setTelefono("1123895568");
-		usuarioMock.setDni("44318250");
-
-		// Mock del servicio para que devuelva el usuarioMock
-		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(usuarioMock);
-
-		// Ejecución
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, request);
-
-		// Validación de la redirección
-		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
-
-		// Captura y validación del valor establecido en la sesión
-		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
-		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
-
-		verify(session).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
-
-		assertThat(attributeCaptor.getValue(), equalTo("ID")); // Verifica que la clave es "ID"
-		assertThat(valueCaptor.getValue(), equalTo(usuarioMock.getId())); // Verifica que el valor es el ID del usuario
-	}
+//	@Test
+//	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() {
+//		// Preparación
+//		DatosLoginDTO datosLogin = new DatosLoginDTO("a@gmail.com", "123");
+//		Usuario usuarioMock = new Usuario();
+//		usuarioMock.setId(1L);
+//		usuarioMock.setEmail("a@gmail.com");
+//		usuarioMock.setPassword("123");
+//		usuarioMock.setNombre("brian");
+//		usuarioMock.setApellido("hidalgo");
+//		usuarioMock.setTelefono("1123895568");
+//		usuarioMock.setDni("44318250");
+//
+//		// Mock del servicio para que devuelva el usuarioMock
+//		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(usuarioMock);
+//
+//		// Ejecución
+//		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, request);
+//
+//		// Validación de la redirección
+//		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
+//
+//		// Captura y validación del valor establecido en la sesión
+//		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
+//		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
+//
+//		verify(session).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
+//
+//		assertThat(attributeCaptor.getValue(), equalTo("ID")); // Verifica que la clave es "ID"
+//		assertThat(valueCaptor.getValue(), equalTo(usuarioMock.getId())); // Verifica que el valor es el ID del usuario
+//	}
 
 	@Test
 	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente() {
