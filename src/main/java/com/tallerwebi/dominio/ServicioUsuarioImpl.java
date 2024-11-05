@@ -17,8 +17,8 @@ public class ServicioUsuarioImpl implements ServicioUsuario{
         this.repositorioUsuario = repositorioUsuario;
     }
 
-    public UsuarioVistaDTO obtenerUsuarioVistaDTODelRepo(){
-        return repositorioUsuario.obtenerUsuraioVistaDTODeLaBase(String email, String password);
+    public Usuario obtenerUsuarioVistaDTODelRepo(String email){
+        return repositorioUsuario.buscar(email);
     }
 
 }

@@ -60,9 +60,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         query.executeUpdate();
     }*/
 
-
-
-
     @Override
     @Transactional
     public Usuario buscar(String email) {
@@ -76,21 +73,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     @Transactional
     public void modificar(Usuario usuario) {
         sessionFactory.getCurrentSession().update(usuario);
-    }
-
-    @Override
-    @Transactional
-    public UsuarioVistaDTO obtenerUsuraioVistaDTODeLaBase(String email, String password) {
-
-        final Session session = sessionFactory.getCurrentSession();
-
-       Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
-                .add(Restrictions.eq("email", email))
-                .add(Restrictions.eq("password", password))
-                .uniqueResult();
-
-        UsuarioVistaDTO usuarioVistaDTO = new UsuarioVistaDTO(usuario.getId(), usuario.getEmail(), usuario.getRol());
-        return usuarioVistaDTO;
     }
 
     }
