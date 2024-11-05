@@ -22,12 +22,20 @@ public class ControladorCarrito {
     private ServicioCarrito servicioCarrito;
     private ServicioEvento servicioEvento;
     private ServicioEmail servicioEmail;
+    private ServicioDatosCompra servicioDatosCompra;
+    private ServicioLogin servicioLogin;
+    private ServicioEntrada servicioEntrada;
+    private ServicioEntradaUsuario servicioEntradaUsuario;
 
     @Autowired
-    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento, ServicioEmail servicioEmail) {
+    public ControladorCarrito(ServicioCarrito servicioCarrito, ServicioEvento servicioEvento, ServicioEmail servicioEmail, ServicioDatosCompra servicioDatosCompra, ServicioLogin servicioLogin, ServicioEntrada servicioEntrada, ServicioEntradaUsuario servicioEntradaUsuario) {
         this.servicioCarrito = servicioCarrito;
         this.servicioEvento = servicioEvento;
         this.servicioEmail = servicioEmail;
+        this.servicioDatosCompra = servicioDatosCompra;
+        this.servicioLogin = servicioLogin;
+        this.servicioEntrada = servicioEntrada;
+        this.servicioEntradaUsuario = servicioEntradaUsuario;
     }
 
     @PostMapping("/pago")
@@ -51,18 +59,81 @@ public class ControladorCarrito {
 
 
     @GetMapping("/compraFinalizada")
-      public ModelAndView mostrarVistaCompraFinalizada(){
+      public ModelAndView mostrarVistaCompraFinalizada(@RequestParam("codigoTransaccion") String codigoTransaccion,
+                                                       @RequestParam("status") String status){
 
         ModelMap modelo = new ModelMap();
 
-        String codigoDescuento = this.servicioCarrito.generarCodigoDescuento();
-        this.servicioCarrito.guardarCodigoDescuento(codigoDescuento);
+        if ("approved".equals(status)) {
+            DatosCompra datosCompra = this.servicioDatosCompra.obtenerCompraPorCodigoTransaccion(codigoTransaccion);
+            if (datosCompra == null) {
+                modelo.put("error", "No se encontró la compra con el ID proporcionado.");
+                return new ModelAndView("error", modelo);
+            }
 
-        modelo.put("codigoDescuento", codigoDescuento);
 
-        this.servicioEmail.enviarCodigoDescuento("jimenagomezwusi@hotmail.com", codigoDescuento);
+            datosCompra.setEstado("completada");
+
+            String emailUsuario = datosCompra.getEmailUsuario();
+            if (emailUsuario == null) {
+                modelo.put("error", "No se encontró el correo electrónico del usuario en la compra.");
+                return new ModelAndView("error", modelo);
+            }
+
+            Usuario user = this.servicioLogin.verificarSiExiste(emailUsuario);
+            if (user == null) {
+                modelo.put("error", "No se encontró el usuario en el sistema.");
+                return new ModelAndView("error", modelo);
+            }
+
+            List<EntradaCompra> datosEntradas = datosCompra.getEntradasCompradas();
+
+            if (datosEntradas == null) {
+                modelo.put("error", "Faltan detalles de las entradas en la compra.");
+                return new ModelAndView("error", modelo);
+            }
+
+
+            for (EntradaCompra entradaCompra : datosEntradas) {
+
+                for (int j = 0; j < entradaCompra.getCantidad(); j++) {
+
+                    Entrada entradaActual = this.servicioEntrada.obtenerEntradaPorId(entradaCompra.getIdEntrada());
+
+                    EntradaUsuario entradaUsuario = new EntradaUsuario(user, entradaActual, codigoTransaccion);
+
+                    if (entradaActual == null) {
+                        System.err.println("Error: No se encontró Entrada con ID " + entradaCompra.getIdEntrada());
+                        continue; // Pasa al siguiente registro si no se encuentra
+                    }
+
+                    try {
+                        this.servicioEntradaUsuario.guardar(entradaUsuario);
+                    } catch (Exception e) {
+                        // Aquí podrías registrar el error
+                        System.err.println("Error al guardar EntradaUsuario: " + e.getMessage());
+                        e.printStackTrace(); // Imprimir el stack trace para más detalles
+                    }
+                }
+            }
+
+
+
+            // Enviar correo y generar código de descuento
+            String codigoDescuento = servicioCarrito.generarCodigoDescuento();
+            servicioCarrito.guardarCodigoDescuento(codigoDescuento);
+            servicioEmail.enviarCodigoDescuento(datosCompra.getEmailUsuario(), codigoDescuento);
+
+            modelo.put("codigoDescuento", codigoDescuento);
+
+        } else {
+            // Si el pago no fue aprobado, eliminar la compra pendiente
+            servicioDatosCompra.eliminarCompraPorCodigoTransaccion(codigoTransaccion);
+            modelo.put("error", "La compra no se completó con éxito y ha sido eliminada.");
+        }
 
         return new ModelAndView("compraRealizada", modelo);
+
     }
 
     @GetMapping("/aplicarDescuento")

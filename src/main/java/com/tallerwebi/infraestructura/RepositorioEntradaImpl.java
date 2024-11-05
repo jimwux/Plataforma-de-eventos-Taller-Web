@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -33,7 +34,12 @@ public class RepositorioEntradaImpl implements RepositorioEntrada {
         String sentencia_sql = "SELECT e FROM Entrada e WHERE id = :id";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
         query.setParameter("id", id);
-        return (Entrada) query.getSingleResult();
+        try {
+            return (Entrada) query.getSingleResult();
+        } catch (NoResultException e) {
+            System.err.println("No se encontró Entrada con ID " + id);
+            return null; // O maneja la excepción de otra manera
+        }
     }
 
     @Override

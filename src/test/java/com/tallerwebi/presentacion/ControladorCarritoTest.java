@@ -1,9 +1,6 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.Carrito;
-import com.tallerwebi.dominio.ServicioCarrito;
-import com.tallerwebi.dominio.ServicioEmail;
-import com.tallerwebi.dominio.ServicioEvento;
+import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,6 +21,10 @@ public class ControladorCarritoTest {
     private ServicioCarrito servicioCarritoMock;
     private ServicioEvento servicioEventoMock;
     private ServicioEmail servicioEmailMock;
+    private ServicioDatosCompra servicioDatosCompraMock;
+    private ServicioLogin servicioLoginMock;
+    private ServicioEntrada servicioEntradaMock;
+    private ServicioEntradaUsuario servicioEntradaUsuarioMock;
 
 
     @BeforeEach
@@ -31,7 +32,11 @@ public class ControladorCarritoTest {
         this.servicioCarritoMock = mock(ServicioCarrito.class);
         this.servicioEventoMock = mock(ServicioEvento.class);
         this.servicioEmailMock = mock(ServicioEmail.class);
-        this.controladorCarrito = new ControladorCarrito(servicioCarritoMock, servicioEventoMock, servicioEmailMock);
+        this.servicioDatosCompraMock = mock(ServicioDatosCompra.class);
+        this.servicioLoginMock = mock(ServicioLogin.class);
+        this.servicioEntradaMock = mock(ServicioEntrada.class);
+        this.servicioEntradaUsuarioMock = mock(ServicioEntradaUsuario.class);
+        this.controladorCarrito = new ControladorCarrito(servicioCarritoMock, servicioEventoMock, servicioEmailMock, servicioDatosCompraMock, servicioLoginMock, servicioEntradaMock, servicioEntradaUsuarioMock);
     }
 
     @Test
