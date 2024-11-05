@@ -143,16 +143,6 @@ public class ServicioEventoImpl implements ServicioEvento {
         }
     }
 
-    @Override
-    public List<EventoNombreDTO> obtenerNombresDeEventos() {
-        List<EventoNombreDTO> eventosNombre = new ArrayList<>();
-
-        for (Evento evento : repositorioEvento.obtenerTodosLosEventos() ) {
-            eventosNombre.add(new EventoNombreDTO(evento.getNombre()));
-        }
-
-        return eventosNombre ;
-    }
 
     @Override
     public String obtenerMensajeSobreEventosAleatorios( List<Evento> eventosAleatorios, String nombreCiudad) {
