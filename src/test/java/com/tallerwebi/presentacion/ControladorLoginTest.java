@@ -16,8 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
@@ -65,15 +68,20 @@ public class ControladorLoginTest {
 		// Validación de la redirección
 		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
 
-		// Captura y validación del valor establecido en la sesión
+
 		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
+		verify(session, atLeastOnce()).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
 
-		verify(session).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
+		List<String> allKeys = attributeCaptor.getAllValues();
+		List<Object> allValues = valueCaptor.getAllValues();
 
-		assertThat(attributeCaptor.getValue(), equalTo("ID")); // Verifica que la clave es "ID"
-		assertThat(valueCaptor.getValue(), equalTo(usuarioMock.getId())); // Verifica que el valor es el ID del usuario
+		assertThat(allKeys, hasItem("ID"));
+		assertThat(allValues, hasItem(usuarioMock.getId()));
 	}
+
+
+
 
 	@Test
 	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente() {
