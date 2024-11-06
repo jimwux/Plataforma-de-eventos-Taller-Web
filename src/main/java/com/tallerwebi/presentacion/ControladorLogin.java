@@ -6,6 +6,7 @@ import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,13 +31,15 @@ public class ControladorLogin {
         return modelAndView;
     }
 
-    @RequestMapping(path = "/validar-login", method = RequestMethod.POST)
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
     public ModelAndView validarLogin(@ModelAttribute("datosLoginDTO") DatosLoginDTO datosLoginDTO, HttpServletRequest request) {
         ModelMap model = new ModelMap();
-
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
+
         if (usuarioBuscado != null) {
+
             request.getSession().setAttribute("ID", usuarioBuscado.getId());
+            request.getSession().setAttribute("email", usuarioBuscado.getEmail());
             return new ModelAndView("redirect:/eventos");
         } else {
             model.put("error", "Usuario o clave incorrecta");
@@ -45,8 +48,13 @@ public class ControladorLogin {
         }
     }
 
-    @RequestMapping(path = "/eventos", method = RequestMethod.GET)
-    public ModelAndView irAHome() {
-        return new ModelAndView("eventos");
+    @GetMapping("/eventos/login")
+    public String irAHome() {
+        return "home";
     }
+
+
+
+
+
 }
