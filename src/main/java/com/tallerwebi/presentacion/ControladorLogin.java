@@ -37,7 +37,9 @@ public class ControladorLogin {
         Usuario usuarioBuscado = servicioLogin.consultarUsuario(datosLoginDTO.getEmail(), datosLoginDTO.getPassword());
 
         if (usuarioBuscado != null) {
+
             request.getSession().setAttribute("ID", usuarioBuscado.getId());
+            request.getSession().setAttribute("email", usuarioBuscado.getEmail());
             return new ModelAndView("redirect:/eventos");
         } else {
             model.put("error", "Usuario o clave incorrecta");

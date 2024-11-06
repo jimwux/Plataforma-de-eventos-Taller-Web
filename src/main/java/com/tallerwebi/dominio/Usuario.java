@@ -97,4 +97,5 @@ public class Usuario {
     public int hashCode() {
         return Objects.hash(id, nombre, apellido, telefono, dni, email, password);
     }
+
 }
