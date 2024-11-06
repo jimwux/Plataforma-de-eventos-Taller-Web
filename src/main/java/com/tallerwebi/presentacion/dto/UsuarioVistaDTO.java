@@ -20,6 +20,7 @@ public class UsuarioVistaDTO {
         this.email = usuario.getEmail();
     }
 
+
     public String getNombre() {
         return nombre;
     }

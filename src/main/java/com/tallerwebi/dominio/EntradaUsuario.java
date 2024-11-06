@@ -9,10 +9,10 @@ public class EntradaUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Entrada entrada;
 
     private String qrCode; // Código QR para esta entrada específica
