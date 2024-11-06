@@ -28,20 +28,19 @@ public class ControladorEntradaUsuario {
 
     @GetMapping("/misEntradas")
     public ModelAndView mostrarEntradasDelUsuario(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return new ModelAndView("redirect:/login");
+        }
 
         ModelMap modeloEntradaUsuario = new ModelMap();
-        String error = "no se encontro usuario";
-        String email = (String) request.getSession().getAttribute("email");
-        if (email != null) {
-            UsuarioVistaDTO usuarioVistaDTO = new UsuarioVistaDTO(servicioUsuario.obtenerUsuarioVistaDTODelRepo(email));
-            modeloEntradaUsuario.put("usuarioVistaDTO", usuarioVistaDTO);
+        String email = (String) session.getAttribute("email");
 
-            List<EntradaUsuario> entradasUs = this.servicioEntradaUsuario.obtenerEntradasDeUsuario(usuarioVistaDTO.getEmail());
+        UsuarioVistaDTO usuarioVistaDTO = new UsuarioVistaDTO(servicioUsuario.obtenerUsuarioVistaDTODelRepo(email));
+        modeloEntradaUsuario.put("usuarioVistaDTO", usuarioVistaDTO);
 
-            modeloEntradaUsuario.put("entradasUs", entradasUs);
-        }else{
-            modeloEntradaUsuario.put("error", error);
-        }
+        List<EntradaUsuario> entradasUs = servicioEntradaUsuario.obtenerEntradasDeUsuario(usuarioVistaDTO.getEmail());
+        modeloEntradaUsuario.put("entradasUs", entradasUs);
 
         return new ModelAndView("misEntradas", modeloEntradaUsuario);
     }
