@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class Entrada {
@@ -46,5 +47,18 @@ public class Entrada {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entrada entrada = (Entrada) o;
+        return Objects.equals(nombre, entrada.nombre) && Objects.equals(precio, entrada.precio) && Objects.equals(id, entrada.id) && Objects.equals(evento, entrada.evento);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, precio, id, evento);
     }
 }

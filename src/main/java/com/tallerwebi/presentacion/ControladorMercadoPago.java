@@ -34,19 +34,16 @@ public class ControladorMercadoPago {
     private ServicioRegistro servicioRegistro;
     private ServicioLogin servicioLogin;
     private ServicioEmail servicioEmail;
-    private ServicioEntradaUsuario servicioEntradaUsuario;
     private ServicioDatosCompra servicioDatosCompra;
     private ServicioEntradaCompra servicioEntradaCompra;
-    private String baseUrl;
 
 
     @Autowired
-    public ControladorMercadoPago(ServicioCarrito servicioCarrito, ServicioRegistro servicioRegistro, ServicioLogin servicioLogin, ServicioEmail servicioEmail, ServicioEntradaUsuario servicioEntradaUsuario, ServicioDatosCompra servicioDatosCompra, ServicioEntradaCompra servicioEntradaCompra) {
+    public ControladorMercadoPago(ServicioCarrito servicioCarrito, ServicioRegistro servicioRegistro, ServicioLogin servicioLogin, ServicioEmail servicioEmail, ServicioDatosCompra servicioDatosCompra, ServicioEntradaCompra servicioEntradaCompra) {
         this.servicioCarrito = servicioCarrito;
         this.servicioRegistro = servicioRegistro;
         this.servicioLogin = servicioLogin;
         this.servicioEmail = servicioEmail;
-        this.servicioEntradaUsuario = servicioEntradaUsuario;
         this.servicioDatosCompra = servicioDatosCompra;
         this.servicioEntradaCompra = servicioEntradaCompra;
     }

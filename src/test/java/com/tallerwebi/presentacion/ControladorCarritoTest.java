@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -107,6 +108,104 @@ public class ControladorCarritoTest {
 
         assertThat(resultado.get("descuentoAplicado"), is(false));
         assertThat(resultado.get("totalConDescuento"), equalTo(null));
+    }
+
+    @Test
+    public void dadoQueSeAproboUnaCompraSeGeneraYEnviaPorCorreoUnCodigoDeDescuentoAlComprador() {
+        String codigoTransaccion = "12345";
+        String emailUsuario = "usuario@ejemplo.com";
+        String status = "approved";
+
+        DatosCompra datosCompra = new DatosCompra();
+        datosCompra.setEmailUsuario(emailUsuario);
+        datosCompra.setEntradasCompradas(List.of(new EntradaCompra()));
+
+        when(this.servicioDatosCompraMock.obtenerCompraPorCodigoTransaccion(codigoTransaccion)).thenReturn(datosCompra);
+        when(this.servicioLoginMock.verificarSiExiste(emailUsuario)).thenReturn(new Usuario());
+        when(this.servicioCarritoMock.generarCodigoDescuento()).thenReturn("b5d21f4a");
+
+        ModelAndView resultado = this.controladorCarrito.mostrarVistaCompraFinalizada(codigoTransaccion, status);
+
+        assertThat(resultado.getModel().get("codigoDescuento"), is("b5d21f4a"));
+        verify(this.servicioCarritoMock).guardarCodigoDescuento("b5d21f4a");
+        verify(this.servicioEmailMock).enviarCodigoDescuento(emailUsuario, "b5d21f4a");
+    }
+
+    @Test
+    public void alComprarEntradasSeLeAsignanAlUsuario() {
+        String codigoTransaccion = "12345";
+        String emailUsuario = "usuario@ejemplo.com";
+        String status = "approved";
+
+        DatosCompra datosCompra = new DatosCompra();
+        datosCompra.setEmailUsuario(emailUsuario);
+        EntradaCompra entradaCompra = new EntradaCompra();
+        entradaCompra.setIdEntrada(1L);
+        entradaCompra.setCantidad(2);
+        datosCompra.setEntradasCompradas(List.of(entradaCompra));
+
+        when(this.servicioDatosCompraMock.obtenerCompraPorCodigoTransaccion(codigoTransaccion)).thenReturn(datosCompra);
+        when(this.servicioLoginMock.verificarSiExiste(emailUsuario)).thenReturn(new Usuario());
+        when(this.servicioEntradaMock.obtenerEntradaPorId(1L)).thenReturn(new Entrada());
+
+        ModelAndView resultado = this.controladorCarrito.mostrarVistaCompraFinalizada(codigoTransaccion, status);
+
+        assertThat(resultado.getViewName(), equalTo("compraRealizada"));
+        assertThat(datosCompra.getEstado(), equalTo("completada"));
+        verify(this.servicioEntradaUsuarioMock, times(1)).guardarEntradasDeTipo(2, new Usuario(), new Entrada(), codigoTransaccion);
+    }
+
+    @Test
+    void alLlevarACaboUnaCompraEstaCambiaSuEstadoDePendienteACompletada() {
+        String codigoTransaccion = "codigo123";
+        String emailUsuario = "usuario@ejemplo.com";
+        String status = "approved";
+
+        DatosCompra datosCompra = new DatosCompra();
+        datosCompra.setEmailUsuario(emailUsuario);
+        EntradaCompra entradaCompra = new EntradaCompra();
+        entradaCompra.setIdEntrada(1L);
+        entradaCompra.setCantidad(2);
+        datosCompra.setEntradasCompradas(List.of(entradaCompra));
+
+        when(this.servicioDatosCompraMock.obtenerCompraPorCodigoTransaccion(codigoTransaccion)).thenReturn(datosCompra);
+        when(this.servicioLoginMock.verificarSiExiste(emailUsuario)).thenReturn(new Usuario());
+        ModelAndView modelAndView = this.controladorCarrito.mostrarVistaCompraFinalizada(codigoTransaccion, status);
+
+        assertThat(datosCompra.getEstado(), equalTo("completada"));
+
+    }
+
+
+    @Test
+    public void dadoQueUnaCompraNoFueAprobadaSeEliminanSusDatosDeLaBaseDeDatos() {
+        String codigoTransaccion = "12345";
+        String status = "declined"; // Estado no aprobado
+
+        ModelAndView resultado = this.controladorCarrito.mostrarVistaCompraFinalizada(codigoTransaccion, status);
+
+        assertThat(resultado.getViewName(), is("compraRealizada"));
+        verify(this.servicioDatosCompraMock).eliminarCompraPorCodigoTransaccion(codigoTransaccion);
+        assertThat(resultado.getModel().get("error"), is("La compra no se completó con éxito y ha sido eliminada."));
+    }
+
+    @Test
+    public void dadoQueNoHayEntradasCompradasNoSeGuardaNingunaEntrada() {
+        String codigoTransaccion = "12345";
+        String emailUsuario = "usuario@ejemplo.com";
+        String status = "approved";
+
+        DatosCompra datosCompra = new DatosCompra();
+        datosCompra.setEmailUsuario(emailUsuario);
+        datosCompra.setEntradasCompradas(Collections.emptyList()); // Lista vacía de entradas compradas
+
+        when(this.servicioDatosCompraMock.obtenerCompraPorCodigoTransaccion(codigoTransaccion)).thenReturn(datosCompra);
+        when(this.servicioLoginMock.verificarSiExiste(emailUsuario)).thenReturn(new Usuario());
+
+        ModelAndView resultado = this.controladorCarrito.mostrarVistaCompraFinalizada(codigoTransaccion, status);
+
+        assertThat(resultado.getViewName(), is("compraRealizada"));
+        verify(this.servicioEntradaUsuarioMock, never()).guardarEntradasDeTipo(anyInt(), any(), any(), any());
     }
 
 
