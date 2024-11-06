@@ -68,6 +68,7 @@ public class ControladorLoginTest {
 		// Validación de la redirección
 		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
 
+
 		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
 		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
 		verify(session, atLeastOnce()).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
@@ -78,6 +79,7 @@ public class ControladorLoginTest {
 		assertThat(allKeys, hasItem("ID"));
 		assertThat(allValues, hasItem(usuarioMock.getId()));
 	}
+
 
 
 

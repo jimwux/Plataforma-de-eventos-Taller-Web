@@ -40,10 +40,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
         HttpSession session = request.getSession(false);
         Long usuarioId = (session != null) ? (Long) session.getAttribute("ID") : null;
 
-//        if (usuarioId == null) {
-//            return new ModelAndView("redirect:/login");
-//        }
-
     ModelMap modelo = new ModelMap();
 
         try{
