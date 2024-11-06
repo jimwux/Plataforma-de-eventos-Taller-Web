@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ControladorEvento {
@@ -63,7 +65,10 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         modelo.put("eventos", eventos);
 
-        List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
+        List<EventoNombreDTO> nombresEventos = new ArrayList<>();
+        for(Evento evento : eventos){
+            nombresEventos.add(new EventoNombreDTO(evento.getNombre()));
+        }
         modelo.put("nombresEventos", nombresEventos);
 
         } catch (EventoNoEncontradoException e) {
