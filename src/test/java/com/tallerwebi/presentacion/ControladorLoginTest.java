@@ -16,8 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
@@ -43,37 +46,40 @@ public class ControladorLoginTest {
 		when(request.getSession()).thenReturn(session);
 	}
 
-//	@Test
-//	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() {
-//		// Preparación
-//		DatosLoginDTO datosLogin = new DatosLoginDTO("a@gmail.com", "123");
-//		Usuario usuarioMock = new Usuario();
-//		usuarioMock.setId(1L);
-//		usuarioMock.setEmail("a@gmail.com");
-//		usuarioMock.setPassword("123");
-//		usuarioMock.setNombre("brian");
-//		usuarioMock.setApellido("hidalgo");
-//		usuarioMock.setTelefono("1123895568");
-//		usuarioMock.setDni("44318250");
-//
-//		// Mock del servicio para que devuelva el usuarioMock
-//		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(usuarioMock);
-//
-//		// Ejecución
-//		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, request);
-//
-//		// Validación de la redirección
-//		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
-//
-//		// Captura y validación del valor establecido en la sesión
-//		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
-//		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
-//
-//		verify(session).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
-//
-//		assertThat(attributeCaptor.getValue(), equalTo("ID")); // Verifica que la clave es "ID"
-//		assertThat(valueCaptor.getValue(), equalTo(usuarioMock.getId())); // Verifica que el valor es el ID del usuario
-//	}
+	@Test
+	public void loginConUsuarioYPasswordCorrectosDeberiaLLevarAHome() {
+		// Preparación
+		DatosLoginDTO datosLogin = new DatosLoginDTO("a@gmail.com", "123");
+		Usuario usuarioMock = new Usuario();
+		usuarioMock.setId(1L);
+		usuarioMock.setEmail("a@gmail.com");
+		usuarioMock.setPassword("123");
+		usuarioMock.setNombre("brian");
+		usuarioMock.setApellido("hidalgo");
+		usuarioMock.setTelefono("1123895568");
+		usuarioMock.setDni("44318250");
+
+		// Mock del servicio para que devuelva el usuarioMock
+		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(usuarioMock);
+
+		// Ejecución
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, request);
+
+		// Validación de la redirección
+		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
+
+		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
+		verify(session, atLeastOnce()).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
+
+		List<String> allKeys = attributeCaptor.getAllValues();
+		List<Object> allValues = valueCaptor.getAllValues();
+
+		assertThat(allKeys, hasItem("ID"));
+		assertThat(allValues, hasItem(usuarioMock.getId()));
+	}
+
+
 
 	@Test
 	public void loginConUsuarioYPasswordInorrectosDeberiaLlevarALoginNuevamente() {
