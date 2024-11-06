@@ -34,19 +34,16 @@ public class ControladorMercadoPago {
     private ServicioRegistro servicioRegistro;
     private ServicioLogin servicioLogin;
     private ServicioEmail servicioEmail;
-    private ServicioEntradaUsuario servicioEntradaUsuario;
     private ServicioDatosCompra servicioDatosCompra;
     private ServicioEntradaCompra servicioEntradaCompra;
-    private String baseUrl;
 
 
     @Autowired
-    public ControladorMercadoPago(ServicioCarrito servicioCarrito, ServicioRegistro servicioRegistro, ServicioLogin servicioLogin, ServicioEmail servicioEmail, ServicioEntradaUsuario servicioEntradaUsuario, ServicioDatosCompra servicioDatosCompra, ServicioEntradaCompra servicioEntradaCompra) {
+    public ControladorMercadoPago(ServicioCarrito servicioCarrito, ServicioRegistro servicioRegistro, ServicioLogin servicioLogin, ServicioEmail servicioEmail, ServicioDatosCompra servicioDatosCompra, ServicioEntradaCompra servicioEntradaCompra) {
         this.servicioCarrito = servicioCarrito;
         this.servicioRegistro = servicioRegistro;
         this.servicioLogin = servicioLogin;
         this.servicioEmail = servicioEmail;
-        this.servicioEntradaUsuario = servicioEntradaUsuario;
         this.servicioDatosCompra = servicioDatosCompra;
         this.servicioEntradaCompra = servicioEntradaCompra;
     }
@@ -70,17 +67,10 @@ public class ControladorMercadoPago {
 
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
-        Usuario user = this.servicioLogin.verificarSiExiste(emailUsuario);
-
-        if(user == null){
-            String pass = this.servicioRegistro.generarContrasena();
-            user = new Usuario(emailUsuario, pass, nombre, apellido, telefono, dni);
-            this.servicioRegistro.registrar(user);
-            this.servicioEmail.enviarContraseniaAUsuarios(emailUsuario, pass);
-        }
+        Usuario user = verificarYRegistrarUsuario(emailUsuario, nombre, apellido, telefono, dni);
 
 
-    // Calcular el descuento si hay un código válido
+        // Calcular el descuento si hay un código válido
         Double porcentajeDescuento = 0.20;
         boolean descuentoAplicado = codigoDescuento != null && this.servicioCarrito.esCodigoDescuentoValido(codigoDescuento, LocalDateTime.now()); // Valida aquí tu código de descuento real
 
@@ -140,14 +130,30 @@ public class ControladorMercadoPago {
 
         Preference preference = client.create(preferenceRequest);
 
+        guardarDatosCompra (cantidades, idsEntradas, emailUsuario, codigoTransaccion);
+
+
+        response.sendRedirect(preference.getInitPoint());
+    }
+
+    public void guardarDatosCompra (List<Integer> cantidades, List<Long> idsEntradas, String emailUsuario, String codigoTransaccion) {
         DatosCompra datosCompraPendiente = new DatosCompra(codigoTransaccion, emailUsuario);
         for (int i = 0; i < idsEntradas.size(); i++) {
             EntradaCompra entradaCompra = datosCompraPendiente.agregarEntrada(idsEntradas.get(i), cantidades.get(i));
             this.servicioEntradaCompra.guardar(entradaCompra);
         }
         this.servicioDatosCompra.guardar(datosCompraPendiente);
+    }
 
+    public Usuario verificarYRegistrarUsuario(String emailUsuario, String nombre, String apellido, String telefono, String dni) throws UsuarioExistente {
+        Usuario user = this.servicioLogin.verificarSiExiste(emailUsuario);
 
-        response.sendRedirect(preference.getInitPoint());
+        if(user == null){
+            String pass = this.servicioRegistro.generarContrasena();
+            user = new Usuario(emailUsuario, pass, nombre, apellido, telefono, dni);
+            this.servicioRegistro.registrar(user);
+            this.servicioEmail.enviarContraseniaAUsuarios(emailUsuario, pass);
+        }
+        return user;
     }
 }

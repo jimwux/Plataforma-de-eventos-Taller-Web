@@ -1,5 +1,6 @@
 package com.tallerwebi.dominio;
 
+
 import java.util.List;
 
 public interface ServicioEntradaUsuario {
@@ -9,4 +10,5 @@ public interface ServicioEntradaUsuario {
     void guardarEntradasDeTipo(Integer cantidad, Usuario user, Entrada entradaActual, String codigoTransaccion);
 
     List<EntradaUsuario> obtenerEntradasDeUsuario(String email);
+
 }

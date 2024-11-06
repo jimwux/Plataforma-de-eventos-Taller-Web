@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+
 @Service
 @Transactional
 public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
@@ -29,8 +30,10 @@ public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
         }
     }
 
+
     @Override
     public List<EntradaUsuario> obtenerEntradasDeUsuario(String email) {
         return this.repositorioEntradaUsuario.obtenerEntradaPorUsuario(email);
     }
+
 }

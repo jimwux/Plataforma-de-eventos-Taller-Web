@@ -1,5 +1,6 @@
 package com.tallerwebi.infraestructura;
 
+
 import com.tallerwebi.dominio.Entrada;
 import com.tallerwebi.dominio.EntradaUsuario;
 import com.tallerwebi.dominio.RepositorioEntradaUsuario;
@@ -7,8 +8,10 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 import javax.persistence.Query;
 import java.util.List;
+
 
 @Repository
 public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario {
@@ -33,4 +36,5 @@ public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario 
         List<EntradaUsuario> entradasUsuario = query.getResultList();
         return entradasUsuario;
     }
+
 }
