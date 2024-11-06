@@ -8,6 +8,22 @@
     <link rel="stylesheet" th:href="@{/css/misEntradas.css}">
 </head>
 <body>
+
+<nav id="nav-bar">
+    <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+    <ul id="botones-nav">
+        <li class="boton-nav"><a href="http://localhost:8080/equipomokito/eventos" id="boton_eventos">Eventos</a></li>
+        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav" th:if="${session.ID != null}"><a th:href="@{/misEntradas}">Mis Entradas</a></li>
+        <li class="boton-nav" th:if="${session.ID == null}">
+            <a th:href="@{/login}">Ingresar</a>
+        </li>
+        <li class="boton-nav" th:if="${session.ID != null}">
+            <a th:href="@{/usuario}">Usuario</a>
+        </li>
+    </ul>
+</nav>
+
 <!-- Verifica si hay entradas, y muestra el contenido -->
 <h1>¡Bienvenido!</h1>
 <p class="texto">Estas son sus entradas disponibles:</p>

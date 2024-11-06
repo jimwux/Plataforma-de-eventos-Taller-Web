@@ -29,7 +29,7 @@ public class ControladorEntradaUsuario {
     @GetMapping("/misEntradas")
     public ModelAndView mostrarEntradasDelUsuario(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) {
+        if (session == null || session.getAttribute("email") == null) {
             return new ModelAndView("redirect:/login");
         }
 
@@ -44,11 +44,4 @@ public class ControladorEntradaUsuario {
 
         return new ModelAndView("misEntradas", modeloEntradaUsuario);
     }
-
-
-
-
-
-
-
 }
