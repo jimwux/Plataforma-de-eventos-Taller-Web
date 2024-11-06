@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class EntradaUsuario {
@@ -67,5 +68,20 @@ public class EntradaUsuario {
 
     public void setCompraId(String compraId) {
         this.compraId = compraId;
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EntradaUsuario that = (EntradaUsuario) o;
+        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario) && Objects.equals(entrada, that.entrada) && Objects.equals(qrCode, that.qrCode) && Objects.equals(compraId, that.compraId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, usuario, entrada, qrCode, compraId);
     }
 }
