@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Entradas</title>
+  <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
+  <link rel="stylesheet" th:href="@{/css/eventos.css}"/>
+    <link rel="stylesheet" th:href="@{/css/misEntradas.css}">
+</head>
+<body>
+<!-- Verifica si hay entradas, y muestra el contenido -->
+<h1>¡Bienvenido!</h1>
+<p class="texto">Estas son sus entradas disponibles:</p>
+
+
+<div th:if="${entradasUs != null}" th:each="item : ${entradasUs}" class="contenedor">
+
+    <div class="cajita1">
+        <img th:src="${item.entrada.evento.imagenUrl}">
+    </div>
+
+    <div class="cajita2">
+        <h3 th:text="${item.entrada.evento.nombre}"></h3>
+        <h4 th:text="${item.entrada.nombre}"></h4>
+        <p th:text="${item.entrada.precio}"></p>
+        <p th:text="${item.entrada.evento.acercaDe}"></p>
+    </div>
+
+
+</div>
+
+<!-- Si no hay entradas, mostrar mensaje de error -->
+<div th:if="${entradasUs == null}">
+    <p>No se encontraron entradas.</p>
+</div>
+</body>
+</html>

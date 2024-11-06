@@ -1,7 +1,9 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+
 import java.util.Objects;
+
 
 @Entity
 public class EntradaUsuario {
@@ -10,10 +12,11 @@ public class EntradaUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Entrada entrada;
 
     private String qrCode; // Código QR para esta entrada específica
@@ -70,8 +73,6 @@ public class EntradaUsuario {
         this.compraId = compraId;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,4 +85,5 @@ public class EntradaUsuario {
     public int hashCode() {
         return Objects.hash(id, usuario, entrada, qrCode, compraId);
     }
+
 }
