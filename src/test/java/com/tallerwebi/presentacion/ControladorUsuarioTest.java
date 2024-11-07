@@ -1,17 +1,11 @@
 package com.tallerwebi.presentacion;
 
-import com.tallerwebi.dominio.ServicioLogin;
 import com.tallerwebi.dominio.ServicioUsuario;
 import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.presentacion.ControladorLogin;
-import com.tallerwebi.presentacion.dto.DatosLoginDTO;
 import com.tallerwebi.presentacion.dto.UsuarioVistaDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.web.reactive.server.JsonPathAssertions;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,15 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-public class ControladoUsuarioTest {
+public class ControladorUsuarioTest {
 
     private ControladorUsuario controladorUsuario;
     private Usuario usuarioMock;

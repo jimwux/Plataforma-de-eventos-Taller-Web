@@ -137,6 +137,10 @@ public class ControladorMercadoPago {
     }
 
     public void guardarDatosCompra (List<Integer> cantidades, List<Long> idsEntradas, String emailUsuario, String codigoTransaccion) {
+        if (cantidades.size() != idsEntradas.size()) {
+            throw new IllegalArgumentException("Las listas de cantidades e IDs de entradas deben tener el mismo tamaño");
+        }
+
         DatosCompra datosCompraPendiente = new DatosCompra(codigoTransaccion, emailUsuario);
         for (int i = 0; i < idsEntradas.size(); i++) {
             EntradaCompra entradaCompra = datosCompraPendiente.agregarEntrada(idsEntradas.get(i), cantidades.get(i));
