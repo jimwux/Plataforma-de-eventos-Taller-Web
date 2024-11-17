@@ -77,4 +77,13 @@ public class ServicioEmailImpl implements ServicioEmail{
         enviarCorreo(email, asunto, mensajeTexto);
     }
 
+    @Override
+    public void enviarMensajeDeContacto(String nombre, String apellido, String email, String asunto, String mensajeUsuario) {
+        String asuntoCompleto = "Consulta de " + nombre + " " + apellido + ": " + asunto;
+        String mensajeTexto = "Mensaje enviado por: " + nombre + " " + apellido + " (" + email + ")\n\n" + mensajeUsuario;
+
+        String nuestroCorreo = remitente;
+        enviarCorreo(nuestroCorreo, asuntoCompleto, mensajeTexto);
+    }
+
 }

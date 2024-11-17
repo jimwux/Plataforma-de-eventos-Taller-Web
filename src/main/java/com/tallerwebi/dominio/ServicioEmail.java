@@ -6,4 +6,5 @@ public interface ServicioEmail {
 
     void enviarContraseniaAUsuarios(String email, String contrasenia);
 
+    void enviarMensajeDeContacto(String nombre, String apellido, String email, String asunto, String mensajeUsuario);
 }
