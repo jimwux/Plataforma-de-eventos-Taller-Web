@@ -37,10 +37,11 @@ public class ServicioEntradaImpl implements ServicioEntrada {
         for (int i = 0; i < idsEntradas.size(); i++) {
             Long idEntrada = idsEntradas.get(i);
             int cantidadSolicitada = cantidades.get(i);
-
-            Entrada entrada = obtenerEntradaPorId(idEntrada);
-            if (entrada == null || cantidadSolicitada > entrada.getStock() || cantidadSolicitada > 4) {
-                return false;
+            if (cantidadSolicitada != 0) {
+                Entrada entrada = obtenerEntradaPorId(idEntrada);
+                if (entrada == null || cantidadSolicitada > entrada.getStock() || cantidadSolicitada > 4) {
+                    return false;
+                }
             }
         }
         return true;

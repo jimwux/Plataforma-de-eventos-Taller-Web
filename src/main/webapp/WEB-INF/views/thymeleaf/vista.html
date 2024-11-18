@@ -57,9 +57,9 @@
                             <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </article>
                         <article class="cantidad">
-                            <select name="cantidades" id="entrada" th:disabled="${cantidadesMaximas[iterStat.index] == 0}">
+                            <select name="cantidades" id="entrada">
                                 <option value="0" selected>0</option>
-                                <option th:each="i : ${#numbers.sequence(1, cantidadesMaximas[iterStat.index])}"
+                                <option th:each="i : ${cantidadesMaximas[iterStat.index] > 0 ? #numbers.sequence(1, cantidadesMaximas[iterStat.index]) : null}"
                                         th:value="${i}" th:text="${i}">
                                 </option>
                             </select>

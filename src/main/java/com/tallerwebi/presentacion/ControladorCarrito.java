@@ -50,7 +50,9 @@ public class ControladorCarrito {
         Boolean stockValido = servicioEntrada.validarStockEntradas(idsEntradas, cantidades);
 
         if (!stockValido) {
+            // Si la validación de stock falla, agregar mensaje de error a RedirectAttributes
             redirectAttributes.addFlashAttribute("error", "No hay suficiente stock disponible o has superado el límite de 4 entradas por tipo.");
+            // Redirigir de vuelta a la vista del evento original
             return new ModelAndView("redirect:/eventos/" + eventoId);
         }
 

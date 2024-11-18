@@ -47,10 +47,12 @@
                     <input class="data" type="text" id="apellido" name="apellido" placeholder="Ingresar apellido">
 
                     <label for="correo">Correo electrónico</label>
-                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico">
+                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico"
+                           th:value="${session.email}" readonly>
 
                     <label for="correoRep">Repetir correo electrónico</label>
-                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico">
+                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico"
+                           th:value="${session.email}" readonly>
 
                     <label for="telefono">Número telefónico</label>
                     <input class="data" type="number" id="telefono" name="telefono" placeholder="Ingresar número">
