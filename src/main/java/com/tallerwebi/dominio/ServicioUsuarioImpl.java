@@ -21,4 +21,36 @@ public class ServicioUsuarioImpl implements ServicioUsuario{
         return repositorioUsuario.buscar(email);
     }
 
+    @Override
+    public void actualizarUsuario(Usuario usuario) {
+        this.repositorioUsuario.modificar(usuario);
+    }
+
+    @Override
+    public void actualizarDatoUsuario(String email, String campo, String nuevoValor) {
+        Usuario usuario = this.obtenerUsuarioVistaDTODelRepo(email);
+        if (usuario != null) {
+            switch (campo.toLowerCase()) {
+                case "nombre":
+                    usuario.setNombre(nuevoValor);
+                    break;
+                case "apellido":
+                    usuario.setApellido(nuevoValor);
+                    break;
+                case "email":
+                    usuario.setEmail(nuevoValor);
+                    break;
+                case "telefono":
+                    usuario.setTelefono(nuevoValor);
+                    break;
+                case "dni":
+                    usuario.setDni(nuevoValor);
+                    break;
+                default:
+                     throw new IllegalArgumentException ("Dato no válido");
+            }
+            this.repositorioUsuario.modificar(usuario);
+        }
+    }
+
 }
