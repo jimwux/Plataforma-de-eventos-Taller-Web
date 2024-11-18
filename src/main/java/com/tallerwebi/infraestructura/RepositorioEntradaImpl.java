@@ -23,6 +23,11 @@ public class RepositorioEntradaImpl implements RepositorioEntrada {
 
 
     @Override
+    public void guardarEntrada(Entrada entrada) {
+        this.sessionFactory.getCurrentSession().save(entrada);
+    }
+
+    @Override
     public List<Entrada> obtenerTodasLasEntradas() {
         String sentencia_sql = "FROM Entrada";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);

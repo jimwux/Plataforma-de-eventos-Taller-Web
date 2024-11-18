@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface RepositorioEntrada {
 
+    void guardarEntrada (Entrada entrada);
+
     List<Entrada> obtenerTodasLasEntradas();
 
     Entrada obtenerEntradaPorId(Long id);
