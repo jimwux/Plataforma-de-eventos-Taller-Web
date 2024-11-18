@@ -4,6 +4,7 @@ import com.tallerwebi.dominio.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -26,6 +27,7 @@ public class ControladorCarritoTest {
     private ServicioLogin servicioLoginMock;
     private ServicioEntrada servicioEntradaMock;
     private ServicioEntradaUsuario servicioEntradaUsuarioMock;
+    private RedirectAttributes redirectAttributes;
 
 
     @BeforeEach
@@ -37,6 +39,7 @@ public class ControladorCarritoTest {
         this.servicioLoginMock = mock(ServicioLogin.class);
         this.servicioEntradaMock = mock(ServicioEntrada.class);
         this.servicioEntradaUsuarioMock = mock(ServicioEntradaUsuario.class);
+        this.redirectAttributes = mock(RedirectAttributes.class);
         this.controladorCarrito = new ControladorCarrito(servicioCarritoMock, servicioEventoMock, servicioEmailMock, servicioDatosCompraMock, servicioLoginMock, servicioEntradaMock, servicioEntradaUsuarioMock);
     }
 
@@ -45,11 +48,14 @@ public class ControladorCarritoTest {
         List<Long> idsEntradas = Arrays.asList(1L, 2L);
         List<Integer> cantidades = Arrays.asList(2, 3);
 
+        when(this.servicioEntradaMock.validarStockEntradas(idsEntradas, cantidades)).thenReturn(true);
+
         List<Carrito> carritoMock = Arrays.asList(new Carrito(), new Carrito());
         when(this.servicioCarritoMock.obtenerEntradasDelCarrito(idsEntradas, cantidades)).thenReturn(carritoMock);
         when(this.servicioCarritoMock.calcularTotalCarrito(carritoMock)).thenReturn(800.0);
 
-        ModelAndView modelAndView = controladorCarrito.agregarAlCarrito(idsEntradas, cantidades, 1L);
+        ModelAndView modelAndView = controladorCarrito.agregarAlCarrito(idsEntradas, cantidades, 1L, redirectAttributes);
+
         assertThat(modelAndView.getViewName(), equalTo("formularioPago"));
     }
 
@@ -58,11 +64,13 @@ public class ControladorCarritoTest {
         List<Long> idsEntradas = Arrays.asList(1L, 2L);
         List<Integer> cantidades = Arrays.asList(2, 3);
 
+        when(this.servicioEntradaMock.validarStockEntradas(idsEntradas, cantidades)).thenReturn(true);
+
         List<Carrito> carritoMock = Arrays.asList(new Carrito(), new Carrito());
         when(this.servicioCarritoMock.obtenerEntradasDelCarrito(idsEntradas, cantidades)).thenReturn(carritoMock);
         when(this.servicioCarritoMock.calcularTotalCarrito(carritoMock)).thenReturn(800.0);
 
-        ModelAndView modelAndView = controladorCarrito.agregarAlCarrito(idsEntradas, cantidades, 1L);
+        ModelAndView modelAndView = controladorCarrito.agregarAlCarrito(idsEntradas, cantidades, 1L, redirectAttributes);
 
         assertThat(modelAndView.getModel().get("entradasCarrito"), equalTo(carritoMock));
         verify(this.servicioCarritoMock).obtenerEntradasDelCarrito(idsEntradas, cantidades);
@@ -73,11 +81,13 @@ public class ControladorCarritoTest {
         List<Long> idsEntradas = Arrays.asList(1L, 2L);
         List<Integer> cantidades = Arrays.asList(2, 3);
 
+        when(this.servicioEntradaMock.validarStockEntradas(idsEntradas, cantidades)).thenReturn(true);
+
         List<Carrito> carritoMock = Arrays.asList(new Carrito(), new Carrito());
         when(this.servicioCarritoMock.obtenerEntradasDelCarrito(idsEntradas, cantidades)).thenReturn(carritoMock);
         when(this.servicioCarritoMock.calcularTotalCarrito(carritoMock)).thenReturn(800.0);
 
-        ModelAndView modelAndView = controladorCarrito.agregarAlCarrito(idsEntradas, cantidades, 1L);
+        ModelAndView modelAndView = controladorCarrito.agregarAlCarrito(idsEntradas, cantidades, 1L, redirectAttributes);
 
         assertThat(modelAndView.getModel().get("totalCarrito"), equalTo(800.0));
         verify(this.servicioCarritoMock).calcularTotalCarrito(carritoMock);

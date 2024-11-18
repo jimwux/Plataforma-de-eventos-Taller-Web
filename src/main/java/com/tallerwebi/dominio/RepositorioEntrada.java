@@ -11,4 +11,6 @@ public interface RepositorioEntrada {
     Entrada obtenerEntradaPorNombre(String nombre);
 
     List<Entrada> obtenerEntradasDeUnEvento(Long id);
+
+    int reducirStock(Long idEntrada, Integer cantidad);
 }

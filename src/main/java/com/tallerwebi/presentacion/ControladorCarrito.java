@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -41,9 +42,19 @@ public class ControladorCarrito {
     @PostMapping("/pago")
     public ModelAndView agregarAlCarrito(@RequestParam("idsEntradas") List<Long> idsEntradas,
                                          @RequestParam("cantidades") List<Integer> cantidades,
-                                         @RequestParam("eventoId") Long eventoId) {
+                                         @RequestParam("eventoId") Long eventoId,
+                                         RedirectAttributes redirectAttributes) {
 
         ModelMap modeloEntradas = new ModelMap();
+
+        Boolean stockValido = servicioEntrada.validarStockEntradas(idsEntradas, cantidades);
+
+        if (!stockValido) {
+            // Si la validación de stock falla, agregar mensaje de error a RedirectAttributes
+            redirectAttributes.addFlashAttribute("error", "No hay suficiente stock disponible o has superado el límite de 4 entradas por tipo.");
+            // Redirigir de vuelta a la vista del evento original
+            return new ModelAndView("redirect:/eventos/" + eventoId);
+        }
 
         List<Carrito> entradasCarrito = this.servicioCarrito.obtenerEntradasDelCarrito(idsEntradas, cantidades);
         Double totalCarrito = this.servicioCarrito.calcularTotalCarrito(entradasCarrito);
@@ -75,6 +86,13 @@ public class ControladorCarrito {
 
             for (EntradaCompra entradaCompra : datosEntradas) {
                 Entrada entradaActual = this.servicioEntrada.obtenerEntradaPorId(entradaCompra.getIdEntrada());
+
+                boolean stockReducido = this.servicioEntrada.reducirStock(entradaCompra.getIdEntrada(), entradaCompra.getCantidad());
+                if (!stockReducido) {
+                    modelo.put("error", "No hay suficiente stock para completar la compra.");
+                    return new ModelAndView("compraRealizada", modelo);
+                }
+
                 this.servicioEntradaUsuario.guardarEntradasDeTipo(entradaCompra.getCantidad(), user,  entradaActual, codigoTransaccion);
             }
 

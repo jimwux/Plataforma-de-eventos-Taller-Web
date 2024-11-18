@@ -58,5 +58,14 @@ public class RepositorioEntradaImpl implements RepositorioEntrada {
         return query.getResultList();
     }
 
+    @Override
+    public int reducirStock(Long idEntrada, Integer cantidad) {
+        String hql = "UPDATE Entrada e SET e.stock = e.stock - :cantidad WHERE e.id = :id AND e.stock >= :cantidad";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(hql);
+        query.setParameter("cantidad", cantidad);
+        query.setParameter("id", idEntrada);
+        return query.executeUpdate();
+    }
+
 
 }
