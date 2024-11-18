@@ -12,7 +12,6 @@ body{
 
 a{
     text-align: center;
-    background-color: #3c474c;
     width: 10%;
     padding: 5px;
     border-radius: 10px;
@@ -31,4 +30,11 @@ h1{
 
 span{
     color: #8b989c;
+}
+
+.boton {
+    background-color: #4e4e4e;
+    width: 20em;
+    padding: 0.8em;
+    margin: 0.6em;
 }
