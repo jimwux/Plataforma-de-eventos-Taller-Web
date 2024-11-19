@@ -95,12 +95,13 @@ public class ControladorCarrito {
 
                 this.servicioEntradaUsuario.guardarEntradasDeTipo(entradaCompra.getCantidad(), user,  entradaActual, codigoTransaccion);
             }
-
-
             // Enviar correo y generar código de descuento
             String codigoDescuento = servicioCarrito.generarCodigoDescuento();
             servicioCarrito.guardarCodigoDescuento(codigoDescuento);
             servicioEmail.enviarCodigoDescuento(emailUsuario, codigoDescuento);
+
+            List<EntradaUsuario> entradasUsuarioDeLaCompra = this.servicioEntradaUsuario.obtenerEntradasDeUnaTransaccion(codigoTransaccion);
+            servicioEmail.enviarEntradasConQR(emailUsuario,entradasUsuarioDeLaCompra);
 
             modelo.put("codigoDescuento", codigoDescuento);
 

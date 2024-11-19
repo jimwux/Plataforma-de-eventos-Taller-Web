@@ -11,6 +11,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Properties;
 
 @Service
@@ -61,6 +62,66 @@ public class ServicioEmailImpl implements ServicioEmail{
         } catch (MessagingException e) {
             throw new RuntimeException("Error al enviar correo", e);
         }
+    }
+
+    private void enviarCorreoHTML(String email, String asunto, String contenidoHTML) {
+        Session sesion = configurarSesionCorreo();
+
+        try {
+            Message mensaje = new MimeMessage(sesion);
+            mensaje.setFrom(new InternetAddress(remitente));
+            mensaje.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            mensaje.setSubject(asunto);
+            mensaje.setContent(contenidoHTML, "text/html; charset=utf-8");
+
+            Transport.send(mensaje);
+            System.out.println("Correo enviado con éxito a " + email);
+
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error al enviar correo", e);
+        }
+    }
+
+    @Override
+    public void enviarEntradasConQR(String emailUsuario, List<EntradaUsuario> entradas) {
+        String asunto = "Tenemos tus entradas :)";
+        StringBuilder mensajeHTML = new StringBuilder();
+
+        mensajeHTML.append("<div style='font-family: Arial, sans-serif; color: #333; line-height: 1.5;'>");
+        mensajeHTML.append("<h1 style='color: #4CAF50;'>¡Gracias por tu compra!</h1>");
+        mensajeHTML.append("<p style='font-size: 16px;'>Aquí están tus entradas:</p>");
+
+        for (EntradaUsuario entrada : entradas) {
+            mensajeHTML.append("<div style='border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 10px;'>")
+                    .append("<div style='display: inline-flex; align-items: center; gap: 10px;'>")
+                    .append("<img src=\"")
+                    .append(entrada.getEntrada().getEvento().getImagenUrl()) // URL de la foto del evento
+                    .append("\" alt=\"Foto del evento\" style='width: 50px; height: 50px; border-radius: 5px; margin-right: 15px;'/>")
+                    .append("<h2 style='color: #333; margin: 0;'>Entrada ")
+                    .append(entrada.getEntrada().getNombre())
+                    .append(" - ")
+                    .append(entrada.getEntrada().getEvento().getNombre())
+                    .append("</h2>")
+                    .append("</div>")
+                    .append("<p><strong>Fecha:</strong> ")
+                    .append(entrada.getEntrada().getEvento().getFecha())
+                    .append("</p>")
+                    .append("<p><strong>Lugar:</strong> ")
+                    .append(entrada.getEntrada().getEvento().getLugar())
+                    .append("</p>")
+                    .append("<p><strong>Código QR:</strong></p>")
+                    .append("<div style='text-align: center;'>")
+                    .append("<img src=\"data:image/png;base64,")
+                    .append(entrada.getQrCode())
+                    .append("\" alt=\"Código QR\" style='max-width: 150px; height: auto;'/>")
+                    .append("</div>")
+                    .append("</div>");
+        }
+
+        mensajeHTML.append("<p style='font-size: 16px;'>¡Disfruta del evento!</p>");
+        mensajeHTML.append("</div>");
+
+        enviarCorreoHTML(emailUsuario, asunto, mensajeHTML.toString());
     }
 
     @Override

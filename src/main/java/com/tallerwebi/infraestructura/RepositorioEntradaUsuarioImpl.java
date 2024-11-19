@@ -37,4 +37,13 @@ public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario 
         return entradasUsuario;
     }
 
+    @Override
+    public List<EntradaUsuario> obtenerEntradasDeUnaTransaccion(String codigoTransaccion) {
+        String sentencia_sql = "SELECT e FROM EntradaUsuario e WHERE e.compraId = :codigoTransaccion";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
+        query.setParameter("codigoTransaccion", codigoTransaccion);
+        List<EntradaUsuario> entradasUsuario = query.getResultList();
+        return entradasUsuario;
+    }
+
 }

@@ -330,6 +330,37 @@ public class ControladorCarritoTest {
         verify(this.servicioEntradaMock, times(1)).reducirStock(1L, 3);
     }
 
+    @Test
+    void alEfectuarseLaCompraDebenEnviarseLasEntradasPorCorreoElectronico() {
+        String codigoTransaccion = "TX123";
+        String status = "approved";
+        String emailUsuario = "usuario@ejemplo.com";
 
+        Usuario user = new Usuario();
+        user.setEmail(emailUsuario);
+
+        DatosCompra datosCompra = new DatosCompra();
+        datosCompra.setEmailUsuario(emailUsuario);
+        datosCompra.setEntradasCompradas(List.of(new EntradaCompra(1L, 2)));
+
+        Entrada entrada = new Entrada();
+        entrada.setNombre("Entrada VIP");
+
+        EntradaUsuario entradaUsuario = new EntradaUsuario();
+        entradaUsuario.setQrCode("QR123");
+
+        // Configurando mocks
+        when(this.servicioDatosCompraMock.obtenerCompraPorCodigoTransaccion(codigoTransaccion)).thenReturn(datosCompra);
+        when(servicioLoginMock.verificarSiExiste(emailUsuario)).thenReturn(user);
+        when(servicioEntradaMock.obtenerEntradaPorId(1L)).thenReturn(entrada);
+        when(servicioEntradaUsuarioMock.obtenerEntradasDeUnaTransaccion(codigoTransaccion))
+                .thenReturn(List.of(entradaUsuario));
+        when(servicioEntradaMock.reducirStock(1L, 2)).thenReturn(true);
+
+        ModelAndView modelAndView = controladorCarrito.mostrarVistaCompraFinalizada(codigoTransaccion, status);
+
+        assertThat(modelAndView.getViewName(), equalTo("compraRealizada"));
+        verify(servicioEmailMock).enviarEntradasConQR(eq(emailUsuario), anyList());
+    }
 
 }

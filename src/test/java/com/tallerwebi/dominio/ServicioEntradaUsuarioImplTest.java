@@ -28,7 +28,11 @@ public class ServicioEntradaUsuarioImplTest {
         servicioEntradaUsuario.guardarEntradasDeTipo(cantidad, usuario, entrada, codigoTransaccion);
 
         EntradaUsuario entradaUsuarioEsperada = new EntradaUsuario(usuario, entrada, codigoTransaccion);
-        verify(repositorioEntradaUsuarioMock, times(cantidad)).guardar(entradaUsuarioEsperada);
+        verify(repositorioEntradaUsuarioMock, times(cantidad)).guardar(argThat(entradaUsuario ->
+                entradaUsuario.getUsuario().equals(usuario) &&
+                        entradaUsuario.getEntrada().equals(entrada) &&
+                        entradaUsuario.getCompraId().equals(codigoTransaccion)
+        ));
     }
 
 
