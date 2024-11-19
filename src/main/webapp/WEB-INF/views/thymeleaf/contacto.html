@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto</title>
+    <link rel="stylesheet" th:href="@{/css/barra-navegacion.css}"/>
+    <link rel="stylesheet" th:href="@{/css/contacto.css}"/>
+</head>
+<body>
+
+    <nav id="nav-bar">
+        <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
+        <ul id="botones-nav">
+            <li class="boton-nav"><a href="http://localhost:8080/equipomokito/eventos" id="boton_eventos">Eventos</a></li>
+            <li class="boton-nav"><a href="http://localhost:8080/equipomokito/contacto">Contacto</a></li>
+            <li class="boton-nav" th:if="${session.ID != null}"><a th:href="@{/misEntradas}">Mis Entradas</a></li>
+            <li class="boton-nav" th:if="${session.ID == null}">
+                <a th:href="@{/login}">Ingresar</a>
+            </li>
+            <li class="boton-nav" th:if="${session.ID != null}">
+                <a th:href="@{/usuario}">Usuario</a>
+            </li>
+        </ul>
+    </nav>
+
+    <header class="banner">
+        <h1>Contactanos</h1>
+        <h2>Ante cualquier consulta no dudes en enviarnos un correo</h2>
+    </header>
+
+    <main>
+
+        <section>
+            <form th:action="@{/contacto}" th:object="${formularioContacto}" method="post" id="formulario-contacto">
+
+                <article id="datos-contacto">
+                <div class="contenedor-form">
+                    <label for="nombre">Nombre</label><br>
+                    <input type="text" id="nombre" th:field="*{nombre}" required class="input-contacto" placeholder="Escribe tu nombre"><br>
+
+                    <label for="apellido">Apellido</label><br>
+                    <input type="text" id="apellido" th:field="*{apellido}" required class="input-contacto" placeholder="Escribe tu apellido"><br>
+
+                    <label for="email">Email</label><br>
+                    <input type="email" id="email" th:field="*{email}" required class="input-contacto" placeholder="Escribe tu correo electrónico"><br>
+
+                    <label for="asunto">Asunto</label><br>
+                    <input type="text" id="asunto" th:field="*{asunto}" required class="input-contacto" placeholder="Escribe el asunto del correo"><br>
+                </div>
+
+                <div class="contenedor-form">
+                    <label for="mensaje">Mensaje</label><br>
+                    <textarea id="mensaje" th:field="*{mensaje}" required class="input-contacto" placeholder="Redacta tu correo"></textarea><br>
+                </div>
+                </article>
+                <button type="submit" id="boton-correo">Enviar</button>
+
+
+            </form>
+
+            <div th:if="${mensajeExito}">
+                <h3 th:text="${mensajeExito}" class="estado-mensaje"></h3>
+            </div>
+
+            <div th:if="${mensajeError}">
+                <h3 th:text="${mensajeError}" class="estado-mensaje"></h3>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="pie-de-pagina">
+        <p>© 2024 Equipo Mokito</p>
+    </footer>
+
+</body>
+</html>

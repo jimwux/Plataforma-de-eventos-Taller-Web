@@ -21,3 +21,17 @@ function validarBoton() {
 }
 
 formulario.addEventListener("input", validarBoton);
+
+let cantidades = document.getElementsByName("cantidades");
+
+// Inicializar valores al cargar la página
+window.addEventListener("DOMContentLoaded", () => {
+    cantidades.forEach((cantidad) => {
+        // Verificar si el elemento correspondiente está marcado como "SOLD OUT"
+        let label = cantidad.closest("tr").querySelector(".stock-label");
+        if (label && label.textContent.includes("SOLD OUT")) {
+            cantidad.value = "0"; // Establecer el valor en 0
+            cantidad.disabled = true; // Deshabilitar el select
+        }
+    });
+});

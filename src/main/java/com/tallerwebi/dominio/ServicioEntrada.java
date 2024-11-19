@@ -8,4 +8,8 @@ public interface ServicioEntrada {
     Entrada obtenerEntradaPorId(Long id);
 
     List<Entrada> obtenerEntradasDeUnEvento(Long id);
+
+    Boolean validarStockEntradas(List<Long> idsEntradas, List<Integer> cantidades);
+
+    boolean reducirStock(Long idEntrada, Integer cantidad);
 }
