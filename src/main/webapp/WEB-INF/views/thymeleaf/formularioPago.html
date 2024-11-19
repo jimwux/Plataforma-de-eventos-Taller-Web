@@ -67,6 +67,14 @@
                     ya que será utilizado para enviar sus accesos al evento!</p>
                 </fieldset>
 
+                <div id="popup" class="modal hidden">
+                    <div id="popup-contenido2" class="modal-content">
+                        <p>Has restado tus entradas a cero, te reenviaremos a la vista eventos para que puedas elegir otra vez!</p>
+                        <div id="botones">
+                            <button  class="botones enviar" id="cancelarBoton" onclick="cerrarModal()">Presione para volver a eventos</button>
+                        </div>
+                    </div>
+                </div>
 
                 <input class="check" type="checkbox" id="aceptacionTerminos" name="aceptacionTerminos" onclick="mostrarTermYCond()">
                 <label for="aceptacionTerminos">Acepto los términos y condiciones.</label>
