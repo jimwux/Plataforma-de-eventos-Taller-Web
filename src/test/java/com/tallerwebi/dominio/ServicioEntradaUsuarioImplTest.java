@@ -9,11 +9,12 @@ public class ServicioEntradaUsuarioImplTest {
 
     private ServicioEntradaUsuario servicioEntradaUsuario;
     private RepositorioEntradaUsuario repositorioEntradaUsuarioMock;
+    private GeneradorCodigoQr generadorCodigoQrMock;
 
     @BeforeEach
     public void init() {
         this.repositorioEntradaUsuarioMock = mock(RepositorioEntradaUsuario.class);
-        this.servicioEntradaUsuario = new ServicioEntradaUsuarioImpl(this.repositorioEntradaUsuarioMock);
+        this.servicioEntradaUsuario = new ServicioEntradaUsuarioImpl(this.repositorioEntradaUsuarioMock, generadorCodigoQrMock);
     }
 
     @Test

@@ -32,7 +32,8 @@
 <div th:if="${entradasUs != null}" th:each="item : ${entradasUs}" class="contenedor">
 
     <div class="cajita1">
-        <img th:src="${item.entrada.evento.imagenUrl}">
+        <img th:src="${item.entrada.evento.imagenUrl}" class="imagen">
+        <img th:src="'data:image/png;base64,' + ${item.qrCode}" alt="Código QR" class="imagen"/>
     </div>
 
     <div class="cajita2">

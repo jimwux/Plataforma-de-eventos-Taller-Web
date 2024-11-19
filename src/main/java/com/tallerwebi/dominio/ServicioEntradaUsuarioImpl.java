@@ -11,10 +11,12 @@ import java.util.List;
 public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
 
     private RepositorioEntradaUsuario repositorioEntradaUsuario;
+    private GeneradorCodigoQr generadorCodigoQr;
 
     @Autowired
-    public ServicioEntradaUsuarioImpl(RepositorioEntradaUsuario repositorioEntradaUsuario) {
+    public ServicioEntradaUsuarioImpl(RepositorioEntradaUsuario repositorioEntradaUsuario, GeneradorCodigoQr generadorCodigoQr) {
         this.repositorioEntradaUsuario = repositorioEntradaUsuario;
+        this.generadorCodigoQr = generadorCodigoQr;
     }
 
     @Override
@@ -26,6 +28,14 @@ public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
     public void guardarEntradasDeTipo(Integer cantidad, Usuario user, Entrada entradaActual, String codigoTransaccion) {
         for (int i = 0; i < cantidad; i++) {
             EntradaUsuario entradaUsuario = new EntradaUsuario(user, entradaActual, codigoTransaccion);
+
+            // Generar QR usando el servicio inyectado
+            String qrData = entradaUsuario.getId() +
+                    ", Compra: " + codigoTransaccion;
+
+            String qrCodeBase64 = generadorCodigoQr.generarCodigoQRBase64(qrData);
+            entradaUsuario.setQrCode(qrCodeBase64);
+
             this.repositorioEntradaUsuario.guardar(entradaUsuario);
         }
     }
