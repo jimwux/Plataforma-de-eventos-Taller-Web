@@ -9,18 +9,43 @@ public class VistaEvento extends VistaWeb{
         page.navigate("localhost:8080/equipomokito/eventos");
     }
 
+    public void cargarPagina(){
+       this.esperarPaginaCargada();
+   }
+
+   public void cargarElementoVisible(){
+        this.esperarElementoVisible(".evento a");
+   }
+
     public String obtenerTituloDelNav(){
         return this.obtenerTextoDelElemento("#titulo-pagina");
     }
 
 
-    public void hacerClickEnUnEvento() {
-        this.darClickEnElElemento(".evento a");
+    public void hacerClickEnElPrimerEvento() {
+        this.darClickEnElPrimerEvento(".evento a");
     }
+
+
+
+
+   /* public void darClickEnElBotonDeVistaDetalle(){
+        this.darClickEnElElemento("#boton-comprar");
+    }
+*/
+
+
+
+
 
 
     public String obtenerInformacionDelFooter(){
         return this.obtenerTextoDelElemento(".pie-de-pagina p");
     }
 
+/*
+    public void seleccionarCantidadDeUnTipoDeEntrada(Integer cantidad){
+        this.seleccionarCantidadDeElPrimerTipoDeEntrada(cantidad);
+    }
+*/
 }
