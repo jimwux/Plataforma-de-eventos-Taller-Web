@@ -36,4 +36,9 @@ public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
         return this.repositorioEntradaUsuario.obtenerEntradaPorUsuario(email);
     }
 
+    @Override
+    public List<EntradaUsuario> obtenerEntradasDeUsuarioPorCategoria(String email, String categoria) {
+        return this.repositorioEntradaUsuario.obtenerEntradaPorUsuarioYCategoria(email, categoria);
+    }
+
 }

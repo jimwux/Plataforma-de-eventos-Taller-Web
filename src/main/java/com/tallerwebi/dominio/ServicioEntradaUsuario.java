@@ -11,4 +11,5 @@ public interface ServicioEntradaUsuario {
 
     List<EntradaUsuario> obtenerEntradasDeUsuario(String email);
 
+    List<EntradaUsuario> obtenerEntradasDeUsuarioPorCategoria(String email, String categoria);
 }

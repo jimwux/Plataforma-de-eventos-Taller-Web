@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,9 @@ public class ControladorEntradaUsuario {
     }
 
     @GetMapping("/misEntradas")
-    public ModelAndView mostrarEntradasDelUsuario(HttpServletRequest request) {
+    public ModelAndView mostrarEntradasDelUsuario(HttpServletRequest request,
+                                                  @RequestParam(value = "categoria", required = false) String categoria)
+                                                   {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("email") == null) {
             return new ModelAndView("redirect:/login");
@@ -39,8 +42,24 @@ public class ControladorEntradaUsuario {
         UsuarioVistaDTO usuarioVistaDTO = new UsuarioVistaDTO(servicioUsuario.obtenerUsuarioVistaDTODelRepo(email));
         modeloEntradaUsuario.put("usuarioVistaDTO", usuarioVistaDTO);
 
-        List<EntradaUsuario> entradasUs = servicioEntradaUsuario.obtenerEntradasDeUsuario(usuarioVistaDTO.getEmail());
-        modeloEntradaUsuario.put("entradasUs", entradasUs);
+
+        List<EntradaUsuario> entradasUs;
+
+        if(categoria == null || categoria.isEmpty()) {
+            entradasUs = this.servicioEntradaUsuario.obtenerEntradasDeUsuario(usuarioVistaDTO.getEmail());
+
+            modeloEntradaUsuario.put("entradasUs", entradasUs);
+        }
+        else{
+            entradasUs = this.servicioEntradaUsuario.obtenerEntradasDeUsuarioPorCategoria(usuarioVistaDTO.getEmail(), categoria);
+
+            modeloEntradaUsuario.put("entradasUs", entradasUs);
+        }
+
+        String mensaje = "No hay entradas compradas";
+        if(entradasUs.isEmpty()){
+            modeloEntradaUsuario.put("error", mensaje);
+        }
 
         return new ModelAndView("misEntradas", modeloEntradaUsuario);
     }
