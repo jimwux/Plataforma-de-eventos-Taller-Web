@@ -32,7 +32,7 @@ span{
     color: #8b989c;
 }
 
-.boton {
+.boton, .compraFin {
     background-color: #4e4e4e;
     width: 20em;
     padding: 0.8em;

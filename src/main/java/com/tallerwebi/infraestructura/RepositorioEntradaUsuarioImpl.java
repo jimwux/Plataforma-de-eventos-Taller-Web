@@ -30,7 +30,7 @@ public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario 
 
     @Override
     public List<EntradaUsuario> obtenerEntradaPorUsuario(String email) {
-        String sentencia_sql = "SELECT e FROM EntradaUsuario e WHERE e.usuario.email = :email";
+        String sentencia_sql = "SELECT e FROM EntradaUsuario e WHERE e.usuario.email = :email ORDER BY e.fecha DESC";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
         query.setParameter("email", email);
         List<EntradaUsuario> entradasUsuario = query.getResultList();
@@ -38,6 +38,16 @@ public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario 
     }
 
     @Override
+    public List<EntradaUsuario> obtenerEntradaPorUsuarioYCategoria(String email, String categoria) {
+        String sentencia_sql = "SELECT e FROM EntradaUsuario e WHERE e.usuario.email = :email AND e.entrada.evento.categoria = :categoria";
+        Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
+        query.setParameter("email", email);
+        query.setParameter("categoria", categoria);
+        List<EntradaUsuario> entradasUsuario = query.getResultList();
+        return entradasUsuario;
+    }
+
+      @Override 
     public List<EntradaUsuario> obtenerEntradasDeUnaTransaccion(String codigoTransaccion) {
         String sentencia_sql = "SELECT e FROM EntradaUsuario e WHERE e.compraId = :codigoTransaccion";
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);

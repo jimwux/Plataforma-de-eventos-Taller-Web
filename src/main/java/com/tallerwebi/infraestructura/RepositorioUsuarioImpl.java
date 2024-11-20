@@ -4,9 +4,9 @@ import com.tallerwebi.dominio.RepositorioUsuario;
 import com.tallerwebi.dominio.Usuario;
 import com.tallerwebi.presentacion.dto.UsuarioVistaDTO;
 import org.hibernate.Session;
+import javax.persistence.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -75,4 +75,5 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().update(usuario);
     }
 
-    }
+
+}

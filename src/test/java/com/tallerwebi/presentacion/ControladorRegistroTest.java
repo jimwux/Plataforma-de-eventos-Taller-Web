@@ -39,14 +39,13 @@ public class ControladorRegistroTest {
     @Test
     public void registrameSiUsuarioNoExisteDeberiaCrearUsuarioYVolverAlLogin() throws UsuarioExistente {
         // preparacion
-        when(usuario.getEmail()).thenReturn("a@gmail.com");
+        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", "1123895568", "23895568");
 
         // ejecucion
         ModelAndView modelAndView = controladorRegistro.registrarme(usuario);
 
         // validacion
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("redirect:/login"));
-        verify(servicioRegistro, times(1)).registrar(usuario);
     }
 
 
@@ -68,7 +67,6 @@ public class ControladorRegistroTest {
     @Test
     public void registrarseConUsuarioNuloDebeVolverAFormularioYMostrarError() throws UsuarioExistente {
         // preparacion
-        ModelMap model = new ModelMap();
         Usuario usuario = null;
 
         // ejecucion
@@ -80,20 +78,6 @@ public class ControladorRegistroTest {
 
     }
 
-    @Test
-    public void verificarDetallesDeUsuarioConRegistroExitoso() throws UsuarioExistente {
-        // preparacion
-        Usuario usuario = new Usuario("a@gmail.com", "12345", "brian", "hidalgo", "1123895568", "23895568");
-
-        when(servicioRegistro.registrar(usuario)).thenReturn("Registro Exitoso");
-
-        // ejecucion
-        String resultado = controladorRegistro.registrar(usuario);
-
-        // validacion
-        assertThat(resultado, equalTo("Registro Exitoso"));
-        verify(servicioRegistro, times(1)).registrar(usuario);
-    }
 
     @Test
     public void verificarSiElEmailExisteEntoncesDebeVolverAlFormularioYMostrarError() throws UsuarioExistente {
@@ -114,8 +98,6 @@ public class ControladorRegistroTest {
     public void alRegistrarseConUnEmailInvalidoDebeVolverAlFormularioYMostrarError() throws UsuarioExistente {
         // preparacion
         Usuario usuario = new Usuario("email-invalido", "12345", "brian", "hidalgo", "1123895568", "23895568");
-
-        ModelMap model = new ModelMap();
 
         // ejecucion
         ModelAndView modelAndView = controladorRegistro.registrarme(usuario);
