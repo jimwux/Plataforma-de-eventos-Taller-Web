@@ -17,11 +17,16 @@
 
 #nav-bar{
     background-color: #B1B1BB;
-    margin:0;
+    margin: 0;
     display: flex;
     justify-content: space-between;
     padding: 20px;
     margin-bottom: 30px;
+}
+
+
+a {
+    text-decoration: none;
 }
 
 #titulo-pagina {
@@ -29,5 +34,11 @@
     padding:0;
     color: white;
     text-decoration: none;
+}
+
+.pie-de-pagina {
+    text-align: center;
+    color: white;
+    margin: 4em;
 }
 

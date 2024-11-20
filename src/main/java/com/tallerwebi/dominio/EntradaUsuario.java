@@ -2,6 +2,7 @@ package com.tallerwebi.dominio;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -23,14 +24,25 @@ public class EntradaUsuario {
 
     private String compraId; // Identificador único de la compra a la que pertenece
 
+    private LocalDateTime fecha;
+
     public EntradaUsuario(Usuario usuario, Entrada entrada, String compraId) {
         this.usuario = usuario;
         this.entrada = entrada;
         this.compraId = compraId;
+        this.fecha = LocalDateTime.now();
     }
 
     public EntradaUsuario() {
 
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 
     public Long getId() {
