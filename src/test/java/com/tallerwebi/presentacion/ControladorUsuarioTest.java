@@ -6,6 +6,8 @@ import com.tallerwebi.presentacion.dto.UsuarioVistaDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -58,8 +60,6 @@ public class ControladorUsuarioTest {
     @Test
     public void sinHaberUnUsuarioDTOMockCargadoElModelAndViewDeLaVistaUsuarioDebeEstarVacio() {
 
-        String email = "a@gmail.com";
-
         when(request.getSession()).thenReturn(session);
 
         ModelAndView modelAndView = controladorUsuario.mostrarVistaUsuario(request);
@@ -69,4 +69,18 @@ public class ControladorUsuarioTest {
         ModelMap modelo = modelAndView.getModelMap();
         assertThat(modelo.containsKey("usuarioVistaDTO"), is(Boolean.FALSE));
     }
+
+    @Test
+    public void dadoQueHayUnaSesionInciadaEstaSePuedaCerrar(){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        HttpSession session = request.getSession();
+        session.setAttribute("ID", 1L);
+
+        controladorUsuario.cerrarSesion(request);
+        // Intenta obtener la sesión
+        HttpSession actualSession = request.getSession(false);
+        assertThat(actualSession, equalTo(null));
+    }
+
+
 }

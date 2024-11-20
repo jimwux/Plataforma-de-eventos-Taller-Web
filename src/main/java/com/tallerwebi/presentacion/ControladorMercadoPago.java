@@ -67,6 +67,7 @@ public class ControladorMercadoPago {
 
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
+
         Usuario user = verificarYRegistrarUsuario(emailUsuario, nombre, apellido, telefono, dni);
 
 
@@ -133,7 +134,7 @@ public class ControladorMercadoPago {
         guardarDatosCompra (cantidades, idsEntradas, emailUsuario, codigoTransaccion);
 
 
-        response.sendRedirect(preference.getInitPoint());
+        response.sendRedirect(preference.getSandboxInitPoint());
     }
 
     public void guardarDatosCompra (List<Integer> cantidades, List<Long> idsEntradas, String emailUsuario, String codigoTransaccion) {
