@@ -1,9 +1,10 @@
 package com.tallerwebi.punta_a_punta.vistas;
 
-import com.microsoft.playwright.Frame;
-import com.microsoft.playwright.Locator;
+
+import com.microsoft.playwright.FrameLocator;
+
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.LoadState;
+
 
 public class VistaEvento extends VistaWeb{
 
@@ -34,15 +35,6 @@ public class VistaEvento extends VistaWeb{
     public void hacerClickEnElPrimerEvento() {
         this.darClickEnElPrimerEvento(".evento a");
     }
-
-
-
-
-   /* public void darClickEnElBotonDeVistaDetalle(){
-        this.darClickEnElElemento("#boton-comprar");
-    }
-*/
-
 
     public void seleccionarCantidadPrimeraEntrada(String cantidad) {
         // Seleccionar el primer `select` encontrado dentro del contenedor
@@ -112,19 +104,9 @@ public class VistaEvento extends VistaWeb{
     }
 
 
-    public void hacerClickParaVisualizarLaCompraFinalizada() {
-        this.darClickEnElElemento(".button-link");
-    }
-
     public void esperarAQueSeaVisibleLaPassDeMp(){
         page.waitForSelector("#password");
     }
-
-
-
-
-
-
 
 
 
@@ -137,20 +119,9 @@ public class VistaEvento extends VistaWeb{
         this.darClickEnElElemento("#debit_and_prepaid_card_row");
     }
 
-    public void escribirNumeroTarjeta(String numero) {
-        this.escribirEnElElemento("#cardNumber", numero);
-    }
 
     public void escribirNombreTitular(String nombre) {
-        this.escribirEnElElemento(".andes-form-control__field", nombre);
-    }
-
-    public void escribirCodigoSeguridad(String codigo) {
-        this.escribirEnElElemento("#securityCode", codigo);
-    }
-
-    public void escribirVencimiento(String fechaV) {
-        this.escribirEnElElemento("#expirationDate", fechaV);
+        this.escribirEnElElemento("#fullname", nombre);
     }
 
     public void hacerClickEnContinuarDatosTarjeta() {
@@ -158,28 +129,82 @@ public class VistaEvento extends VistaWeb{
     }
 
 
-    public void inspeccionarIframe(){
-        Locator iframeLocator = page.locator("iframe[name='cardNumber']");
-        iframeLocator.waitFor(new Locator.WaitForOptions().setTimeout(50000));
-        Locator cardNumberLocator = iframeLocator.frameLocator("iframe").locator("#cardNumber");
+    public void inspeccionarIframeNumeroTarjeta(){
+        // Acceder al iframe
+        FrameLocator iframe = page.frameLocator("iframe").first();
 
-
-        cardNumberLocator.type("5031 7557 3453 0604");
+        // Esperar e interactuar con el campo
+        iframe.locator("input#cardNumber").waitFor();
+        iframe.locator("input#cardNumber").fill("5031 7557 3453 0604");
 
     }
 
 
+    public void inspeccionarIframeFechaVencimiento(){
+        // Acceder al iframe
+        FrameLocator iframe = page.frameLocator("iframe").nth(1);
 
+        // Esperar e interactuar con el campo
+        iframe.locator("input#expirationDate").waitFor();
+        iframe.locator("input#expirationDate").fill("11/25");
 
-
-
-
-
-
-
-/*
-    public void seleccionarCantidadDeUnTipoDeEntrada(Integer cantidad){
-        this.seleccionarCantidadDeElPrimerTipoDeEntrada(cantidad);
     }
-*/
+
+    public void inspeccionarIframeCodigoSeguridad(){
+        // Acceder al iframe
+        FrameLocator iframe = page.frameLocator("iframe").nth(2);
+
+        // Esperar e interactuar con el campo
+        iframe.locator("input#securityCode").waitFor();
+        iframe.locator("input#securityCode").fill("123");
+
+    }
+
+    public void escribirDniMP(String number) {
+        this.escribirEnElElemento("#number", number);
+    }
+
+    public void hacerClickEnContinuarMPDni() {
+        this.darClickEnElElemento("#submit");
+    }
+
+    public void hacerClickEnLaCuota() {
+        this.darClickEnElElemento("label[for='1']");
+
+    }
+
+
+    public void hacerClickEnVolverAlSitio() {
+        this.darClickEnElElemento("text=Volver al sitio");
+    }
+
+    public void hacerClickEnVolverAEventos() {
+        this.darClickEnElElemento(".compraFin");
+    }
+
+    public void hacerClickEnIngresar() {
+        this.darClickEnElElemento(".ingresar");
+
+    }
+
+    public void escribirEmail(String mail) {
+        this.escribirEnElElemento("#email", mail);
+    }
+
+    public void escribirContrasenia(String pass) {
+        this.escribirEnElElemento("#password", pass);
+    }
+
+    public void hacerClickEnIniciarSesion() {
+        this.darClickEnElElemento("#btn-login");
+    }
+
+    public void hacerClickEnMisEntradas() {
+        this.darClickEnElElemento(".misEnt");
+    }
+
+    public String leerEntradaComprada() {
+      return  page.locator(".cajita2 h3:has-text('Parense de Manos II')").nth(0).textContent();
+
+    }
 }

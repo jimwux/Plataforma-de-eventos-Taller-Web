@@ -36,7 +36,7 @@ public class VistaWeb {
     //estamos seleccionando el primer elemento de la lista de eventos que tenemos
     //mostrara temporalmente mario por como se ven el en html (ya que se ordenan por fecha)
     protected void darClickEnElPrimerEvento(String selectorCSS){
-        this.obtenerElemento(selectorCSS).nth(0).click();
+        this.obtenerElemento(selectorCSS).nth(8).click();
     }
 
   /*  protected void seleccionarCantidadDeElPrimerTipoDeEntrada(Integer cantidad){

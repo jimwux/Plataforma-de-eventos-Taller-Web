@@ -21,7 +21,7 @@ public class VistaEventoE2E {
     static void abrirNavegador() {
         playwright = Playwright.create();
         //browser = playwright.chromium().launch();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(8000));
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(5500));
 
     }
 
@@ -72,11 +72,6 @@ public class VistaEventoE2E {
 
     @Test
     void deberiaComprarUnaEntrada(){
-
-        //Debemos estar parados en la vista localhost:8080/equipomokito/eventos
-        //Debemos hacer click en una de las tarjetas de eventos
-
-
         // Esperar a que la página cargue completamente
         vistaEvento.cargarPagina();
         // Asegurarse de que el evento esté disponible
@@ -133,69 +128,45 @@ public class VistaEventoE2E {
         vistaEvento.hacerClickEnTipoTarjetaMP();
 
         //cargar datos de la tarjeta
-        vistaEvento.inspeccionarIframe();
-       // vistaEvento.escribirNumeroTarjeta("5031 7557 3453 0604");
+        vistaEvento.inspeccionarIframeNumeroTarjeta();
         vistaEvento.escribirNombreTitular("APRO");
-        vistaEvento.escribirVencimiento("11/25");
-        vistaEvento.escribirCodigoSeguridad("123");
-
+        vistaEvento.inspeccionarIframeFechaVencimiento();
+        vistaEvento.inspeccionarIframeCodigoSeguridad();
         vistaEvento.hacerClickEnContinuarDatosTarjeta();
 
+        //llenar ultimo dato
+        vistaEvento.escribirDniMP("12345678");
+        vistaEvento.hacerClickEnContinuarMPDni();
 
+        //cuota
+        vistaEvento.hacerClickEnLaCuota();
 
-        /*
-
-        String urlMp = vistaEvento.obtenerURLActual();
-        assertThat(urlMp, containsString("checkout/v1/redirect/"));
-
+        //pagar
         vistaEvento.hacerClickEnBotonPagarDeMercadoPago();
-*/
 
-
-
-
-
-
-
-       /*
-        String urlDetallePago = vistaEvento.obtenerURLActual();
-        assertThat(urlDetallePago, containsString("/approved/"));
-
-        vistaEvento.hacerClickParaVisualizarLaCompraFinalizada();
+        //volver a compraFinalizada
+        vistaEvento.hacerClickEnVolverAlSitio();
 
         String urlFinal = vistaEvento.obtenerURLActual();
         assertThat(urlFinal, containsString("/compraFinalizada"));
-*/
 
+        vistaEvento.hacerClickEnVolverAEventos();
+        String urlEventos = vistaEvento.obtenerURLActual();
+        assertThat(urlEventos, containsString("/eventos"));
 
+        vistaEvento.hacerClickEnIngresar();
 
+        vistaEvento.escribirEmail("ariaasol9@gmail.com");
+        vistaEvento.escribirContrasenia("123456789");
 
+        vistaEvento.hacerClickEnIniciarSesion();
 
-/*
-        vistaEvento.seleccionarCantidadDeUnTipoDeEntrada(2);
-        vistaEvento.darClickEnElBotonDeVistaDetalle();
+        vistaEvento.hacerClickEnMisEntradas();
 
-        String url2 = vistaEvento.obtenerURLActual();
-        assertThat(url2, containsString("equipomokito/pago"));
-*/
-
-        //Debemos seleccionar la cantidad de entradas y el tipo
-        //Presionar abonar
-
-        //Debemos rellenar los datos del formulario
-        //Debemos presionar abonar
-
-        //Debemos inspeccionar los botones de mercado pago para poder presionarlos
-        //Abonariamos
-
-        //Debemos ver la vista de compra finalizada
-
-        //Podriamos probar iniciando sesion con esa cuenta
-        //Revisar en mis entradas que este ese elemento comprado
-
-
-
-
+        String nombreEntrada = vistaEvento.leerEntradaComprada();
+        String urlMisEntradas = vistaEvento.obtenerURLActual();
+        assertThat(nombreEntrada, equalToIgnoringCase("Parense de Manos II"));
+        assertThat(urlMisEntradas, containsString("/misEntradas"));
 
     }
 
