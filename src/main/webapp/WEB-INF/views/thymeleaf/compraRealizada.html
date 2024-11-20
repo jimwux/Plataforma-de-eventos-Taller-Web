@@ -14,9 +14,9 @@
     <ul id="botones-nav">
         <li class="boton-nav"><a href="http://localhost:8080/equipomokito/eventos" id="boton_eventos">Eventos</a></li>
         <li class="boton-nav"><a href="http://localhost:8080/equipomokito/contacto">Contacto</a></li>
-        <li class="boton-nav" th:if="${session.ID != null}"><a th:href="@{/misEntradas}">Mis Entradas</a></li>
+        <li class="boton-nav" th:if="${session.ID != null}"><a class="misEnt" th:href="@{/misEntradas}">Mis Entradas</a></li>
         <li class="boton-nav" th:if="${session.ID == null}">
-            <a th:href="@{/login}">Ingresar</a>
+            <a class="ingresar" th:href="@{/login}">Ingresar</a>
         </li>
         <li class="boton-nav" th:if="${session.ID != null}">
             <a th:href="@{/usuario}">Usuario</a>
@@ -28,7 +28,6 @@
     <h1>¡Gracias <!-- <span th:text="${nombre} "></span>  <span th:text="${apellido}"></span> --> por realizar su compra en MokitoPass!</h1>
     <h1>Te regalamos un código de descuento del 20% para tu próxima compra: <span th:text="${codigoDescuento}"></span></h1>
     <a class="compraFin" href="http://localhost:8080/equipomokito/eventos">Volver</a>
-    <a class="boton" href="http://localhost:8080/equipomokito/eventos">Volver</a>
     <a class="boton" th:if="${session.ID != null}" th:href="@{/misEntradas}">Ir a mis entradas</a>
 </div>
 
