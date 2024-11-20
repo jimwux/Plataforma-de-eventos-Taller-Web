@@ -1,9 +1,8 @@
 package com.tallerwebi.punta_a_punta;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.LoadState;
 import com.tallerwebi.punta_a_punta.vistas.VistaEvento;
-import com.tallerwebi.punta_a_punta.vistas.VistaDetalle;
-import com.tallerwebi.punta_a_punta.vistas.VistaPago;
 import org.junit.jupiter.api.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,14 +15,13 @@ public class VistaEventoE2E {
     static Browser browser;
     BrowserContext context;
     VistaEvento vistaEvento;
-    VistaDetalle vistaDetalle;
-    VistaPago vistaPago;
+
 
     @BeforeAll
     static void abrirNavegador() {
         playwright = Playwright.create();
         //browser = playwright.chromium().launch();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(2000));
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setSlowMo(8000));
 
     }
 
@@ -38,8 +36,8 @@ public class VistaEventoE2E {
         Page page = context.newPage();
         vistaEvento = new VistaEvento(page);
 
-        vistaDetalle = new VistaDetalle(page, "6");
-        vistaPago = new VistaPago(page);
+        //vistaDetalle = new VistaDetalle(page, "6");
+        //vistaPago = new VistaPago(page);
        // vistaMP = new VistaMP(page);
        // vistaCompraFinalizada = new VistaCompraFinalizada(page);
     }
@@ -88,6 +86,87 @@ public class VistaEventoE2E {
         // Validar la URL actual
         String url = vistaEvento.obtenerURLActual();
         assertThat(url, containsString("eventos/"));
+
+
+        // Seleccionar "2" en el primer select de entradas
+        vistaEvento.seleccionarCantidadPrimeraEntrada("1");
+
+        // Hacer clic en el botón "Abonar"
+        vistaEvento.hacerClickEnBotonAbonar();
+
+        String urlActual = vistaEvento.obtenerURLActual();
+        assertThat(urlActual, containsString("pago"));
+
+        //tipeamos datos de formulario
+        vistaEvento.escribirNombre("Sol");
+        vistaEvento.escribirApellido("Arias");
+        vistaEvento.escribirCorreo("ariaasol9@gmail.com");
+        vistaEvento.escribirCorreoRepetido("ariaasol9@gmail.com");
+        vistaEvento.escribirTelefono("1128438706");
+        vistaEvento.escribirDNI("46349257");
+
+        vistaEvento.hacerClickEnAceptarTerminosYCondiciones();
+        vistaEvento.hacerClickEnAceptarTerminos();
+
+        //hacemos click en abonar
+        vistaEvento.hacerClickEnAbonar();
+
+        //String urlPago = vistaEvento.obtenerURLActual();
+       // assertThat(urlPago, containsString("/checkout/"));
+
+        //inicio de sesion
+        vistaEvento.escribirCorreoPruebaMP("TESTUSER919898742");
+        vistaEvento.hacerClickEnContinuarMP();
+
+        vistaEvento.esperarAQueSeaVisibleLaPassDeMp();
+
+        //contraseña
+        vistaEvento.escribirContraseniaPruebaMP("fq3ul0hsDY");
+        vistaEvento.hacerClickEnIniciarSesionMP();
+
+        //COLOCACION DE DATOS DE TARJETA PARA PODER USAR MERCADO PAGO
+
+        //presionar modificar
+        vistaEvento.hacerClickEnModificarMP();
+
+        //seleccionar tipo de tarjeta
+        vistaEvento.hacerClickEnTipoTarjetaMP();
+
+        //cargar datos de la tarjeta
+        vistaEvento.inspeccionarIframe();
+       // vistaEvento.escribirNumeroTarjeta("5031 7557 3453 0604");
+        vistaEvento.escribirNombreTitular("APRO");
+        vistaEvento.escribirVencimiento("11/25");
+        vistaEvento.escribirCodigoSeguridad("123");
+
+        vistaEvento.hacerClickEnContinuarDatosTarjeta();
+
+
+
+        /*
+
+        String urlMp = vistaEvento.obtenerURLActual();
+        assertThat(urlMp, containsString("checkout/v1/redirect/"));
+
+        vistaEvento.hacerClickEnBotonPagarDeMercadoPago();
+*/
+
+
+
+
+
+
+
+       /*
+        String urlDetallePago = vistaEvento.obtenerURLActual();
+        assertThat(urlDetallePago, containsString("/approved/"));
+
+        vistaEvento.hacerClickParaVisualizarLaCompraFinalizada();
+
+        String urlFinal = vistaEvento.obtenerURLActual();
+        assertThat(urlFinal, containsString("/compraFinalizada"));
+*/
+
 
 
 
