@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const fila = event.target.closest('tr');
             const cantidadInput = fila.querySelector('.cantidad-entrada');
-            const cantidad = parseInt(cantidadInput.textContent);
+            let cantidad = parseInt(cantidadInput.textContent);
             const subtotalElement = fila.querySelector('.subtotal-entrada');
             const precioUnitario = parseFloat(fila.querySelector('.precioEntrada').value);
             const cantidadOculta = fila.querySelector('.cantidad');

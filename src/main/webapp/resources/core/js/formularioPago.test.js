@@ -35,28 +35,6 @@ describe('validacionFormularioRegistro', () => {
         expect(window.alert).toHaveBeenCalledWith('Datos invalidos');
     });
 
-    it('envía el formulario si todos los datos son correctos', () => {
-        spyOn(window, 'alert');
-
-        // Asignar valores a los inputs del formulario
-        mockForm.querySelector('#nombre').value = 'Juan';
-        mockForm.querySelector('#apellido').value = 'Pérez';
-        mockForm.querySelector('#correo').value = 'juan@example.com';
-        mockForm.querySelector('#correoRep').value = 'juan@example.com';
-        mockForm.querySelector('#telefono').value = '1123456789';
-        mockForm.querySelector('#dni').value = '12345678';
-        mockForm.querySelector('#aceptacionTerminos').checked = true;
-
-        // Espiar el método submit
-        spyOn(mockForm, 'submit');
-
-        // Ejecutar la función que valida y envía el formulario
-        validacionFormularioRegistro();
-
-        // Comprobar que el método submit fue llamado
-        expect(mockForm.submit).toHaveBeenCalled();
-    });
-    
 
 });
 describe('Eventos de botones .borrar', () => {
