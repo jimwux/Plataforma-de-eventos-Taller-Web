@@ -76,7 +76,7 @@ li{
 
 .botones{
     margin: 0;
-    width: 70%;
+    width: 100%;
     background: linear-gradient(to right, #817878, rgb(106, 106, 106));
     padding: 1em;
     border: none;
