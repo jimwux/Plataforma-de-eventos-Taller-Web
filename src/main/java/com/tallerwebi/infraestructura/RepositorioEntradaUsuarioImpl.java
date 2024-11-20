@@ -43,6 +43,9 @@ public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario 
         Query query = this.sessionFactory.getCurrentSession().createQuery(sentencia_sql);
         query.setParameter("email", email);
         query.setParameter("categoria", categoria);
+        List<EntradaUsuario> entradasUsuario = query.getResultList();
+        return entradasUsuario;
+    }
 
       @Override 
     public List<EntradaUsuario> obtenerEntradasDeUnaTransaccion(String codigoTransaccion) {
