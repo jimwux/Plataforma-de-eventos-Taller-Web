@@ -1,63 +1,23 @@
 
-document.addEventListener("DOMContentLoaded", function () {
-    const formu = document.getElementById("formulario");
+const formu = document.getElementById("formulario");
 
-    if (formu) {
-        formu.addEventListener("submit", function (e) {
-            e.preventDefault();
+formu.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-            const botonPresionado = e.submitter; // Directamente usar e.submitter
-            if (botonPresionado.classList.contains('enviar')) {
-                validacionFormularioRegistro();
-            }
-        });
-
+    const botonPresionado = e.submitter; //permite obtener directamente el botón que activó el envío
+    if (botonPresionado.classList.contains('enviar')) { // si ese tiene la clase enviar entonces quiere decir que hubo intento de enviar el form y valido
+        validacionFormularioRegistro();
     }
-
-    // Seleccionamos todos los botones con la clase .borrar
-    const botones = document.querySelectorAll('.borrar');
-
-    botones.forEach(boton => {
-        boton.addEventListener('click', (event) => {
-            event.preventDefault();
-
-            const fila = event.target.closest('tr');
-            const cantidadInput = fila.querySelector('.cantidad-entrada');
-            let cantidad = parseInt(cantidadInput.textContent);
-            const subtotalElement = fila.querySelector('.subtotal-entrada');
-            const precioUnitario = parseFloat(fila.querySelector('.precioEntrada').value);
-            const cantidadOculta = fila.querySelector('.cantidad');
-
-            const botonBorrar = document.getElementById("tachito");
-            const precioTotal = parseFloat(document.getElementById('precio-final-valor-original').textContent) || 0;
-
-            if (precioTotal > precioUnitario) {
-                if (cantidad === 1) {
-                    fila.remove();
-                } else {
-                    cantidad--;
-                    cantidadInput.textContent = cantidad;
-                    cantidadOculta.value = cantidad; // Sincroniza la cantidad oculta
-                    actualizarSubtotal(subtotalElement, cantidad, precioUnitario);
-                }
-            } else {
-                botonBorrar.disabled = true;
-            }
-
-            // Actualizamos el total
-            actualizarPrecioFinal();
-        });
-    });
 });
 
 function validacionFormularioRegistro() {
-    const nombre = document.getElementById("nombre").value;
-    const apellido = document.getElementById("apellido").value;
-    const correo = document.getElementById("correo").value;
-    const correoRep = document.getElementById("correoRep").value;
-    const telefono = document.getElementById("telefono").value;
-    const dni = document.getElementById("dni").value;
-    const aceptacionTerminos = document.getElementById("aceptacionTerminos").checked;
+    let nombre = document.getElementById("nombre").value;
+    let apellido = document.getElementById("apellido").value;
+    let correo = document.getElementById("correo").value;
+    let correoRep = document.getElementById("correoRep").value;
+    let telefono = document.getElementById("telefono").value;
+    let dni = document.getElementById("dni").value;
+    let aceptacionTerminos = document.getElementById("aceptacionTerminos").checked;
 
     document.getElementById("errorNombre").innerHTML = "";
     document.getElementById("errorApellido").innerHTML = "";
@@ -68,7 +28,6 @@ function validacionFormularioRegistro() {
     document.getElementById("errorTYC").innerHTML = "";
 
     let error = false;
-
 
     let exp = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
@@ -94,10 +53,7 @@ function validacionFormularioRegistro() {
         document.getElementById("errorCorreoRep").innerHTML = "<p> El email debe cumplir el formato de un email y coincidir con el primero </p>"
     }
 
-
-    const expDni = /^\d{8}$/;
-    if (!expDni.test(dni) || dni === "") error = true;
-
+    let expNumero = /^11\d{8}$/;
 
     if (!expNumero.test(telefono) || telefono === "") {
         error = true;
@@ -116,15 +72,12 @@ function validacionFormularioRegistro() {
         document.getElementById("errorTYC").innerHTML = "<p> Debe marcar los terminos y condiciones </p>"
     }
 
-
     if (error) {
 
     } else {
-        const formu = document.getElementById("formulario");
         formu.submit();
     }
 }
-
 
 //seleccionamos todos los botones con la clase .borrar, los cuales esten
 //en el front cargados
@@ -177,19 +130,23 @@ botones.forEach(boton => {
     });
 });
 
-
 function actualizarSubtotal(subtotal, cantidad, precioUnitario) {
     subtotal.textContent = (cantidad * precioUnitario).toFixed(2);
+    //nos traemos el subtotal, la cantidad y el precio unitario que tenemos dentro del evento
 }
+
 
 function actualizarPrecioFinal() {
     let total = 0;
-    const subtotales = document.querySelectorAll('.subtotal-entrada');
+    //nos traemos todos los subtotales y los recorremos para ir creando nuestro nuevo total en caso
+    // de haber eliminado alguna entrada
+    let subtotales = document.querySelectorAll('.subtotal-entrada');
     subtotales.forEach(subtotal => {
         total += parseFloat(subtotal.textContent) || 0;
+        //caso de devolver un NaN,mostrara 0 en pantalla
     });
+    //modificamos precio total en la vista
     document.getElementById('precio-final-valor-original').textContent = total.toFixed(2);
-
 }
 function mostrarModal() {
     const modal = document.getElementById("popup");
@@ -207,3 +164,5 @@ function cerrarModal() {
         document.body.style.overflow = "auto"; // Reactiva el scroll de fondo
     }
 }
+
+

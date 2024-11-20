@@ -1,41 +1,50 @@
-describe('validacionFormularioRegistro', () => {
-    let mockForm;
+describe("Formulario - Validación del registro", () => {
+    let form, nombre, apellido, correo, correoRep, telefono, dni, aceptacionTerminos, botonEnviar;
 
-    beforeEach(() => {
-        const form = document.createElement('form');
-        form.id = 'formulario';
-        form.style.display = 'none';
 
-        const fields = [
-            { id: 'nombre', type: 'text', value: '' },
-            { id: 'apellido', type: 'text', value: '' },
-            { id: 'correo', type: 'text', value: '' },
-            { id: 'correoRep', type: 'text', value: '' },
-            { id: 'telefono', type: 'text', value: '' },
-            { id: 'dni', type: 'text', value: '' },
-            { id: 'aceptacionTerminos', type: 'checkbox', value: false },
-        ];
-
-        fields.forEach(field => {
-            const input = document.createElement('input');
-            input.id = field.id;
-            input.type = field.type;
-            input.value = field.value;
-            form.appendChild(input);
-        });
-
-        document.body.appendChild(form);
-        mockForm = form;
+    afterEach(() => {
+        document.body.innerHTML = ""; // Limpiar el DOM después de cada test
     });
 
+    it("debe mostrar errores si los campos están vacíos", () => {
+        spyOn(form, "submit"); // Espía para evitar el envío real del formulario
 
-    it('muestra un error si los campos están vacíos', () => {
-        spyOn(window, 'alert');
         validacionFormularioRegistro();
-        expect(window.alert).toHaveBeenCalledWith('Datos invalidos');
+
+        expect(document.getElementById("errorNombre").innerHTML).toContain("El nombre debe contener solo letras");
+        expect(document.getElementById("errorApellido").innerHTML).toContain("El apellido debe contener solo letras");
+        expect(document.getElementById("errorCorreo").innerHTML).toContain("El email debe cumplir el formato de un email");
+        expect(document.getElementById("errorCorreoRep").innerHTML).toContain("El email debe cumplir el formato de un email y coincidir con el primero");
+        expect(document.getElementById("errorTelefono").innerHTML).toContain("El telefono debe cumplir con los 10 digitos");
+        expect(document.getElementById("errorDNI").innerHTML).toContain("El DNI debe cumplir el formato de los 8 digitos");
+        expect(document.getElementById("errorTYC").innerHTML).toContain("Debe marcar los terminos y condiciones");
+
+        expect(form.submit).not.toHaveBeenCalled();
     });
 
+    it("debe enviar el formulario si los campos son válidos", () => {
+        spyOn(form, "submit");
 
+        nombre.value = "Juan";
+        apellido.value = "Pérez";
+        correo.value = "juan.perez@example.com";
+        correoRep.value = "juan.perez@example.com";
+        telefono.value = "1123456789";
+        dni.value = "12345678";
+        aceptacionTerminos.checked = true;
+
+        validacionFormularioRegistro();
+
+        expect(document.getElementById("errorNombre").innerHTML).toBe("");
+        expect(document.getElementById("errorApellido").innerHTML).toBe("");
+        expect(document.getElementById("errorCorreo").innerHTML).toBe("");
+        expect(document.getElementById("errorCorreoRep").innerHTML).toBe("");
+        expect(document.getElementById("errorTelefono").innerHTML).toBe("");
+        expect(document.getElementById("errorDNI").innerHTML).toBe("");
+        expect(document.getElementById("errorTYC").innerHTML).toBe("");
+
+        expect(form.submit).toHaveBeenCalled();
+    });
 });
 describe('Eventos de botones .borrar', () => {
     let mockRow, mockBoton, mockCantidadInput, mockSubtotalElement, mockPrecioUnitario, mockPrecioFinal;
