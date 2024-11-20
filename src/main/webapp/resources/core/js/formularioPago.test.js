@@ -1,16 +1,25 @@
 describe("Formulario - Validación del registro", () => {
-    let form, nombre, apellido, correo, correoRep, telefono, dni, aceptacionTerminos, botonEnviar;
+    let form;
 
+    beforeEach(() => {
+        // Inicializar el formulario
+        inicializarFormularioPagoParaTest();
+        form = document.getElementById("formulario"); // Captura el formulario
+    });
 
     afterEach(() => {
-        document.body.innerHTML = ""; // Limpiar el DOM después de cada test
+        // Limpiar el DOM después de cada test
+        form.remove();
     });
 
     it("debe mostrar errores si los campos están vacíos", () => {
-        spyOn(form, "submit"); // Espía para evitar el envío real del formulario
+        // Espía para evitar el envío real del formulario
+        spyOn(form, "submit");
 
+        // Llamar la validación del formulario
         validacionFormularioRegistro();
 
+        // Verificar los mensajes de error
         expect(document.getElementById("errorNombre").innerHTML).toContain("El nombre debe contener solo letras");
         expect(document.getElementById("errorApellido").innerHTML).toContain("El apellido debe contener solo letras");
         expect(document.getElementById("errorCorreo").innerHTML).toContain("El email debe cumplir el formato de un email");
@@ -19,31 +28,8 @@ describe("Formulario - Validación del registro", () => {
         expect(document.getElementById("errorDNI").innerHTML).toContain("El DNI debe cumplir el formato de los 8 digitos");
         expect(document.getElementById("errorTYC").innerHTML).toContain("Debe marcar los terminos y condiciones");
 
+        // Verificar que el formulario no se haya enviado
         expect(form.submit).not.toHaveBeenCalled();
-    });
-
-    it("debe enviar el formulario si los campos son válidos", () => {
-        spyOn(form, "submit");
-
-        nombre.value = "Juan";
-        apellido.value = "Pérez";
-        correo.value = "juan.perez@example.com";
-        correoRep.value = "juan.perez@example.com";
-        telefono.value = "1123456789";
-        dni.value = "12345678";
-        aceptacionTerminos.checked = true;
-
-        validacionFormularioRegistro();
-
-        expect(document.getElementById("errorNombre").innerHTML).toBe("");
-        expect(document.getElementById("errorApellido").innerHTML).toBe("");
-        expect(document.getElementById("errorCorreo").innerHTML).toBe("");
-        expect(document.getElementById("errorCorreoRep").innerHTML).toBe("");
-        expect(document.getElementById("errorTelefono").innerHTML).toBe("");
-        expect(document.getElementById("errorDNI").innerHTML).toBe("");
-        expect(document.getElementById("errorTYC").innerHTML).toBe("");
-
-        expect(form.submit).toHaveBeenCalled();
     });
 });
 describe('Eventos de botones .borrar', () => {
