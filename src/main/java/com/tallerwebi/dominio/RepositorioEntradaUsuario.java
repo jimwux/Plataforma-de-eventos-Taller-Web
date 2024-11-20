@@ -10,4 +10,7 @@ public interface RepositorioEntradaUsuario {
     List<EntradaUsuario> obtenerEntradaPorUsuario(String email);
 
     List<EntradaUsuario> obtenerEntradaPorUsuarioYCategoria(String email, String categoria);
+
+    List<EntradaUsuario> obtenerEntradasDeUnaTransaccion(String codigoTransaccion);
+
 }

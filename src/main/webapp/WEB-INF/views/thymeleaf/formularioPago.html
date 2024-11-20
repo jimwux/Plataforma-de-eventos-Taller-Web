@@ -17,7 +17,7 @@
     <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
     <ul id="botones-nav">
         <li class="boton-nav"><a href="http://localhost:8080/equipomokito/eventos" id="boton_eventos">Eventos</a></li>
-        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav"><a href="http://localhost:8080/equipomokito/contacto">Contacto</a></li>
         <li class="boton-nav" th:if="${session.ID != null}"><a th:href="@{/misEntradas}">Mis Entradas</a></li>
         <li class="boton-nav" th:if="${session.ID == null}">
             <a th:href="@{/login}">Ingresar</a>
@@ -51,12 +51,14 @@
                     <div id="errorApellido" class="error"></div>
 
                     <label for="correo">Correo electrónico</label>
-                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico">
+                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico"
+                           th:value="${session.email}"  th:readonly="${session.ID != null}" required>
 
                     <div id="errorCorreo" class="error"></div>
 
                     <label for="correoRep">Repetir correo electrónico</label>
-                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico">
+                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico"
+                           th:value="${session.email}"  th:readonly="${session.ID != null}" required>
 
                     <div id="errorCorreoRep" class="error"></div>
 

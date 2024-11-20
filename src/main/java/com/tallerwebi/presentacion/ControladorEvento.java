@@ -90,6 +90,13 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
             List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
             vistas.put("entradas", entradas);
 
+            List<Integer> cantidadesMaximas = new ArrayList<>();
+            for (Entrada entrada : entradas) {
+                int maxCantidad = Math.min(4, entrada.getStock());
+                cantidadesMaximas.add(maxCantidad);
+            }
+            vistas.addAttribute("cantidadesMaximas", cantidadesMaximas);
+
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
             String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());

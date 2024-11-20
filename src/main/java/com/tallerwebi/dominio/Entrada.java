@@ -16,6 +16,8 @@ public class Entrada {
     @ManyToOne(fetch = FetchType.EAGER)
     private Evento evento;
 
+    private Integer stock;
+
     public Evento getEvento() {
         return evento;
     }
@@ -47,6 +49,14 @@ public class Entrada {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     @Override

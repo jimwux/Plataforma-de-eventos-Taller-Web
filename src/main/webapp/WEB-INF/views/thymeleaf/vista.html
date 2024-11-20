@@ -14,7 +14,7 @@
     <a href="http://localhost:8080/equipomokito/eventos"><h1 id="titulo-pagina">Equipo mokito</h1></a>
     <ul id="botones-nav">
         <li class="boton-nav"><a href="http://localhost:8080/equipomokito/eventos" id="boton_eventos">Eventos</a></li>
-        <li class="boton-nav"><a href="">Contacto</a></li>
+        <li class="boton-nav"><a href="http://localhost:8080/equipomokito/contacto">Contacto</a></li>
         <li class="boton-nav" th:if="${session.ID != null}"><a th:href="@{/misEntradas}">Mis Entradas</a></li>
         <li class="boton-nav" th:if="${session.ID == null}">
             <a th:href="@{/login}">Ingresar</a>
@@ -46,20 +46,22 @@
                 <form th:action="@{/pago}" method="POST" id="formulario-carrito">
                 <section id="contenedor_entradas" >
                     <input type="hidden" name="eventoId" th:value="${vista.id}" />
-                    <div class="entrada" th:each="entrada : ${entradas}">
+                    <div class="entrada" th:each="entrada, iterStat : ${entradas}">
                         <article class="tipo-entrada" >
                             <!-- ponemos entrada.id en oculto para poder llamar a esta etiqueta desde el controlador -->
                             <input type="hidden" name="idsEntradas" th:value="${entrada.id}" />
-                            <h4 class="datos-entrada" th:text="${entrada.nombre}"></h4>
+                            <h4 class="datos-entrada">
+                                <span th:text="${entrada.nombre}"></span>
+                                <span th:if="${cantidadesMaximas[iterStat.index] == 0}" style="color: #9e3030;"> SOLD OUT</span>
+                            </h4>
                             <p class="datos-entrada" th:text="${entrada.precio}"></p>
                         </article>
                         <article class="cantidad">
                             <select name="cantidades" id="entrada">
                                 <option value="0" selected>0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option th:each="i : ${cantidadesMaximas[iterStat.index] > 0 ? #numbers.sequence(1, cantidadesMaximas[iterStat.index]) : null}"
+                                        th:value="${i}" th:text="${i}">
+                                </option>
                             </select>
                         </article>
                     </div>
