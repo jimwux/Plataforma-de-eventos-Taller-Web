@@ -30,7 +30,7 @@
 
 <main>
 
-    <form th:action="@{/checkout/create-payment}" id="formulario" method="post" >
+    <form th:action="@{/checkout/create-payment}" id="formulario" method="post" accept-charset="UTF-8">
 
         <section class="contenedor">
 
@@ -43,22 +43,34 @@
                     <label for="nombre">Nombre</label>
                     <input class="data" type="text" id="nombre" name="nombre" placeholder="Ingresar nombre">
 
+                    <div id="errorNombre" class="error"></div>
+
                     <label for="apellido">Apellido</label>
                     <input class="data" type="text" id="apellido" name="apellido" placeholder="Ingresar apellido">
+
+                    <div id="errorApellido" class="error"></div>
 
                     <label for="correo">Correo electrónico</label>
                     <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico"
                            th:value="${session.email}"  th:readonly="${session.ID != null}" required>
 
+                    <div id="errorCorreo" class="error"></div>
+
                     <label for="correoRep">Repetir correo electrónico</label>
                     <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico"
                            th:value="${session.email}"  th:readonly="${session.ID != null}" required>
 
+                    <div id="errorCorreoRep" class="error"></div>
+
                     <label for="telefono">Número telefónico</label>
                     <input class="data" type="number" id="telefono" name="telefono" placeholder="Ingresar número">
 
+                    <div id="errorTelefono" class="error"></div>
+
                     <label for="dni">DNI</label>
                     <input class="data" type="text" id="dni" name="dni" placeholder="Ingresar número de documento">
+
+                    <div id="errorDNI" class="error"></div>
 
                 </article>
 
@@ -70,6 +82,8 @@
 
                 <input class="check" type="checkbox" id="aceptacionTerminos" name="aceptacionTerminos" onclick="mostrarTermYCond()">
                 <label for="aceptacionTerminos">Acepto los términos y condiciones.</label>
+
+                <div id="errorTYC" class="error"></div>
 
                 <div id="termsPopup" class="modal hidden">
                     <div id="popup-contenido" class="modal-content">

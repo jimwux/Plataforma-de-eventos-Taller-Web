@@ -55,7 +55,7 @@ public class ControladorEntradaUsuarioTest {
 
         when(this.servicioEntradaUsuarioMock.obtenerEntradasDeUsuario(usuario.getEmail())).thenReturn(listaDeEntradasUs);
 
-        ModelAndView modelAndView = this.controladorEntradaUsuario.mostrarEntradasDelUsuario(request);
+        ModelAndView modelAndView = this.controladorEntradaUsuario.mostrarEntradasDelUsuario(request, null);
 
 
         assertThat(modelAndView.getViewName(), equalToIgnoringCase("misEntradas"));

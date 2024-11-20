@@ -11,6 +11,12 @@ a{
     text-decoration: none;
 }
 
+.error p{
+    color: #b63434;
+    font-size: 13px;
+    font-weight: bold;
+}
+
 .contenedor{
     display: flex;
     flex-direction: row;

@@ -22,6 +22,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario{
         return repositorioUsuario.buscar(email);
     }
 
+
     @Override
     public void actualizarDatoUsuario(String email, String campo, String nuevoValor) {
         Usuario usuario = this.obtenerUsuarioVistaDTODelRepo(email);
@@ -66,4 +67,5 @@ public class ServicioUsuarioImpl implements ServicioUsuario{
             repositorioUsuario.modificar(usuario);
         }
     }
+
 }

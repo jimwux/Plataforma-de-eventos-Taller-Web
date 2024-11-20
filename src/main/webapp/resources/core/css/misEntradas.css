@@ -9,11 +9,39 @@
     align-items: center;
 }
 
+
+
 .cajita1{
     display:flex;
     flex-direction: row;
     align-items: center;
 }
+
+.cajita2{
+   color: #b7c2c6;
+}
+
+.error{
+    text-align: center;
+    color: #8b989c;
+    font-weight: bold;
+    font-size: 27px;
+    padding: 15px;
+}
+
+.selector{
+    display:flex;
+    justify-content: end;
+    padding:10px
+}
+
+.categoria {
+    background-color: rgba(197, 209, 211, 0.53);
+    border: none;
+    border-radius: 7px;
+    padding: 4px;
+}
+
 
 .texto{
     text-align: center;
