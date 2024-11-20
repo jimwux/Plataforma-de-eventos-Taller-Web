@@ -1,6 +1,5 @@
 package com.tallerwebi.dominio;
 
-import com.tallerwebi.presentacion.dto.UsuarioVistaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,12 +9,21 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 public class ServicioUsuarioImpl implements ServicioUsuario{
-
     private RepositorioUsuario repositorioUsuario;
+    private RepositorioEntradaUsuario repositorioEntradaUsuario;
+    private RepositorioEntradaCompra repositorioEntradaCompra;
+    private RepositorioDatosCompra repositorioDatosCompra;
+
 
     @Autowired
-    public ServicioUsuarioImpl(RepositorioUsuario repositorioUsuario) {
+    public ServicioUsuarioImpl(RepositorioUsuario repositorioUsuario, RepositorioEntradaUsuario repositorioEntradaUsuario, RepositorioEntradaCompra repositorioEntradaCompra, RepositorioDatosCompra repositorioDatosCompra) {
         this.repositorioUsuario = repositorioUsuario;
+        this.repositorioDatosCompra = repositorioDatosCompra;
+        this.repositorioEntradaUsuario = repositorioEntradaUsuario;
+        this.repositorioEntradaCompra = repositorioEntradaCompra;
+    }
+
+    public ServicioUsuarioImpl(RepositorioUsuario repositorioUsuarioMock) {
     }
 
     public Usuario obtenerUsuarioVistaDTODelRepo(String email){
@@ -67,5 +75,15 @@ public class ServicioUsuarioImpl implements ServicioUsuario{
             repositorioUsuario.modificar(usuario);
         }
     }
+
+    @Override
+    public void eliminarCuentaUsuario(Long usuarioId) {
+        repositorioEntradaUsuario.eliminarEntradasUsuario(usuarioId);
+        repositorioEntradaCompra.eliminarEntradasCompra(usuarioId);
+        repositorioDatosCompra.eliminarDatosCompra(usuarioId);
+        repositorioUsuario.eliminarUsuario(usuarioId);
+    }
+
+
 
 }

@@ -8,4 +8,5 @@ public interface RepositorioDatosCompra {
 
     void eliminarCompraPorCodigoTransaccion(String codigoTransaccion);
 
+    void eliminarDatosCompra(Long usuarioId);
 }
