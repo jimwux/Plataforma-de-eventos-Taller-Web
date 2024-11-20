@@ -72,15 +72,16 @@ public class VistaEventoE2E {
 
     @Test
     void deberiaComprarUnaEntrada(){
+
         // Esperar a que la página cargue completamente
         vistaEvento.cargarPagina();
         // Asegurarse de que el evento esté disponible
         vistaEvento.cargarElementoVisible();
         // Hacer clic en el evento
         vistaEvento.hacerClickEnElPrimerEvento();
-        // Validar la URL actual
-        String url = vistaEvento.obtenerURLActual();
-        assertThat(url, containsString("eventos/"));
+
+        String urlDetalle = vistaEvento.obtenerURLActual();
+        assertThat(urlDetalle, containsString("eventos/"));
 
 
         // Seleccionar "2" en el primer select de entradas
