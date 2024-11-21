@@ -1,3 +1,5 @@
+
+
 body{
     background: linear-gradient(to right, #18181B, black);
     margin: 0;
@@ -113,8 +115,3 @@ button {
     text-decoration: none;
 }
 
-.pie-de-pagina {
-    text-align: center;
-    color: white;
-    margin: 4em;
-}

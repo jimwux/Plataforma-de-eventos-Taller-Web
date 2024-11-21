@@ -80,3 +80,5 @@ function cargarCiudades() {
             ciudadesSelect.innerHTML = "<option value=''>Seleccione una ciudad</option>";
         });
 };
+
+

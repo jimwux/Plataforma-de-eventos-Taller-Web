@@ -9,11 +9,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.ModelAndView;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ControladorEvento {
@@ -31,8 +36,13 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public ModelAndView mostrarVistaEventos(@RequestParam(value = "nombre", required = false) String nombre,
                                             @RequestParam(value = "provinciaNombre", required = false) String nombreProvincia,
                                             @RequestParam(value = "ciudadNombre", required = false) String nombreCiudad,
-                                            @RequestParam(value = "categoria", required = false) String categoria) {
-        ModelMap modelo = new ModelMap();
+                                            @RequestParam(value = "categoria", required = false) String categoria,
+                                            HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        Long usuarioId = (session != null) ? (Long) session.getAttribute("ID") : null;
+
+    ModelMap modelo = new ModelMap();
 
         try{
 
@@ -55,7 +65,10 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         modelo.put("eventos", eventos);
 
-        List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
+        List<EventoNombreDTO> nombresEventos = new ArrayList<>();
+        for(Evento evento : eventos){
+            nombresEventos.add(new EventoNombreDTO(evento.getNombre()));
+        }
         modelo.put("nombresEventos", nombresEventos);
 
         } catch (EventoNoEncontradoException e) {
@@ -77,6 +90,13 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
             List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
             vistas.put("entradas", entradas);
 
+            List<Integer> cantidadesMaximas = new ArrayList<>();
+            for (Entrada entrada : entradas) {
+                int maxCantidad = Math.min(4, entrada.getStock());
+                cantidadesMaximas.add(maxCantidad);
+            }
+            vistas.addAttribute("cantidadesMaximas", cantidadesMaximas);
+
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
             String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());
@@ -85,7 +105,8 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         return new ModelAndView("vista", vistas);
     }
-    
+
+
     public List<Evento> obtenerEventosOrdenadosPorFecha() {
         return this.servicioEvento.obtenerEventosOrdenadosPorFecha();
     }
@@ -93,11 +114,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
-
-
-
-
-
 
 
 

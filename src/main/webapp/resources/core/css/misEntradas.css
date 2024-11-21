@@ -1,0 +1,65 @@
+.contenedor{
+    display: flex;
+    flex-direction: row;
+    background-color: rgba(139, 152, 156, 0.53);
+    border-radius: 20px;
+    margin: 30px;
+    padding: 20px;
+    gap: 10px;
+    align-items: center;
+}
+
+
+
+.cajita1{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.cajita2{
+   color: #b7c2c6;
+}
+
+.error{
+    text-align: center;
+    color: #8b989c;
+    font-weight: bold;
+    font-size: 27px;
+    padding: 15px;
+}
+
+.selector{
+    display:flex;
+    justify-content: end;
+    padding:10px
+}
+
+.categoria {
+    background-color: rgba(197, 209, 211, 0.53);
+    border: none;
+    border-radius: 7px;
+    padding: 4px;
+}
+
+
+.texto{
+    text-align: center;
+    color: #b5b5b5;
+}
+
+.cajita2 h3{
+    font-weight: 900;
+
+}
+
+h1{
+    text-align: center;
+    color: #b5b5b5;
+}
+
+
+.cajita1 img{
+    width: 210px;
+    border-radius: 10px;
+}

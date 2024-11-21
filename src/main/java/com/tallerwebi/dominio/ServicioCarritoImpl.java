@@ -4,18 +4,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @Transactional
 public class ServicioCarritoImpl implements ServicioCarrito {
 
     private  RepositorioEntrada repositorioEntrada;
+    private Map<String, LocalDateTime> codigosDescuento;
+    private final Double PORCENTAJE_DESCUENTO = 0.20;
 
     @Autowired
     public ServicioCarritoImpl(RepositorioEntrada repositorioEntrada) {
         this.repositorioEntrada = repositorioEntrada;
+        this.codigosDescuento = new HashMap<>();
     }
 
     @Override
@@ -46,6 +49,31 @@ public class ServicioCarritoImpl implements ServicioCarrito {
             totalCarrito += itemCarrito.getTotalCarrito();
         }
         return totalCarrito;
+    }
+
+    @Override
+    public String generarCodigoDescuento() {
+        return UUID.randomUUID().toString().substring(0, 8);
+    }
+
+    @Override
+    public void guardarCodigoDescuento(String codigo) {
+        codigosDescuento.put(codigo, LocalDateTime.now().plusMinutes(2));
+    }
+
+    @Override
+    public Boolean esCodigoDescuentoValido(String codigo, LocalDateTime ahora) {
+        LocalDateTime expiracion = codigosDescuento.get(codigo);
+        if (expiracion == null || ahora.isAfter(expiracion)) {
+            codigosDescuento.remove(codigo);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Double calcularTotalCarritoConDescuento(Double totalCarrito) {
+        return totalCarrito - ( totalCarrito * PORCENTAJE_DESCUENTO);
     }
 
 }

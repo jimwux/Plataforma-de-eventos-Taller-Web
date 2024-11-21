@@ -44,6 +44,21 @@ public class RepositorioEntradaImplTest {
         Entrada entradaConseguida = this.repositorioEntrada.obtenerEntradaPorNombre("General");
 
         assertThat(entradaConseguida.getNombre(), equalToIgnoringCase(entrada.getNombre()));
+        assertThat(entradaConseguida, equalTo(entrada));
+    }
+
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExisteUnaEntradaGeneralEnLaBaseDeDatosObtenerlaPorSuIdentificador(){
+        Entrada entrada = new Entrada();
+        entrada.setNombre("General");
+        this.repositorioEntrada.guardarEntrada(entrada);
+
+        Entrada entradaConseguida = this.repositorioEntrada.obtenerEntradaPorId(entrada.getId());
+
+        assertThat(entradaConseguida.getNombre(), equalToIgnoringCase(entrada.getNombre()));
+        assertThat(entradaConseguida, equalTo(entrada));
     }
 
     @Test
@@ -54,7 +69,7 @@ public class RepositorioEntradaImplTest {
         Evento evento2 = new Evento("TANGO SHOW",LocalDate.of(2024,11,16), "Parque de los Patos");
         Evento evento3 = new Evento("Fiesta Wasabi",LocalDate.of(2025,2,6), "CABA");
 
-       this.sessionFactory.getCurrentSession().save(evento);
+        this.sessionFactory.getCurrentSession().save(evento);
         this.sessionFactory.getCurrentSession().save(evento2);
         this.sessionFactory.getCurrentSession().save(evento3);
 
@@ -80,7 +95,32 @@ public class RepositorioEntradaImplTest {
        assertThat(entradasObtenidas.get(1).getNombre(), equalToIgnoringCase(entradaDos.getNombre()));
     }
 
+    @Test
+    @Rollback
+    @Transactional
+    public void dadoQueExistenEntradasDeunEventoPodemosReducirElStockDeLasMismas() {
+        Evento evento = new Evento("Creamfields 2024", LocalDate.of(2024, 11, 16), "Parque de la Ciudad");
+        this.sessionFactory.getCurrentSession().save(evento);
 
+        Entrada entrada = new Entrada();
+        entrada.setStock(10);
+        entrada.setNombre("General");
+        entrada.setEvento(evento);
+        this.repositorioEntrada.guardarEntrada(entrada);
+
+        Long idEntrada = entrada.getId();
+        this.repositorioEntrada.reducirStock(idEntrada, 3);
+
+        this.sessionFactory.getCurrentSession().flush();
+        this.sessionFactory.getCurrentSession().clear();
+
+        Entrada entradaRecargada = this.repositorioEntrada.obtenerEntradaPorId(idEntrada);
+
+        Integer nuevoStock = entradaRecargada.getStock();
+        Integer stockEsperado = 10 - 3;
+
+        assertThat(nuevoStock, equalTo(stockEsperado));
+    }
 
 
 

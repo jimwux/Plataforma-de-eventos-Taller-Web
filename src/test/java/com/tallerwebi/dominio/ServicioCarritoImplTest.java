@@ -3,6 +3,7 @@ package com.tallerwebi.dominio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,11 +32,13 @@ public class ServicioCarritoImplTest {
         entrada1.setId(1L);
         entrada1.setNombre("Concierto A");
         entrada1.setPrecio(100.0);
+        entrada1.setStock(20);
 
         Entrada entrada2 = new Entrada();
         entrada2.setId(2L);
         entrada2.setNombre("Concierto B");
         entrada2.setPrecio(200.0);
+        entrada2.setStock(20);
 
         when(this.repositorioEntradaMock.obtenerEntradaPorId(1L)).thenReturn(entrada1);
         when(this.repositorioEntradaMock.obtenerEntradaPorId(2L)).thenReturn(entrada2);
@@ -56,11 +59,13 @@ public class ServicioCarritoImplTest {
         entrada1.setId(1L);
         entrada1.setNombre("Concierto A");
         entrada1.setPrecio(100.0);
+        entrada1.setStock(20);
 
         Entrada entrada2 = new Entrada();
         entrada2.setId(2L);
         entrada2.setNombre("Concierto B");
         entrada2.setPrecio(200.0);
+        entrada2.setStock(20);
 
         Double totalEsperado = (100.0 * 2) + (200.0 * 3);
 
@@ -70,8 +75,53 @@ public class ServicioCarritoImplTest {
         List<Carrito> carrito = servicioCarrito.obtenerEntradasDelCarrito(idsEntradas, cantidades);
         Double totalObtenido = servicioCarrito.calcularTotalCarrito(carrito);
 
-        assertThat(totalObtenido, equalTo(totalObtenido));
+        assertThat(totalObtenido, equalTo(totalEsperado));
     }
+
+
+    @Test
+    public void alGenerarUnCodigoDeDescuentoEsteTieneElLargoDeseado() {
+        String codigo = servicioCarrito.generarCodigoDescuento();
+        assertThat(codigo, hasLength(8));
+    }
+
+    @Test
+    public void alCargarUnCodigoDeDescuentoDentroDeLosDosMinutosEsteResultaValido() {
+        String codigo = servicioCarrito.generarCodigoDescuento();
+        servicioCarrito.guardarCodigoDescuento(codigo);
+
+        assertThat(servicioCarrito.esCodigoDescuentoValido(codigo, LocalDateTime.now().plusMinutes(1)), is(true));
+    }
+
+    @Test
+    public void alCargarUnCodigoDeDescuentoExpiradoEsteResultaInvalido() {
+        String codigo = servicioCarrito.generarCodigoDescuento();
+        servicioCarrito.guardarCodigoDescuento(codigo);
+
+        assertThat(servicioCarrito.esCodigoDescuentoValido(codigo, LocalDateTime.now().plusMinutes(3)), is(false));
+    }
+
+    @Test
+    public void alCalcularElTotalDelCarritoConDescuentoDescuentaElVeintePorciento() {
+        Double totalCarrito = 100.0;
+        Double totalConDescuento = servicioCarrito.calcularTotalCarritoConDescuento(totalCarrito);
+
+        assertThat(totalConDescuento, equalTo(80.0));
+    }
+
+    @Test
+    public void alCalcularElTotalDelCarritoConDescuentoNuncaDaNegativoPorMasBajoQueSeaElTotalOriginal() {
+        Double totalCarrito = 1.0;
+        Double totalConDescuento = servicioCarrito.calcularTotalCarritoConDescuento(totalCarrito);
+
+        assertThat((totalConDescuento >= 0), is(true));
+    }
+
+
+
+
+
+
 
 
 }
