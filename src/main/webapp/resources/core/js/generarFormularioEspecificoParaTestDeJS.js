@@ -1,53 +1,54 @@
 function inicializarFormularioPagoParaTest() {
-    let formContainer = document.createElement("div");
-    formContainer.style.display = "none"; // Oculta el contenedor
-    formContainer.id = "formContainer";
-
-    let form, nombre, apellido, correo, correoRep, telefono, dni, aceptacionTerminos, botonEnviar;
-
-    form = document.createElement("form");
+    // Crear el formulario y establecer sus propiedades
+    const form = document.createElement("form");
     form.id = "formulario";
+    form.style.display = "none"; // Ocultar el formulario
 
-    nombre = document.createElement("input");
-    nombre.id = "nombre";
-    form.appendChild(nombre);
+    // Crear los campos del formulario
+    const fields = [
+        { id: "nombre", type: "text", value: "" },
+        { id: "apellido", type: "text", value: "" },
+        { id: "correo", type: "text", value: "" },
+        { id: "correoRep", type: "text", value: "" },
+        { id: "telefono", type: "text", value: "" },
+        { id: "dni", type: "text", value: "" },
+        { id: "aceptacionTerminos", type: "checkbox", value: "" },
+    ];
 
-    apellido = document.createElement("input");
-    apellido.id = "apellido";
-    form.appendChild(apellido);
+    // Crear y añadir cada campo al formulario
+    fields.forEach(field => {
+        const input = document.createElement("input");
+        input.id = field.id;
+        input.type = field.type;
+        input.value = field.value; // Establecer valor predeterminado
+        if (field.type === "checkbox") {
+            input.checked = false; // Checkbox desmarcado por defecto
+        }
+        form.appendChild(input);
+    });
 
-    correo = document.createElement("input");
-    correo.id = "correo";
-    form.appendChild(correo);
+    // Crear elementos para errores
+    const errores = [
+        "errorNombre",
+        "errorApellido",
+        "errorCorreo",
+        "errorCorreoRep",
+        "errorTelefono",
+        "errorDNI",
+        "errorTYC",
+    ];
 
-    correoRep = document.createElement("input");
-    correoRep.id = "correoRep";
-    form.appendChild(correoRep);
-
-    telefono = document.createElement("input");
-    telefono.id = "telefono";
-    form.appendChild(telefono);
-
-    dni = document.createElement("input");
-    dni.id = "dni";
-    form.appendChild(dni);
-
-    aceptacionTerminos = document.createElement("input");
-    aceptacionTerminos.id = "aceptacionTerminos";
-    aceptacionTerminos.type = "checkbox";
-    form.appendChild(aceptacionTerminos);
-
-    const errores = ["errorNombre", "errorApellido", "errorCorreo", "errorCorreoRep", "errorTelefono", "errorDNI", "errorTYC"];
     errores.forEach((errorId) => {
         const errorDiv = document.createElement("div");
         errorDiv.id = errorId;
         form.appendChild(errorDiv);
     });
 
-    botonEnviar = document.createElement("button");
+    // Añadir botón de envío
+    const botonEnviar = document.createElement("button");
     botonEnviar.classList.add("enviar");
     form.appendChild(botonEnviar);
 
-    formContainer.appendChild(form);
-    document.body.appendChild(formContainer);
+    // Añadir el formulario al body
+    document.body.appendChild(form);
 }

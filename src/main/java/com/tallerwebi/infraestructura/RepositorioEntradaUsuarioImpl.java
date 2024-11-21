@@ -1,9 +1,9 @@
 package com.tallerwebi.infraestructura;
 
 
-import com.tallerwebi.dominio.Entrada;
 import com.tallerwebi.dominio.EntradaUsuario;
 import com.tallerwebi.dominio.RepositorioEntradaUsuario;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -54,6 +54,15 @@ public class RepositorioEntradaUsuarioImpl implements RepositorioEntradaUsuario 
         query.setParameter("codigoTransaccion", codigoTransaccion);
         List<EntradaUsuario> entradasUsuario = query.getResultList();
         return entradasUsuario;
+    }
+    @Override
+    public void eliminarEntradasUsuario(Long usuarioId) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "DELETE FROM EntradaUsuario e WHERE e.usuario.id = :usuarioId";
+        Query query = session.createQuery(hql);
+        query.setParameter("usuarioId", usuarioId);
+        query.executeUpdate();
+
     }
 
 }

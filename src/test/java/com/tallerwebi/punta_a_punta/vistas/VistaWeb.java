@@ -18,9 +18,10 @@ public class VistaWeb {
         return this.obtenerElemento(selectorCSS).textContent();
     }
 
-    // Esperar a que la página cargue completamente
     protected void esperarPaginaCargada() {
         page.waitForLoadState();
+        //page representa la ventana del navegador que se esta ejecutando
+        //el metodo pausa la ejecucion del codigo hasta que la pagina cargue
     }
 
     // Esperar a que un elemento esté visible
@@ -39,10 +40,6 @@ public class VistaWeb {
         this.obtenerElemento(selectorCSS).nth(8).click();
     }
 
-  /*  protected void seleccionarCantidadDeElPrimerTipoDeEntrada(Integer cantidad){
-        this.obtenerElemento(".entrada:nth-child(1) select").selectOption(cantidad.toString());
-    }
-*/
 
     protected void escribirEnElElemento(String selectorCSS, String texto){
         this.obtenerElemento(selectorCSS).type(texto);

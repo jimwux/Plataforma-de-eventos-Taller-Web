@@ -75,4 +75,21 @@ public class ControladorUsuario {
 
         return new ModelAndView("redirect:/login").addObject("error", "Debe iniciar sesión.");
     }
+
+    @PostMapping("/eliminar-cuenta")
+    public String eliminarCuenta(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Long usuarioId = (session != null) ? (Long) session.getAttribute("ID") : null;
+
+        if (usuarioId != null ) {
+            servicioUsuario.eliminarCuentaUsuario(usuarioId);
+            session.invalidate();
+        }
+
+        return "redirect:/login";
+    }
+
+
+
+
 }

@@ -2,7 +2,6 @@ package com.tallerwebi.infraestructura;
 
 import com.tallerwebi.dominio.RepositorioUsuario;
 import com.tallerwebi.dominio.Usuario;
-import com.tallerwebi.presentacion.dto.UsuarioVistaDTO;
 import org.hibernate.Session;
 import javax.persistence.Query;
 import org.hibernate.SessionFactory;
@@ -19,7 +18,7 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public RepositorioUsuarioImpl(SessionFactory sessionFactory){
+    public RepositorioUsuarioImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
@@ -44,21 +43,6 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
         sessionFactory.getCurrentSession().save(usuario);
     }
 
- /*   @Override
-    @Transactional
-    public void guardar(Usuario usuario) {
-        String sql = "INSERT INTO usuario (email, password, nombre, apellido, telefono, dni) VALUES (:email, :password, :nombre, :apellido, :telefono, :dni)";
-
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery(sql);
-        query.setParameter("email", usuario.getEmail());
-        query.setParameter("password", usuario.getPassword());
-        query.setParameter("nombre", usuario.getNombre());
-        query.setParameter("apellido", usuario.getApellido());
-        query.setParameter("telefono", usuario.getTelefono());
-        query.setParameter("dni", usuario.getDni());
-
-        query.executeUpdate();
-    }*/
 
     @Override
     @Transactional
@@ -74,6 +58,19 @@ public class RepositorioUsuarioImpl implements RepositorioUsuario {
     public void modificar(Usuario usuario) {
         sessionFactory.getCurrentSession().update(usuario);
     }
+
+
+    @Override
+    public void eliminarUsuario(Long usuarioId) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "DELETE FROM Usuario u WHERE u.id = :usuarioId";
+
+        Query query = session.createQuery(hql);
+        query.setParameter("usuarioId", usuarioId);
+        query.executeUpdate();
+    }
+
+
 
 
 }

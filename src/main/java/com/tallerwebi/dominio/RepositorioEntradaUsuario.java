@@ -13,4 +13,5 @@ public interface RepositorioEntradaUsuario {
 
     List<EntradaUsuario> obtenerEntradasDeUnaTransaccion(String codigoTransaccion);
 
+    void eliminarEntradasUsuario(Long usuarioId);
 }
