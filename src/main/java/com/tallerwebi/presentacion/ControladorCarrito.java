@@ -2,13 +2,12 @@ package com.tallerwebi.presentacion;
 
 import com.tallerwebi.dominio.*;
 
+import com.tallerwebi.presentacion.dto.FormularioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -64,6 +63,9 @@ public class ControladorCarrito {
 
         Evento evento = this.servicioEvento.obtenerEventoPorId(eventoId);
         modeloEntradas.put("evento", evento);
+
+        FormularioDTO formularioPagoDTO = new FormularioDTO();
+        modeloEntradas.put("formularioPagoDTO", formularioPagoDTO);
 
         return new ModelAndView("formularioPago", modeloEntradas);  // Retornar la vista del carrito
     }
@@ -130,5 +132,25 @@ public class ControladorCarrito {
         }
         return resultado;
     }
+
+//    @GetMapping("/pago")
+//    public ModelAndView mostrarFormularioPago() {
+//        ModelAndView mav = new ModelAndView("formularioPago");
+//        FormularioDTO formularioPagoDTO = new FormularioDTO();
+//        mav.addObject("formularioPagoDTO", formularioPagoDTO);
+//        return mav;
+//    }
+
+//    @PostMapping("/procesarFormulario")
+//    public String procesarFormularioDTO(FormularioDTO formularioDTO, BindingResult bindingResult, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            // Si hay errores, redirigir al formulario para mostrar los mensajes de error
+//            model.addAttribute("formulario", formularioDTO);  // Para mantener los valores del formulario
+//            return "formularioPago";  // Retorna a la vista donde el formulario está
+//        }
+//
+//        model.addAttribute("mensajeExito", "Formulario procesado correctamente.");
+//        return "redirect:checkout/create-payment"; // Redirige a una página de resultado o confirmación
+//    }
 
 }

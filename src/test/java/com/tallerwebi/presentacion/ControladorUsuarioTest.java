@@ -96,5 +96,22 @@ public class ControladorUsuarioTest {
         assertThat(vistaRedirigida, equalTo("redirect:/login"));
     }
 
+    @Test
+    public void dadoQueUnUsuarioHayaCambiadoAlgunDatoEnLaVistaEsteSeActualice() {
+        //preparacion
+        String email = "a@gmail.com";
+        Usuario usuario = new Usuario(email, "123456", "Maria", "Perez", "12345678", "11223344");
+        String campoQueQuieroModificar = "dni";
+        String nuevoValor = "45400400";
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("email")).thenReturn(email);
+        when(servicioUsuarioMock.obtenerUsuarioVistaDTODelRepo(email)).thenReturn(usuario);
+        //ejecurion
+        ModelAndView modelAndView = controladorUsuario.modificarUsuario(campoQueQuieroModificar, nuevoValor, request);
+        //verificacion
+        assertThat(modelAndView.getViewName(), equalTo("redirect:/usuario"));
+        verify(servicioUsuarioMock).actualizarDatoUsuario(email, campoQueQuieroModificar, nuevoValor);
+    }
+
 
 }

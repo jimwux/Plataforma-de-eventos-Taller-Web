@@ -30,7 +30,7 @@
 
 <main>
 
-    <form th:action="@{/checkout/create-payment}" id="formulario" method="post" accept-charset="UTF-8">
+    <form th:action="@{/checkout/create-payment}" th:object="${formularioPagoDTO}" id="formulario" method="post" accept-charset="UTF-8">
 
         <section class="contenedor">
 
@@ -41,34 +41,38 @@
                     <h2>Complete con sus datos</h2>
 
                     <label for="nombre">Nombre</label>
-                    <input class="data" type="text" id="nombre" name="nombre" placeholder="Ingresar nombre">
+                    <input class="data" type="text" id="nombre" name="nombre" th:field="*{nombre}" placeholder="Ingresar nombre">
+
 
                     <div id="errorNombre" class="error"></div>
 
                     <label for="apellido">Apellido</label>
-                    <input class="data" type="text" id="apellido" name="apellido" placeholder="Ingresar apellido">
+                    <input class="data" type="text" id="apellido" name="apellido" th:field="*{apellido}" placeholder="Ingresar apellido">
+
 
                     <div id="errorApellido" class="error"></div>
 
                     <label for="correo">Correo electrónico</label>
-                    <input class="data" type="email" id="correo" name="correo" placeholder="Ingresar correo electrónico"
-                           th:value="${session.email}"  th:readonly="${session.ID != null}" required>
+                    <input class="data" type="email" id="correo" name="correo"  placeholder="Ingresar correo electrónico"
+                           th:value="${session.email}"  th:field="*{email}" required>
 
                     <div id="errorCorreo" class="error"></div>
 
                     <label for="correoRep">Repetir correo electrónico</label>
-                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico"
-                           th:value="${session.email}"  th:readonly="${session.ID != null}" required>
+                    <input class="data" type="email" id="correoRep" name="correoRep"  placeholder="Repetir correo electrónico"
+                           th:value="${session.email}" th:field="*{emailRep}" required>
 
                     <div id="errorCorreoRep" class="error"></div>
 
                     <label for="telefono">Número telefónico</label>
-                    <input class="data" type="number" id="telefono" name="telefono" placeholder="Ingresar número">
+                    <input class="data" type="number" id="telefono" name="telefono" th:field="*{telefono}" placeholder="Ingresar número">
+
 
                     <div id="errorTelefono" class="error"></div>
 
                     <label for="dni">DNI</label>
-                    <input class="data" type="text" id="dni" name="dni" placeholder="Ingresar número de documento">
+                    <input class="data" type="text" id="dni" name="dni" th:field="*{dni}" placeholder="Ingresar número de documento">
+
 
                     <div id="errorDNI" class="error"></div>
 

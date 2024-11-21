@@ -13,12 +13,15 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.preference.Preference;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.excepcion.UsuarioExistente;
+import com.tallerwebi.presentacion.dto.FormularioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -53,22 +56,27 @@ public class ControladorMercadoPago {
 
     @PostMapping("/create-payment")
     public void crearPago(HttpServletRequest request, HttpServletResponse response,
+                          @Valid @ModelAttribute FormularioDTO formularioPagoDTO,
+                          BindingResult result,
                           @RequestParam("cantidades") List<Integer> cantidades,
                           @RequestParam("idsEntradas") List<Long> idsEntradas,
                           @RequestParam("precioEntrada") List<Double> precioEntrada,
                           @RequestParam("tipoEntrada") List<String> tipoEntradas,
                           @RequestParam("nombreEvento") String nombreEvento,
-                          @RequestParam("correo") String emailUsuario,
-                          @RequestParam("nombre") String nombre,
-                          @RequestParam("apellido") String apellido,
-                          @RequestParam("telefono") String telefono,
-                          @RequestParam("dni") String dni,
                           @RequestParam(value = "codigoDescuento", required = false) String codigoDescuento) throws MPException, MPApiException, IOException, UsuarioExistente, UsuarioExistente {
+
+        if (result.hasErrors() || !formularioPagoDTO.correosCoinciden()) {
+            System.out.println("Errores de validación: " + result.getAllErrors());
+            System.out.println("¿Correos coinciden?: " + formularioPagoDTO.correosCoinciden());
+            response.sendRedirect("/formulario?error=true");
+            return;
+        } //refactorizar
+
 
         MercadoPagoConfig.setAccessToken(mercadoPagoAccessToken);
 
 
-        Usuario user = verificarYRegistrarUsuario(emailUsuario, nombre, apellido, telefono, dni);
+        Usuario user = verificarYRegistrarUsuario(formularioPagoDTO.getEmail(), formularioPagoDTO.getNombre(), formularioPagoDTO.getApellido(), formularioPagoDTO.getTelefono(), formularioPagoDTO.getDni());
 
 
         // Calcular el descuento si hay un código válido
@@ -131,7 +139,7 @@ public class ControladorMercadoPago {
 
         Preference preference = client.create(preferenceRequest);
 
-        guardarDatosCompra (cantidades, idsEntradas, emailUsuario, codigoTransaccion);
+        guardarDatosCompra (cantidades, idsEntradas, formularioPagoDTO.getEmail(), codigoTransaccion);
 
 
         response.sendRedirect(preference.getSandboxInitPoint());
