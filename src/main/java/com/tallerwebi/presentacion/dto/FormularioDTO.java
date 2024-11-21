@@ -1,40 +1,84 @@
 package com.tallerwebi.presentacion.dto;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class FormularioDTO {
-    @NotNull(message = "El DNI no puede estar vacío")
-    @Pattern(regexp = "\\d{8}", message = "El DNI debe tener 8 dígitos")
-    private String dni;
-
-    @NotNull(message = "El nombre no puede estar vacío")
+    @NotBlank(message = "El nombre es obligatorio")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El nombre debe contener solo letras")
     private String nombre;
 
-    @NotNull(message = "El apellido no puede estar vacío")
+    @NotBlank(message = "El apellido es obligatorio")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El apellido debe contener solo letras")
     private String apellido;
 
-    @NotNull(message = "El correo electrónico no puede estar vacío")
-    @Email(message = "El formato del correo electrónico no es válido")
+    @NotBlank(message = "El correo es obligatorio")
+    @Email(message = "El correo debe tener un formato válido")
     private String email;
 
-    @NotNull(message = "El teléfono no puede estar vacío")
-    @Pattern(regexp = "\\d{9}", message = "El teléfono debe tener 9 dígitos")
+    @NotBlank(message = "El correo repetido es obligatorio")
+    @Email(message = "El correo repetido debe tener un formato válido")
+    private String emailRep;
+
+    @NotBlank(message = "El teléfono es obligatorio")
+    @Pattern(regexp = "^11\\d{8}$", message = "El teléfono debe tener 10 dígitos y comenzar con 11")
     private String telefono;
 
-    public String getDni() { return dni; }
-    public void setDni(String dni) { this.dni = dni; }
+    @NotBlank(message = "El DNI es obligatorio")
+    @Pattern(regexp = "^\\d{8}$", message = "El DNI debe tener 8 dígitos")
+    private String dni;
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public @NotBlank(message = "El nombre es obligatorio") @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El nombre debe contener solo letras") String getNombre() {
+        return nombre;
+    }
 
-    public String getApellido() { return apellido; }
-    public void setApellido(String apellido) { this.apellido = apellido; }
+    public void setNombre(@NotBlank(message = "El nombre es obligatorio") @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El nombre debe contener solo letras") String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public @NotBlank(message = "El apellido es obligatorio") @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El apellido debe contener solo letras") String getApellido() {
+        return apellido;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setApellido(@NotBlank(message = "El apellido es obligatorio") @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "El apellido debe contener solo letras") String apellido) {
+        this.apellido = apellido;
+    }
+
+    public @NotBlank(message = "El correo es obligatorio") @Email(message = "El correo debe tener un formato válido") String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NotBlank(message = "El correo es obligatorio") @Email(message = "El correo debe tener un formato válido") String email) {
+        this.email = email;
+    }
+
+    public @NotBlank(message = "El correo repetido es obligatorio") @Email(message = "El correo repetido debe tener un formato válido") String getEmailRep() {
+        return emailRep;
+    }
+
+    public void setEmailRep(@NotBlank(message = "El correo repetido es obligatorio") @Email(message = "El correo repetido debe tener un formato válido") String emailRep) {
+        this.emailRep = emailRep;
+    }
+
+    public @NotBlank(message = "El teléfono es obligatorio") @Pattern(regexp = "^11\\d{8}$", message = "El teléfono debe tener 10 dígitos y comenzar con 11") String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(@NotBlank(message = "El teléfono es obligatorio") @Pattern(regexp = "^11\\d{8}$", message = "El teléfono debe tener 10 dígitos y comenzar con 11") String telefono) {
+        this.telefono = telefono;
+    }
+
+    public @NotBlank(message = "El DNI es obligatorio") @Pattern(regexp = "^\\d{8}$", message = "El DNI debe tener 8 dígitos") String getDni() {
+        return dni;
+    }
+
+    public void setDni(@NotBlank(message = "El DNI es obligatorio") @Pattern(regexp = "^\\d{8}$", message = "El DNI debe tener 8 dígitos") String dni) {
+        this.dni = dni;
+    }
+
+    public boolean correosCoinciden() {
+        return email.equals(emailRep);
+    }
 }

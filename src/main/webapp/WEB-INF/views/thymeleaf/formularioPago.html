@@ -30,7 +30,7 @@
 
 <main>
 
-    <form action="@{/procesarFormulario}" th:object="${formulario}" id="formulario" method="post" accept-charset="UTF-8">
+    <form th:action="@{/checkout/create-payment}" th:object="${formularioPagoDTO}" id="formulario" method="post" accept-charset="UTF-8">
 
         <section class="contenedor">
 
@@ -53,16 +53,14 @@
                     <div id="errorApellido" class="error"></div>
 
                     <label for="correo">Correo electrónico</label>
-                    <input class="data" type="email" id="correo" name="correo" th:field="*{email}" placeholder="Ingresar correo electrónico"
-                           th:value="${session.email}"  th:readonly="${session.ID != null}" required>
-
-
+                    <input class="data" type="email" id="correo" name="correo"  placeholder="Ingresar correo electrónico"
+                           th:value="${session.email}"  th:field="*{email}" required>
 
                     <div id="errorCorreo" class="error"></div>
 
                     <label for="correoRep">Repetir correo electrónico</label>
-                    <input class="data" type="email" id="correoRep" name="correoRep" placeholder="Repetir correo electrónico"
-                           th:value="${session.email}"  th:readonly="${session.ID != null}" required>
+                    <input class="data" type="email" id="correoRep" name="correoRep"  placeholder="Repetir correo electrónico"
+                           th:value="${session.email}" th:field="*{emailRep}" required>
 
                     <div id="errorCorreoRep" class="error"></div>
 
