@@ -60,8 +60,6 @@ public class ControladorUsuarioTest {
     @Test
     public void sinHaberUnUsuarioDTOMockCargadoElModelAndViewDeLaVistaUsuarioDebeEstarVacio() {
 
-        String email = "a@gmail.com";
-
         when(request.getSession()).thenReturn(session);
 
         ModelAndView modelAndView = controladorUsuario.mostrarVistaUsuario(request);

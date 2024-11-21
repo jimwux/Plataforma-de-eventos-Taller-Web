@@ -1,3 +1,4 @@
+
 const formu = document.getElementById("formulario");
 
 formu.addEventListener("submit", function(e) {
@@ -122,7 +123,7 @@ botones.forEach(boton => {
             cantidadOculta.value = cantidad; // Sincroniza la cantidad oculta
             actualizarSubtotal(subtotalElement, cantidad, precioUnitario);
         } else {
-            botonBorrar.disabled();
+            mostrarModal()
         }
         //actualizamos el total
         actualizarPrecioFinal();
@@ -147,4 +148,21 @@ function actualizarPrecioFinal() {
     //modificamos precio total en la vista
     document.getElementById('precio-final-valor-original').textContent = total.toFixed(2);
 }
+function mostrarModal() {
+    const modal = document.getElementById("popup");
+    if (modal) {
+        modal.classList.remove("hidden"); // Muestra el modal
+        document.body.style.overflow = "hidden"; // Desactiva el scroll de fondo
+    }
+}
+
+function cerrarModal() {
+    const modal = document.getElementById("popup");
+    window.location.href = 'eventos';
+    if (modal) {
+        modal.classList.add("hidden"); // Oculta el modal
+        document.body.style.overflow = "auto"; // Reactiva el scroll de fondo
+    }
+}
+
 
