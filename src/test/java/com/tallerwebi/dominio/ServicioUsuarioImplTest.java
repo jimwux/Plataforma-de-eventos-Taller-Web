@@ -11,14 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 public class ServicioUsuarioImplTest {
 
-    @Mock
-    private RepositorioUsuario repositorioUsuarioMock;
-
-    @InjectMocks
     private ServicioUsuarioImpl servicioUsuario;
+    private RepositorioUsuario repositorioUsuarioMock;
+    private RepositorioEntradaUsuario repositorioEntradaUsuarioMock;
+    private RepositorioEntradaCompra repositorioEntradaCompraMock;
+    private RepositorioDatosCompra repositorioDatosCompraMock;
 
     @BeforeEach
     public void init() {
+        this.repositorioUsuarioMock = mock(RepositorioUsuario.class);
+        this.repositorioEntradaUsuarioMock = mock(RepositorioEntradaUsuario.class);
+        this.repositorioEntradaCompraMock = mock(RepositorioEntradaCompra.class);
+        this.repositorioDatosCompraMock = mock(RepositorioDatosCompra.class);
+        this.servicioUsuario = new ServicioUsuarioImpl(this.repositorioUsuarioMock, this.repositorioEntradaUsuarioMock, this.repositorioEntradaCompraMock, this.repositorioDatosCompraMock);
     }
 
     @Test
