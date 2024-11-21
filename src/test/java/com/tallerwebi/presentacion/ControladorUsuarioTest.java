@@ -81,6 +81,20 @@ public class ControladorUsuarioTest {
         HttpSession actualSession = request.getSession(false);
         assertThat(actualSession, equalTo(null));
     }
+    @Test
+    public void dadoQueHayUnaSesionIniciadaEstaSePuedaEliminar(){
+        // Configurar el request sin sesión
+        when(request.getSession(false)).thenReturn(null);
+
+        // Ejecutar el método
+        String vistaRedirigida = controladorUsuario.eliminarCuenta(request);
+
+        // Verificar que el servicio no fue llamado
+        verify(servicioUsuarioMock, never()).eliminarCuentaUsuario(any());
+
+        // Verificar la redirección al login
+        assertThat(vistaRedirigida, equalTo("redirect:/login"));
+    }
 
 
 }

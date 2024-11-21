@@ -1,9 +1,6 @@
 package com.tallerwebi.dominio;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class EntradaCompra {
@@ -14,6 +11,10 @@ public class EntradaCompra {
 
     private Long idEntrada; // ID de la entrada
     private Integer cantidad; // Cantidad de esa entrada en particular
+
+    @ManyToOne
+    @JoinColumn(name = "datos_compra_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private DatosCompra datosCompra;
 
     // Constructor, getters y setters
     public EntradaCompra() {}
@@ -45,5 +46,13 @@ public class EntradaCompra {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public DatosCompra getDatosCompra() {
+        return datosCompra;
+    }
+
+    public void setDatosCompra(DatosCompra datosCompra) {
+        this.datosCompra = datosCompra;
     }
 }

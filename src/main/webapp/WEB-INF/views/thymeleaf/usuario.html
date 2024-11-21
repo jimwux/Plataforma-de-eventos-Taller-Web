@@ -121,8 +121,16 @@
 
     <br>
     <a th:href="@{/logout}" class="btn btn-primary mt-3" style="color:white">
-        <i class="fas fa-sign-out-alt" ></i> Cerrar sesión
+        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
     </a>
+
+    <form th:action="@{/eliminar-cuenta}" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')">
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash-alt"></i> Eliminar Cuenta
+        </button>
+    </form>
+
+
 
 </div>
 
