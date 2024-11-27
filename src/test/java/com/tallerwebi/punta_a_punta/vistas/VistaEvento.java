@@ -108,8 +108,6 @@ public class VistaEvento extends VistaWeb{
         page.waitForSelector("#password");
     }
 
-
-
     //modificar de mercado pago
     public void hacerClickEnModificarMP() {
         this.darClickEnElElemento(".card-option-cta");
