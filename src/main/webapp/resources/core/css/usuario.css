@@ -200,3 +200,8 @@ h1 {
     padding-left: 5px;
     padding-top: 2px;
 }
+
+.form-label, h5 {
+    all: unset;
+    color: black;
+}
