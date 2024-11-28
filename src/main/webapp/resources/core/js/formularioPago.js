@@ -1,10 +1,11 @@
+
 const formu = document.getElementById("formulario");
 
 formu.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const botonPresionado = e.submitter; // Directamente usar e.submitter
-    if (botonPresionado.classList.contains('enviar')) {
+    const botonPresionado = e.submitter; //permite obtener directamente el botón que activó el envío
+    if (botonPresionado.classList.contains('enviar')) { // si ese tiene la clase enviar entonces quiere decir que hubo intento de enviar el form y valido
         validacionFormularioRegistro();
     }
 });
@@ -16,7 +17,15 @@ function validacionFormularioRegistro() {
     let correoRep = document.getElementById("correoRep").value;
     let telefono = document.getElementById("telefono").value;
     let dni = document.getElementById("dni").value;
-    let acepto = document.getElementById("acepto").checked;
+    let aceptacionTerminos = document.getElementById("aceptacionTerminos").checked;
+
+    document.getElementById("errorNombre").innerHTML = "";
+    document.getElementById("errorApellido").innerHTML = "";
+    document.getElementById("errorCorreo").innerHTML = "";
+    document.getElementById("errorCorreoRep").innerHTML = "";
+    document.getElementById("errorTelefono").innerHTML = "";
+    document.getElementById("errorDNI").innerHTML = "";
+    document.getElementById("errorTYC").innerHTML = "";
 
     let error = false;
 
@@ -24,43 +33,49 @@ function validacionFormularioRegistro() {
 
     if (!exp.test(nombre) || nombre === "") {
         error = true;
+        document.getElementById("errorNombre").innerHTML = "<p> El nombre debe contener solo letras </p>"
     }
 
     if (!exp.test(apellido) || apellido === "") {
         error = true;
+        document.getElementById("errorApellido").innerHTML = "<p> El apellido debe contener solo letras  </p>"
     }
 
     let expCorreo = /^(.+@.+\..+)$/;
 
     if (!expCorreo.test(correo) || correo === "") {
         error = true;
+        document.getElementById("errorCorreo").innerHTML = "<p> El email debe cumplir el formato de un email </p>"
     }
 
-    if (correo !== correoRep && (!expCorreo.test(correoRep) || correoRep === "")) {
+    if (correoRep === "" || correo !== correoRep || (!expCorreo.test(correoRep))) {
         error = true;
+        document.getElementById("errorCorreoRep").innerHTML = "<p> El email debe cumplir el formato de un email y coincidir con el primero </p>"
     }
 
     let expNumero = /^11\d{8}$/;
 
     if (!expNumero.test(telefono) || telefono === "") {
         error = true;
+        document.getElementById("errorTelefono").innerHTML = "<p> El telefono debe cumplir con los 10 digitos </p>"
     }
 
     let expDni = /^\d{8}$/;
 
     if (!expDni.test(dni) || dni === "") {
         error = true;
+        document.getElementById("errorDNI").innerHTML = "<p> El DNI debe cumplir el formato de los 8 digitos </p>"
     }
 
-    if (!acepto) {
+    if (!aceptacionTerminos) {
         error = true;
+        document.getElementById("errorTYC").innerHTML = "<p> Debe marcar los terminos y condiciones </p>"
     }
 
     if (error) {
-        alert("Datos invalidos");
+
     } else {
         formu.submit();
-        alert("Compra realizada");
     }
 }
 
@@ -100,13 +115,15 @@ botones.forEach(boton => {
         let precioTotal = parseFloat(document.getElementById('precio-final-valor-original').textContent) || 0;
 
         if (precioTotal > precioUnitario) {
-            if(cantidad == 1){fila.remove();}
+            if(cantidad == 1){
+                fila.remove();
+            }
             cantidad--;
             cantidadInput.textContent = cantidad;
             cantidadOculta.value = cantidad; // Sincroniza la cantidad oculta
             actualizarSubtotal(subtotalElement, cantidad, precioUnitario);
         } else {
-            botonBorrar.disabled();
+            mostrarModal()
         }
         //actualizamos el total
         actualizarPrecioFinal();
@@ -131,4 +148,21 @@ function actualizarPrecioFinal() {
     //modificamos precio total en la vista
     document.getElementById('precio-final-valor-original').textContent = total.toFixed(2);
 }
+function mostrarModal() {
+    const modal = document.getElementById("popup");
+    if (modal) {
+        modal.classList.remove("hidden"); // Muestra el modal
+        document.body.style.overflow = "hidden"; // Desactiva el scroll de fondo
+    }
+}
+
+function cerrarModal() {
+    const modal = document.getElementById("popup");
+    window.location.href = 'eventos';
+    if (modal) {
+        modal.classList.add("hidden"); // Oculta el modal
+        document.body.style.overflow = "auto"; // Reactiva el scroll de fondo
+    }
+}
+
 

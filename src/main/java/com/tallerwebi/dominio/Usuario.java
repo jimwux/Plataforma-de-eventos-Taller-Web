@@ -1,6 +1,7 @@
 package com.tallerwebi.dominio;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "usuario")
@@ -82,6 +83,19 @@ public class Usuario {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id) && Objects.equals(nombre, usuario.nombre) && Objects.equals(apellido, usuario.apellido) && Objects.equals(telefono, usuario.telefono) && Objects.equals(dni, usuario.dni) && Objects.equals(email, usuario.email) && Objects.equals(password, usuario.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nombre, apellido, telefono, dni, email, password);
     }
 
 }

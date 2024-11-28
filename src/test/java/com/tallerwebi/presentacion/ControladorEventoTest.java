@@ -3,12 +3,15 @@ package com.tallerwebi.presentacion;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.text.IsEqualIgnoringCase.equalToIgnoringCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import com.tallerwebi.dominio.*;
 import com.tallerwebi.dominio.Evento;
 import com.tallerwebi.dominio.ServicioEventoImpl;
+import com.tallerwebi.presentacion.dto.EventoNombreDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -280,6 +283,33 @@ public class ControladorEventoTest {
         seVerificaQueSoloEstenLosEventosCuyasFechasCumplanConElRequerimiento(eventosObtenidos);
 
         verify(this.servicioEventoMock, times(1)).obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
+    }
+
+    @Test
+    public void mostrarBusquedaDeventosUtilizandoDTO() {
+
+        List<Evento> eventos = Arrays.asList(
+                new Evento("Evento 1", LocalDate.of(2025, 1, 15),"Parque de la Ciudad"  ),
+                new Evento("Evento 2", LocalDate.of(2025, 1, 15),"Parque de la Ciudad"),
+                new Evento("Evento 3", LocalDate.of(2025, 1, 15),"Parque de la Ciudad")
+            );
+
+        // Configurar el servicio simulado para devolver esta lista de eventos
+        when(servicioEventoMock.obtenerEventosOrdenadosPorFecha()).thenReturn(eventos);
+
+        // Ejecutar el metodo del controlador
+        ModelAndView modelAndView = controladorEvento.mostrarVistaEventos(null, null, null, null, request);
+
+        // Verificar que se obtuvo la lista de nombres de eventos en el modelo
+        ModelMap modelo = modelAndView.getModelMap();
+        List<EventoNombreDTO> nombresEventos = (List<EventoNombreDTO>) modelo.get("nombresEventos");
+
+        // Verificar que la lista no es nula y tiene el tamaño esperado
+        assertNotNull(nombresEventos);
+        assertThat(nombresEventos.size(), equalTo(3));
+        assertThat( nombresEventos.get(0).getNombre(), equalTo("Evento 1"));
+        assertThat( nombresEventos.get(1).getNombre(), equalTo("Evento 2"));
+        assertThat( nombresEventos.get(2).getNombre(), equalTo("Evento 3"));
     }
   
     private void seVerificaQueSoloEstenLosEventosCuyasFechasCumplanConElRequerimiento(List<Evento> eventosOrdenados) {

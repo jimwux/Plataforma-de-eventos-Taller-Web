@@ -4,6 +4,8 @@ import com.tallerwebi.dominio.excepcion.UsuarioExistente;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class ServicioRegistroImpl implements ServicioRegistro {
 
@@ -24,5 +26,11 @@ public class ServicioRegistroImpl implements ServicioRegistro {
         usuario.setPassword(encriptada);
         repositorioUsuario.guardar(usuario);
         return "Registro Exitoso";
+    }
+
+    @Override
+    public String generarContrasena() {
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        return uuid.substring(0, 12);
     }
 }

@@ -120,3 +120,88 @@ button {
     color: white;
     margin: 4em;
 }
+
+.titulo-usuario {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.titulo-usuario h2 {
+    color: #ffffff;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/*.tarjetas {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+}*/
+.tarjetas {
+    display: grid;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tarjeta {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 15px;
+    width: auto;
+    min-width: 300px;
+    max-width: 500px;
+    gap: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.editarDatos {
+
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: auto;
+}
+
+.editarDatos:hover {
+    color: #999999FF;
+
+}
+
+.pie-de-pagina {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    font-size: 0.8em;
+}
+
+.icon {
+    margin-right: 10px;
+    color: #999999FF;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+.boton-nav {
+    all: unset;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 2px;
+}
+
+.form-label, h5 {
+    all: unset;
+    color: black;
+}

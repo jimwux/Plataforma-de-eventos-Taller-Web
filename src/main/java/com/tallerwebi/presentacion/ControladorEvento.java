@@ -16,7 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ControladorEvento {
@@ -63,7 +65,10 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
 
         modelo.put("eventos", eventos);
 
-        List<EventoNombreDTO> nombresEventos = servicioEvento.obtenerNombresDeEventos();
+        List<EventoNombreDTO> nombresEventos = new ArrayList<>();
+        for(Evento evento : eventos){
+            nombresEventos.add(new EventoNombreDTO(evento.getNombre()));
+        }
         modelo.put("nombresEventos", nombresEventos);
 
         } catch (EventoNoEncontradoException e) {
@@ -85,6 +90,13 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
             List<Entrada> entradas = servicioEntrada.obtenerEntradasDeUnEvento(id);
             vistas.put("entradas", entradas);
 
+            List<Integer> cantidadesMaximas = new ArrayList<>();
+            for (Entrada entrada : entradas) {
+                int maxCantidad = Math.min(4, entrada.getStock());
+                cantidadesMaximas.add(maxCantidad);
+            }
+            vistas.addAttribute("cantidadesMaximas", cantidadesMaximas);
+
             List<Evento> eventosCarrousel = servicioEvento.obtenerEventosAleatorios(eventoBuscado.getCiudad().getNombre());
             vistas.put("eventosCarrousel", eventosCarrousel);
             String mensajeCarrusel = servicioEvento.obtenerMensajeSobreEventosAleatorios(eventosCarrousel, eventoBuscado.getCiudad().getNombre());
@@ -102,11 +114,6 @@ public ControladorEvento(ServicioEvento servicioEvento, ServicioEntrada servicio
     public List<Evento> obtenerEventosDentroDeUnRangoDeFechas(LocalDate fechaInicio, LocalDate fechaFin) {
         return this.servicioEvento.obtenerEventosDentroDeUnRangoDeFechas(fechaInicio,fechaFin);
     }
-
-
-
-
-
 
 
 

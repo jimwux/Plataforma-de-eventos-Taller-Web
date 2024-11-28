@@ -62,22 +62,18 @@ public class ControladorLoginTest {
 		// Mock del servicio para que devuelva el usuarioMock
 		when(servicioLoginMock.consultarUsuario(datosLogin.getEmail(), datosLogin.getPassword())).thenReturn(usuarioMock);
 
+		// Mock de request para que devuelva la sesion
+		when(request.getSession(false)).thenReturn(session);
+
 		// Ejecución
-		ModelAndView modelAndView = controladorLogin.validarLogin(datosLogin, request);
+		ModelAndView modelAndView = controladorLogin.validarLogin(datosLoginDTOMock, request);
+
+		// Validacion del ID
+		verify(session).setAttribute("ID", usuarioMock.getId());
 
 		// Validación de la redirección
 		assertThat(modelAndView.getViewName(), equalTo("redirect:/eventos"));
 
-
-		ArgumentCaptor<String> attributeCaptor = ArgumentCaptor.forClass(String.class);
-		ArgumentCaptor<Object> valueCaptor = ArgumentCaptor.forClass(Object.class);
-		verify(session, atLeastOnce()).setAttribute(attributeCaptor.capture(), valueCaptor.capture());
-
-		List<String> allKeys = attributeCaptor.getAllValues();
-		List<Object> allValues = valueCaptor.getAllValues();
-
-		assertThat(allKeys, hasItem("ID"));
-		assertThat(allValues, hasItem(usuarioMock.getId()));
 	}
 
 

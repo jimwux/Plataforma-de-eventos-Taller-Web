@@ -90,9 +90,90 @@ public class ServicioEntradaImplTest {
 
     }
 
+    @Test
+    public void alHaberEntradasSuficientesParaLaCompraSeValidaSuStock() {
+        List<Long> idsEntradas = List.of(1L, 2L);
+        List<Integer> cantidades = List.of(2, 3);
 
+        Entrada entrada1 = new Entrada();
+        entrada1.setId(1L);
+        entrada1.setStock(10);
 
+        Entrada entrada2 = new Entrada();
+        entrada2.setId(2L);
+        entrada2.setStock(5);
 
+        // Simula que hay suficiente stock
+        when(this.repositorioEntradaMock.obtenerEntradaPorId(1L)).thenReturn(entrada1);
+        when(this.repositorioEntradaMock.obtenerEntradaPorId(2L)).thenReturn(entrada2);
 
+        boolean resultado = this.servicioEntrada.validarStockEntradas(idsEntradas, cantidades);
+        assertThat(resultado, is(true));
+    }
+
+    @Test
+    public void alNoHaberEntradasSuficientesParaLaCompraNoSeValidaSuStock() {
+        List<Long> idsEntradas = List.of(1L, 2L);
+        List<Integer> cantidades = List.of(2, 6);  // Supera el stock de la entrada 2
+
+        Entrada entrada1 = new Entrada();
+        entrada1.setId(1L);
+        entrada1.setStock(10);
+
+        Entrada entrada2 = new Entrada();
+        entrada2.setId(2L);
+        entrada2.setStock(5);  // Stock insuficiente para la cantidad solicitada
+
+        // Simula que no hay suficiente stock para la entrada 2
+        when(this.repositorioEntradaMock.obtenerEntradaPorId(1L)).thenReturn(entrada1);
+        when(this.repositorioEntradaMock.obtenerEntradaPorId(2L)).thenReturn(entrada2);
+
+        boolean resultado = this.servicioEntrada.validarStockEntradas(idsEntradas, cantidades);
+        assertThat(resultado, is(false));
+    }
+
+    @Test
+    public void alQuererSuperarElLimiteDeCompraDeEntradasNoSeValida() {
+        List<Long> idsEntradas = List.of(1L);
+        List<Integer> cantidades = List.of(5);  // Cantidad supera el límite de 4
+
+        Entrada entrada1 = new Entrada();
+        entrada1.setId(1L);
+        entrada1.setStock(10);
+
+        // Simula que hay stock suficiente, pero la cantidad solicitada supera el límite de 4
+        when(this.repositorioEntradaMock.obtenerEntradaPorId(1L)).thenReturn(entrada1);
+
+        boolean resultado = this.servicioEntrada.validarStockEntradas(idsEntradas, cantidades);
+        assertThat(resultado, is(false));
+    }
+
+    @Test
+    public void alReducirElStockExitosamenteObtenemosLaCantidadDeFilasAfectadas () {
+        Long idEntrada = 1L;
+        Integer cantidad = 3;
+
+        // Simula que la operación de reducción afecta 1 fila (éxito)
+        when(this.repositorioEntradaMock.reducirStock(idEntrada, cantidad)).thenReturn(1);
+
+        boolean resultado = this.servicioEntrada.reducirStock(idEntrada, cantidad);
+
+        assertThat(resultado, is(true));
+        verify(this.repositorioEntradaMock, times(1)).reducirStock(idEntrada, cantidad);
+    }
+
+    @Test
+    public void alNoReducirElStockExitosamenteNoObtenemosLaCantidadDeFilasAfectadas() {
+        Long idEntrada = 1L;
+        Integer cantidad = 3;
+
+        // Simula que la operación de reducción no afecta ninguna fila (fallo)
+        when(this.repositorioEntradaMock.reducirStock(idEntrada, cantidad)).thenReturn(0);
+
+        boolean resultado = this.servicioEntrada.reducirStock(idEntrada, cantidad);
+
+        assertThat(resultado, is(false));
+        verify(this.repositorioEntradaMock, times(1)).reducirStock(idEntrada, cantidad);
+    }
 
 }

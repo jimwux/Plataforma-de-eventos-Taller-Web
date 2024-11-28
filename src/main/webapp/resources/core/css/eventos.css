@@ -80,6 +80,8 @@ button {
     row-gap: 4vh;
     column-gap: 2vh;
     justify-content: space-evenly;
+    padding: 0;
+
 }
 
 
@@ -91,6 +93,7 @@ button {
 
 .eventos img{
     width: 200px;
+    margin-bottom: 1em;
     border-radius: 3px;
 }
 
@@ -115,8 +118,3 @@ button {
     text-decoration: none;
 }
 
-.pie-de-pagina {
-    text-align: center;
-    color: white;
-    margin: 4em;
-}

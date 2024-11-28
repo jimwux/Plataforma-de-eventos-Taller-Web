@@ -1,0 +1,91 @@
+body {
+    background: linear-gradient(to right, #18181B, black);
+    margin: 0;
+    padding : 0;
+    color: white;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+#nav-bar {
+    margin-bottom: 0;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.banner {
+    background-image: url("https://staff360.es/wp-content/uploads/2022/05/staff360-slider-home-eventos-de-otra-pasta-2.png");
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 17em;
+    margin-bottom: 4em;
+}
+
+.banner h2 {
+    margin: 0;
+}
+
+#formulario-contacto {
+    background-color: rgba(66, 71, 76, 0.35);
+    border-radius: 1em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#datos-contacto {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Distribuye las columnas */
+    align-items: stretch; /* Asegura que ambas columnas tengan la misma altura */
+    width: 100%;
+}
+
+.contenedor-form {
+    margin: 1.5em;
+}
+
+
+#nombre, #apellido, #email {
+    margin-bottom: 1em;
+}
+
+.input-contacto {
+    padding: 0.5em;
+    width: 30em;
+    border-radius: 0.5em;
+    border: none;
+    margin-top: 0.4em;
+}
+
+#mensaje {
+    height: 85.5%;
+}
+
+#boton-correo {
+    padding: 1em;
+    margin: 0.5em;
+    width: 50%;
+    border-radius: 1em;
+    border: none;
+    background-color: #979797;
+    cursor: pointer;
+}
+
+#boton-correo:hover {
+    background-color: #7a7a7a;
+}
+
+.estado-mensaje {
+    text-align: center;
+    padding: 1em;
+}
