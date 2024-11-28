@@ -80,6 +80,8 @@ button {
     row-gap: 4vh;
     column-gap: 2vh;
     justify-content: space-evenly;
+    padding: 0;
+
 }
 
 
