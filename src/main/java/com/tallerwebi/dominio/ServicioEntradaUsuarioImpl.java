@@ -30,8 +30,7 @@ public class ServicioEntradaUsuarioImpl implements ServicioEntradaUsuario {
             EntradaUsuario entradaUsuario = new EntradaUsuario(user, entradaActual, codigoTransaccion);
 
             // Generar QR usando el servicio inyectado
-            String qrData = entradaUsuario.getId() +
-                    ", Compra: " + codigoTransaccion;
+            String qrData = String.valueOf(entradaUsuario.getId());
 
             String qrCodeBase64 = generadorCodigoQr.generarCodigoQRBase64(qrData);
             entradaUsuario.setQrCode(qrCodeBase64);

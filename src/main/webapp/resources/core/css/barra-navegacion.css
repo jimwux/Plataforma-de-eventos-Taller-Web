@@ -47,4 +47,7 @@ a {
     margin: 4em;
 }
 
-
+img {
+    width: 100%; /* O un ancho fijo, si lo prefieres */
+    aspect-ratio: 1 / 1; /* Hace que el alto sea igual al ancho */
+}
